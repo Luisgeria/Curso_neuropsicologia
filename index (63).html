@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neuropsicología Universitaria · IAprendizaje</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:   #1C2B3A;
+    --mist:  #F0EDE8;
+    --white: #FAFAF8;
+    --muted: #7A8FA6;
+    --rule:  #D8D2CA;
+    --b1:    #2B5EA7;
+    --b2:    #1A7A6E;
+    --b3:    #8B3A2F;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans:  'Inter', system-ui, sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body { background: var(--white); color: var(--ink); font-family: var(--sans); line-height: 1.7; }
+
+  /* ── HEADER ── */
+  header {
+    padding: 2rem 2rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--rule);
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .brand {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+  }
+  .brand span { color: var(--ink); }
+  .header-tag {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 5rem 2rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  .hero-text {}
+  .hero-eyebrow {
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    line-height: 1.12;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--muted);
+  }
+  .hero-desc {
+    font-size: 1rem;
+    color: #4A5E72;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+    max-width: 440px;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 2.5rem;
+  }
+  .stat {}
+  .stat .st-num {
+    font-family: var(--serif);
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 0.2rem;
+  }
+  .stat .st-label {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* Anatomía SVG decorativa */
+  .hero-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .brain-diagram {
+    width: 320px;
+    height: 320px;
+    position: relative;
+  }
+  .brain-diagram svg {
+    width: 100%;
+    height: 100%;
+  }
+  /* Líneas de lóbulos superpuestas con etiquetas */
+  .lobe-labels {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .lobe-label {
+    position: absolute;
+    font-family: var(--sans);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .lobe-label::before {
+    content: '';
+    display: block;
+    width: 18px;
+    height: 1px;
+    background: var(--rule);
+    flex-shrink: 0;
+  }
+  .ll-frontal  { top: 22%; left: 2%; color: var(--b1); }
+  .ll-frontal::before { background: var(--b1); }
+  .ll-parietal { top: 10%; right: 4%; color: var(--b2); }
+  .ll-parietal::before { background: var(--b2); width: 26px; }
+  .ll-temporal { bottom: 28%; left: 0%; color: var(--b3); }
+  .ll-temporal::before { background: var(--b3); }
+  .ll-occipital{ bottom: 14%; right: 4%; color: #6B4A9B; }
+  .ll-occipital::before { background: #6B4A9B; width: 22px; }
+
+  /* ── SECTION DIVIDE ── */
+  .section-divide {
+    border-top: 1px solid var(--rule);
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* ── BLOQUES ── */
+  .bloques {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 4rem 2rem 5rem;
+  }
+  .bloques-header {
+    margin-bottom: 3rem;
+  }
+  .bloques-header .bh-label {
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.6rem;
+  }
+  .bloques-header h2 {
+    font-family: var(--serif);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .bloque-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .bloque-card {
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--ink);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.18s, box-shadow 0.18s;
+    background: var(--white);
+  }
+  .bloque-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(28,43,58,0.1);
+  }
+  .bloque-card-top {
+    padding: 2rem 1.75rem 1.5rem;
+    border-bottom: 1px solid var(--rule);
+    flex: 1;
+  }
+  .bloque-num {
+    font-family: var(--serif);
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 1.25rem;
+  }
+  .bc1 .bloque-num { color: var(--b1); }
+  .bc2 .bloque-num { color: var(--b2); }
+  .bc3 .bloque-num { color: var(--b3); }
+  .bloque-card h3 {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 0.6rem;
+    color: var(--ink);
+  }
+  .bloque-card p {
+    font-size: 0.85rem;
+    color: #4A5E72;
+    line-height: 1.65;
+  }
+  .bloque-card-bottom {
+    padding: 1rem 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .bloque-topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .topic-tag {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    font-weight: 500;
+    color: var(--muted);
+    background: var(--mist);
+    padding: 0.2rem 0.6rem;
+    border-radius: 99px;
+    border: 1px solid var(--rule);
+  }
+  .bloque-arrow {
+    font-size: 1rem;
+    color: var(--rule);
+    transition: color 0.15s, transform 0.15s;
+    flex-shrink: 0;
+    margin-left: 0.75rem;
+  }
+  .bloque-card:hover .bloque-arrow {
+    color: var(--ink);
+    transform: translateX(3px);
+  }
+
+  /* ── METODOLOGÍA ── */
+  .metodologia {
+    background: var(--mist);
+    padding: 4rem 2rem;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .metodologia-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  .metodologia-title {}
+  .metodologia-title .mt-label {
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.6rem;
+  }
+  .metodologia-title h2 {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--ink);
+  }
+  .met-items {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .met-item {}
+  .met-item .mi-icon {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+  .met-item .mi-title {
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 0.3rem;
+  }
+  .met-item .mi-desc {
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    color: #4A5E72;
+    line-height: 1.6;
+  }
+
+  /* ── DESCARGA PDF ── */
+  .descargas {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 3.5rem 2rem 4rem;
+    border-top: 1px solid var(--rule);
+  }
+  .descargas-header {
+    margin-bottom: 2rem;
+  }
+  .descargas-header .dh-label {
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+  .descargas-header h2 {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  --purple: #6B4A9B;
+  .pdf-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .pdf-bib {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 1.1rem 1.25rem;
+    text-decoration: none;
+    color: var(--ink);
+    background: var(--mist);
+    transition: box-shadow 0.15s, border-color 0.15s;
+  }
+  .pdf-bib:hover { box-shadow: 0 4px 16px rgba(28,43,58,0.09); border-color: var(--ink); }
+  .pi-purple { background: #E8E4F0; }
+  .pi-purple-label { color: #6B4A9B; }
+  .pdf-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 1.1rem 1.25rem;
+    text-decoration: none;
+    color: var(--ink);
+    background: var(--white);
+    transition: box-shadow 0.15s, border-color 0.15s;
+  }
+  .pdf-card:hover { box-shadow: 0 4px 16px rgba(28,43,58,0.09); border-color: var(--ink); }
+  .pdf-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+  }
+  .pi1 { background: #D6E4F7; }
+  .pi2 { background: #E0F5F2; }
+  .pi3 { background: #F9E8E6; }
+  .pdf-info {}
+  .pdf-info .pi-bloque {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.2rem;
+  }
+  .pdf-info .pi-title {
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.3;
+    margin-bottom: 0.15rem;
+  }
+  .pdf-info .pi-meta {
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    color: var(--muted);
+  }
+  @media (max-width: 800px) {
+    .pdf-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  footer .ft-left {
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  footer .ft-left strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  footer .ft-right {
+    display: flex;
+    gap: 1.25rem;
+  }
+  footer .ft-right a {
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+  }
+  footer .ft-right a:hover { color: var(--ink); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 800px) {
+    .hero { grid-template-columns: 1fr; gap: 3rem; padding: 3rem 1.5rem; }
+    .hero-visual { order: -1; }
+    .brain-diagram { width: 220px; height: 220px; }
+    .bloque-grid { grid-template-columns: 1fr; }
+    .metodologia-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .met-items { grid-template-columns: 1fr; }
+    .hero-stats { gap: 1.5rem; }
+    header { padding: 1.5rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="#" class="brand">IA<span>prendizaje</span></a>
+  <span class="header-tag">Recursos educativos en abierto</span>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-eyebrow">Curso completo · Nivel universitario</div>
+    <h1>Neuropsicología:<br>del cerebro al <em>paciente real</em></h1>
+    <p class="hero-desc">Un manual universitario de neuropsicología en tres bloques independientes: fundamentos teóricos, evaluación y rehabilitación, y diez casos clínicos integrados. Con autoevaluación y generador de exámenes impulsado por IA.</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="st-num">3</div><div class="st-label">Bloques</div></div>
+      <div class="stat"><div class="st-num">23</div><div class="st-label">Temas</div></div>
+      <div class="stat"><div class="st-num">10</div><div class="st-label">Casos clínicos</div></div>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="brain-diagram">
+      <!-- SVG cerebro esquemático lateral izquierdo -->
+      <svg viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Silueta base del cerebro -->
+        <path d="M80 220 C50 200 35 170 40 140 C45 110 55 95 70 88 C70 70 80 52 100 46 C115 40 130 46 140 55 C150 44 168 36 188 40 C210 44 224 60 226 78 C244 82 258 98 260 118 C264 140 256 162 240 178 C248 192 248 210 238 222 C224 238 200 244 178 242 C164 252 148 256 132 252 C110 248 88 238 80 220Z" fill="#EEE9E4" stroke="#C8C0B6" stroke-width="1.5"/>
+        <!-- Surcos principales -->
+        <path d="M120 80 C128 90 124 108 130 120 C136 132 148 136 154 148" stroke="#C8C0B6" stroke-width="1" stroke-linecap="round"/>
+        <path d="M158 54 C162 68 168 82 170 96 C172 110 168 124 170 138" stroke="#C8C0B6" stroke-width="1" stroke-linecap="round"/>
+        <path d="M196 64 C200 78 208 90 212 104 C216 118 212 132 214 146" stroke="#C8C0B6" stroke-width="1" stroke-linecap="round"/>
+        <path d="M76 140 C90 136 104 140 116 148 C128 156 134 170 140 182" stroke="#C8C0B6" stroke-width="1" stroke-linecap="round"/>
+        <path d="M90 178 C106 170 122 172 136 180 C150 188 158 202 164 216" stroke="#C8C0B6" stroke-width="1" stroke-linecap="round"/>
+        <path d="M180 160 C192 158 204 164 212 174 C220 184 220 198 218 210" stroke="#C8C0B6" stroke-width="1" stroke-linecap="round"/>
+        <path d="M60 158 C72 152 82 162 84 176" stroke="#C8C0B6" stroke-width="1" stroke-linecap="round"/>
+        <!-- Cisura de Silvio -->
+        <path d="M80 168 C98 156 118 148 140 152 C160 156 176 168 192 172" stroke="#A8A098" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 2"/>
+        <!-- Cisura de Rolando -->
+        <path d="M146 56 C150 80 148 104 144 128 C140 152 132 172 126 192" stroke="#A8A098" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 2"/>
+        <!-- Zonas coloreadas sutilmente por lóbulo -->
+        <!-- Frontal -->
+        <path d="M80 168 C80 140 90 110 100 88 C112 66 130 54 146 56 C148 80 148 104 144 128 C140 152 124 160 108 164 C96 166 86 168 80 168Z" fill="rgba(43,94,167,0.06)"/>
+        <!-- Parietal -->
+        <path d="M146 56 C158 54 178 56 196 64 C214 72 228 90 234 110 C238 128 234 148 226 162 C216 178 200 186 188 184 C176 182 168 172 162 160 C156 148 148 136 144 128 C148 104 148 80 146 56Z" fill="rgba(26,122,110,0.06)"/>
+        <!-- Temporal -->
+        <path d="M80 168 C72 178 64 192 64 208 C64 220 72 232 82 240 C100 252 124 254 144 248 C156 244 164 238 164 228 C164 216 158 204 150 196 C140 186 128 180 116 176 C100 172 90 170 80 168Z" fill="rgba(139,58,47,0.06)"/>
+        <!-- Occipital -->
+        <path d="M188 184 C200 186 216 188 228 184 C242 178 254 166 258 150 C262 134 256 116 248 104 C240 94 228 86 216 84 C216 98 216 114 214 128 C212 144 206 158 196 168 C194 174 192 180 188 184Z" fill="rgba(107,74,155,0.06)"/>
+        <!-- Puntos de área funcional -->
+        <circle cx="108" cy="128" r="3.5" fill="rgba(43,94,167,0.35)"/>
+        <circle cx="172" cy="100" r="3.5" fill="rgba(43,94,167,0.25)"/>
+        <circle cx="176" cy="148" r="3.5" fill="rgba(26,122,110,0.35)"/>
+        <circle cx="108" cy="192" r="3.5" fill="rgba(139,58,47,0.35)"/>
+        <circle cx="220" cy="130" r="3.5" fill="rgba(107,74,155,0.3)"/>
+      </svg>
+      <div class="lobe-labels">
+        <div class="lobe-label ll-frontal">Frontal</div>
+        <div class="lobe-label ll-parietal">Parietal</div>
+        <div class="lobe-label ll-temporal">Temporal</div>
+        <div class="lobe-label ll-occipital">Occipital</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divide"></div>
+
+<!-- BLOQUES -->
+<section class="bloques">
+  <div class="bloques-header">
+    <div class="bh-label">Contenidos</div>
+    <h2>Tres bloques, un solo curso</h2>
+  </div>
+
+  <div class="bloque-grid">
+
+    <a href="neuropsicologia_bloque1.html" class="bloque-card bc1">
+      <div class="bloque-card-top">
+        <div class="bloque-num">I</div>
+        <h3>Fundamentos Teóricos de la Neuropsicología</h3>
+        <p>Organización del sistema nervioso, lateralización cerebral, técnicas de neuroimagen, síndromes neuropsicológicos mayores (afasias, amnesias, agnosias, apraxias), desarrollo infantil y envejecimiento normal.</p>
+      </div>
+      <div class="bloque-card-bottom">
+        <div class="bloque-topics">
+          <span class="topic-tag">Neuroimagen</span>
+          <span class="topic-tag">Afasias</span>
+          <span class="topic-tag">Memoria</span>
+          <span class="topic-tag">FFEE</span>
+          <span class="topic-tag">Infancia</span>
+        </div>
+        <span class="bloque-arrow">→</span>
+      </div>
+    </a>
+
+    <a href="neuropsicologia_bloque2.html" class="bloque-card bc2">
+      <div class="bloque-card-top">
+        <div class="bloque-num">II</div>
+        <h3>Evaluación, Diagnóstico y Rehabilitación</h3>
+        <p>Instrumentos de evaluación por dominio cognitivo (lenguaje, memoria, atención, FFEE, emocional, infantil y envejecimiento). Plasticidad cerebral, principios de rehabilitación y técnicas basadas en la evidencia.</p>
+      </div>
+      <div class="bloque-card-bottom">
+        <div class="bloque-topics">
+          <span class="topic-tag">WISC-V</span>
+          <span class="topic-tag">BRIEF</span>
+          <span class="topic-tag">CILT / MIT</span>
+          <span class="topic-tag">Plasticidad</span>
+          <span class="topic-tag">GMT</span>
+        </div>
+        <span class="bloque-arrow">→</span>
+      </div>
+    </a>
+
+    <a href="neuropsicologia_bloque3.html" class="bloque-card bc3">
+      <div class="bloque-card-top">
+        <div class="bloque-num">III</div>
+        <h3>Estudio de Casos Clínicos</h3>
+        <p>Diez casos que integran los dos bloques anteriores: afasia, amnesia, negligencia, doble excepcionalidad AACC, DFTvc, TCE, Alzheimer, dislexia enmascarada, prosopagnosia y síndrome disejecutivo. Evaluación final del curso y generador IA de casos nuevos.</p>
+      </div>
+      <div class="bloque-card-bottom">
+        <div class="bloque-topics">
+          <span class="topic-tag">10 casos</span>
+          <span class="topic-tag">AACC + TDAH</span>
+          <span class="topic-tag">Dislexia 2e</span>
+          <span class="topic-tag">Eval. final</span>
+          <span class="topic-tag">IA</span>
+        </div>
+        <span class="bloque-arrow">→</span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- METODOLOGÍA -->
+<section class="metodologia">
+  <div class="metodologia-inner">
+    <div class="metodologia-title">
+      <div class="mt-label">Metodología</div>
+      <h2>Cómo está construido el curso</h2>
+    </div>
+    <div class="met-items">
+      <div class="met-item">
+        <div class="mi-icon">📖</div>
+        <div class="mi-title">Lectura académica en profundidad</div>
+        <div class="mi-desc">Contenidos de nivel universitario con tipografía y estructura pensadas para la lectura extendida. Sin superficialidad divulgativa.</div>
+      </div>
+      <div class="met-item">
+        <div class="mi-icon">🧠</div>
+        <div class="mi-title">Conexiones AACC en cada tema</div>
+        <div class="mi-desc">Recuadros específicos que traducen cada concepto neuropsicológico a la práctica del maestro de primaria con alumnos de altas capacidades.</div>
+      </div>
+      <div class="met-item">
+        <div class="mi-icon">📝</div>
+        <div class="mi-title">Autoevaluación con feedback razonado</div>
+        <div class="mi-desc">Preguntas tipo test al final de cada módulo con retroalimentación explicada que va más allá de «correcto / incorrecto».</div>
+      </div>
+      <div class="met-item">
+        <div class="mi-icon">🎯</div>
+        <div class="mi-title">Generador de exámenes con IA</div>
+        <div class="mi-desc">Cada bloque incluye un generador que crea preguntas o casos clínicos originales con Claude, configurable por módulo, dificultad y tipo.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DESCARGAS PDF -->
+<section class="descargas" id="descargas">
+  <div class="descargas-header">
+    <div class="dh-label">Descargas</div>
+    <h2>Manual completo en PDF</h2>
+  </div>
+  <div class="pdf-grid">
+    <a href="neuropsicologia_bloque1.pdf" class="pdf-card" download>
+      <div class="pdf-icon pi1">📄</div>
+      <div class="pdf-info">
+        <div class="pi-bloque">Bloque I</div>
+        <div class="pi-title">Fundamentos Teóricos</div>
+        <div class="pi-meta">Módulos I, II y III · 15 temas</div>
+      </div>
+    </a>
+    <a href="neuropsicologia_bloque2.pdf" class="pdf-card" download>
+      <div class="pdf-icon pi2">📄</div>
+      <div class="pdf-info">
+        <div class="pi-bloque">Bloque II</div>
+        <div class="pi-title">Evaluación y Rehabilitación</div>
+        <div class="pi-meta">Módulos IV y V · 13 temas</div>
+      </div>
+    </a>
+    <a href="neuropsicologia_bloque3.pdf" class="pdf-card" download>
+      <div class="pdf-icon pi3">📄</div>
+      <div class="pdf-info">
+        <div class="pi-bloque">Bloque III</div>
+        <div class="pi-title">Casos Clínicos</div>
+        <div class="pi-meta">Módulo VI · 10 casos integrados</div>
+      </div>
+    </a>
+  </div>
+
+  <a href="neuropsicologia_bibliografia.pdf" class="pdf-bib" download>
+    <div class="pdf-icon" style="background:#E8E4F0;width:2.5rem;height:2.5rem;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem;">📚</div>
+    <div class="pdf-info">
+      <div class="pi-bloque" style="color:#6B4A9B;">Bibliografía completa del curso</div>
+      <div class="pi-title">Bibliografía Comentada y Guía de Lectura</div>
+      <div class="pi-meta">+60 referencias · Libros, artículos originales y recursos web · Formato APA 7.ª ed.</div>
+    </div>
+  </a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-left">
+    <strong>IAprendizaje</strong> · Luis Ángel González Ortega · <a href="https://iaprendizaje.vercel.app" style="color:var(--muted);text-decoration:none;">iaprendizaje.vercel.app</a>
+  </div>
+  <div class="ft-right">
+    <a href="neuropsicologia_bloque1.html">Bloque I</a>
+    <a href="neuropsicologia_bloque2.html">Bloque II</a>
+    <a href="neuropsicologia_bloque3.html">Bloque III</a>
+  </div>
+</footer>
+
+</body>
+</html>
