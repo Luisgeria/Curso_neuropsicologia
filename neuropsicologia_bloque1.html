@@ -1,0 +1,1860 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neuropsicología — Bloque I: Fundamentos Teóricos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ===== TOKENS ===== */
+  :root {
+    --bg:        #F8F7F4;
+    --bg-alt:    #EEECEA;
+    --ink:       #1C2B3A;
+    --ink-soft:  #3D5068;
+    --accent:    #2B5EA7;
+    --accent-lt: #D6E4F7;
+    --amber:     #C8860A;
+    --amber-lt:  #FDF3DC;
+    --muted:     #8A9BB0;
+    --rule:      #D4CFC8;
+    --sidebar-w: 240px;
+    --content-max: 700px;
+    --serif-d:   'Playfair Display', Georgia, serif;
+    --serif-b:   'Source Serif 4', Georgia, serif;
+    --sans:      'Inter', system-ui, sans-serif;
+  }
+
+  /* ===== RESET ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; font-size: 17px; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--serif-b); line-height: 1.75; }
+
+  /* ===== LAYOUT ===== */
+  .shell { display: flex; min-height: 100vh; }
+
+  /* SIDEBAR */
+  .sidebar {
+    position: fixed; top: 0; left: 0; bottom: 0;
+    width: var(--sidebar-w);
+    background: var(--ink);
+    color: #fff;
+    overflow-y: auto;
+    display: flex; flex-direction: column;
+    z-index: 100;
+    padding-bottom: 2rem;
+  }
+  .sidebar-logo {
+    padding: 1.5rem 1.25rem 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .sidebar-logo .brand {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.35rem;
+  }
+  .sidebar-logo .course-title {
+    font-family: var(--serif-d);
+    font-size: 0.9rem;
+    line-height: 1.3;
+    color: #fff;
+  }
+  .sidebar-logo .bloque-badge {
+    display: inline-block;
+    margin-top: 0.5rem;
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--sans);
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.5rem;
+    border-radius: 2px;
+  }
+
+  .sidebar-nav { padding: 1rem 0; flex: 1; }
+  .nav-section-label {
+    font-family: var(--sans);
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 1rem 1.25rem 0.4rem;
+  }
+  .nav-item {
+    display: block;
+    padding: 0.4rem 1.25rem;
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    line-height: 1.4;
+    transition: color 0.15s, background 0.15s;
+    border-left: 2px solid transparent;
+  }
+  .nav-item:hover { color: #fff; background: rgba(255,255,255,0.05); }
+  .nav-item.active { color: #fff; border-left-color: var(--accent); background: rgba(43,94,167,0.2); }
+  .nav-item.module { font-weight: 600; color: rgba(255,255,255,0.85); margin-top: 0.5rem; }
+
+  .sidebar-progress {
+    padding: 1rem 1.25rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .progress-label {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .progress-bar-bg {
+    background: rgba(255,255,255,0.1);
+    border-radius: 99px;
+    height: 4px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 99px;
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+  .progress-pct {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.5);
+    margin-top: 0.35rem;
+    text-align: right;
+  }
+
+  /* MAIN */
+  .main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    padding: 0 2rem 6rem;
+  }
+
+  /* COVER */
+  .cover {
+    padding: 4rem 0 3rem;
+    border-bottom: 1px solid var(--rule);
+    max-width: var(--content-max);
+    margin: 0 auto;
+  }
+  .cover-eyebrow {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+  .cover h1 {
+    font-family: var(--serif-d);
+    font-size: 2.6rem;
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--ink);
+    margin-bottom: 1.25rem;
+  }
+  .cover .subtitle {
+    font-family: var(--serif-b);
+    font-size: 1.1rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--ink-soft);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+  .cover-meta {
+    display: flex; gap: 2rem; flex-wrap: wrap;
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .cover-meta span { display: flex; align-items: center; gap: 0.35rem; }
+
+  /* CONTENT AREA */
+  .content-wrap {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    padding: 3rem 0;
+  }
+
+  /* SECTION */
+  .section { margin-bottom: 5rem; scroll-margin-top: 2rem; }
+
+  .section-header {
+    border-top: 2px solid var(--ink);
+    padding-top: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .section-eyebrow {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.6rem;
+  }
+  .section h2 {
+    font-family: var(--serif-d);
+    font-size: 1.9rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+  .objectives-box {
+    background: var(--accent-lt);
+    border-left: 3px solid var(--accent);
+    padding: 1.25rem 1.5rem;
+    margin: 2rem 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .objectives-box .ob-label {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+  }
+  .objectives-box ul {
+    list-style: none;
+    padding: 0;
+  }
+  .objectives-box ul li {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    color: var(--ink);
+    padding: 0.25rem 0 0.25rem 1.2rem;
+    position: relative;
+  }
+  .objectives-box ul li::before {
+    content: '→';
+    position: absolute; left: 0;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* SUBSECTION */
+  .subsection { margin-bottom: 3rem; scroll-margin-top: 2rem; }
+  .subsection h3 {
+    font-family: var(--serif-d);
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 1rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .subsection h4 {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: 0.03em;
+    margin: 1.5rem 0 0.5rem;
+    text-transform: uppercase;
+  }
+
+  /* PROSE */
+  p { margin-bottom: 1.1rem; font-size: 1rem; color: var(--ink); }
+  .lead {
+    font-size: 1.05rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--ink-soft);
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+  }
+
+  /* DEFINITION BOX */
+  .def-box {
+    background: var(--amber-lt);
+    border-left: 3px solid var(--amber);
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .def-box .def-term {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 0.3rem;
+  }
+  .def-box p { margin: 0; font-size: 0.95rem; }
+
+  /* AACC BOX */
+  .aacc-box {
+    background: #F0FBF4;
+    border: 1px solid #A3D9B5;
+    border-left: 3px solid #2D9E5F;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .aacc-box .aacc-label {
+    font-family: var(--sans);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #2D9E5F;
+    margin-bottom: 0.4rem;
+  }
+  .aacc-box p { margin: 0; font-size: 0.88rem; color: #1A4A2E; }
+
+  /* CASE BOX */
+  .case-box {
+    background: #F5F0FB;
+    border: 1px solid #C9B8E8;
+    border-left: 3px solid #7B5EA7;
+    padding: 1.25rem 1.5rem;
+    margin: 2rem 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .case-box .case-label {
+    font-family: var(--sans);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #7B5EA7;
+    margin-bottom: 0.5rem;
+  }
+  .case-box p { margin-bottom: 0.5rem; font-size: 0.9rem; }
+  .case-box p:last-child { margin: 0; }
+
+  /* TABLE */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-family: var(--sans);
+    font-size: 0.82rem;
+  }
+  .data-table th {
+    background: var(--ink);
+    color: #fff;
+    padding: 0.6rem 0.85rem;
+    text-align: left;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  .data-table td {
+    padding: 0.55rem 0.85rem;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+    color: var(--ink);
+  }
+  .data-table tr:nth-child(even) td { background: var(--bg-alt); }
+
+  /* FIGURE */
+  .fig-wrap { margin: 2rem 0; }
+  .fig-caption {
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+    font-style: italic;
+  }
+
+  /* DIVIDER */
+  hr.section-rule { border: none; border-top: 1px solid var(--rule); margin: 3rem 0; }
+
+  /* QUIZ SECTION */
+  .quiz-section {
+    background: var(--bg-alt);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 2rem;
+    margin-top: 3rem;
+  }
+  .quiz-section h3 {
+    font-family: var(--serif-d);
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: var(--ink);
+  }
+  .quiz-section .quiz-intro {
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+  }
+  .quiz-q { margin-bottom: 1.5rem; }
+  .quiz-q .q-text {
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+  .quiz-q label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-family: var(--sans);
+    font-size: 0.83rem;
+    color: var(--ink-soft);
+    padding: 0.3rem 0;
+    cursor: pointer;
+  }
+  .quiz-q label input { margin-top: 3px; accent-color: var(--accent); }
+  .answer-feedback {
+    display: none;
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    padding: 0.6rem 0.85rem;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+  }
+  .answer-feedback.correct { background: #E6F7ED; color: #1A5C35; border: 1px solid #A3D9B5; }
+  .answer-feedback.incorrect { background: #FDE8E8; color: #7A1F1F; border: 1px solid #F5A5A5; }
+  .quiz-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 0.65rem 1.5rem;
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background 0.15s;
+  }
+  .quiz-btn:hover { background: #1E4A8A; }
+  .quiz-result {
+    display: none;
+    margin-top: 1.25rem;
+    padding: 1rem;
+    background: var(--accent-lt);
+    border-radius: 4px;
+    font-family: var(--sans);
+    font-size: 0.88rem;
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* AI EXAM GENERATOR */
+  .ai-exam-section {
+    margin-top: 5rem;
+    padding: 2.5rem;
+    background: var(--ink);
+    color: #fff;
+    border-radius: 8px;
+  }
+  .ai-exam-section h2 {
+    font-family: var(--serif-d);
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+  }
+  .ai-exam-section .ai-intro {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+  .ai-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .ai-controls label {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+  .ai-controls select {
+    width: 100%;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #fff;
+    padding: 0.55rem 0.75rem;
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    border-radius: 4px;
+    cursor: pointer;
+    appearance: none;
+  }
+  .ai-controls select option { background: var(--ink); }
+
+  .api-key-row {
+    margin-bottom: 1.25rem;
+  }
+  .api-key-row label {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+  .api-key-row input {
+    width: 100%;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #fff;
+    padding: 0.55rem 0.75rem;
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    border-radius: 4px;
+  }
+  .api-key-row input::placeholder { color: rgba(255,255,255,0.3); }
+
+  .generate-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 0.75rem 2rem;
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+    width: 100%;
+  }
+  .generate-btn:hover { background: #1E4A8A; }
+  .generate-btn:disabled { opacity: 0.5; cursor: default; }
+
+  .exam-output {
+    display: none;
+    margin-top: 2rem;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    padding: 1.75rem;
+  }
+  .exam-output h3 {
+    font-family: var(--serif-d);
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: #fff;
+  }
+  .exam-question {
+    margin-bottom: 1.25rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .exam-question:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .exam-question .eq-num {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.3rem;
+  }
+  .exam-question p {
+    color: rgba(255,255,255,0.9);
+    font-family: var(--sans);
+    font-size: 0.88rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+  .exam-question .eq-answer {
+    display: none;
+    margin-top: 0.6rem;
+    padding: 0.6rem 0.85rem;
+    background: rgba(43,94,167,0.25);
+    border-radius: 4px;
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    color: #A8C8F0;
+    line-height: 1.5;
+  }
+  .show-answer-btn {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.6);
+    padding: 0.3rem 0.7rem;
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: all 0.15s;
+  }
+  .show-answer-btn:hover { border-color: var(--accent); color: #fff; }
+
+  .loading-indicator {
+    display: none;
+    text-align: center;
+    padding: 2rem;
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .loading-dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    margin: 0 2px;
+    animation: bounce 1.2s infinite;
+  }
+  .loading-dot:nth-child(2) { animation-delay: 0.2s; }
+  .loading-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce {
+    0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+    40% { transform: translateY(-6px); opacity: 1; }
+  }
+
+  /* BACK TO TOP */
+  .back-top {
+    display: inline-block;
+    margin-top: 3rem;
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  .back-top:hover { text-decoration: underline; }
+
+  /* KEY CONCEPTS */
+  .key-concepts {
+    background: var(--bg-alt);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 1.75rem;
+    margin-top: 3rem;
+  }
+  .key-concepts h4 {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+  .concept-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .concept-tag {
+    background: #fff;
+    border: 1px solid var(--rule);
+    padding: 0.3rem 0.75rem;
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    border-radius: 99px;
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    .sidebar { transform: translateX(-100%); transition: transform 0.3s; }
+    .sidebar.open { transform: none; }
+    .main { margin-left: 0; padding: 0 1rem 4rem; }
+    .cover h1 { font-size: 1.8rem; }
+    .ai-controls { grid-template-columns: 1fr; }
+    .menu-toggle {
+      display: block;
+      position: fixed; top: 1rem; left: 1rem; z-index: 200;
+      background: var(--ink); color: #fff; border: none;
+      padding: 0.5rem 0.75rem; border-radius: 4px;
+      font-family: var(--sans); font-size: 0.8rem; cursor: pointer;
+    }
+  }
+  @media (min-width: 769px) { .menu-toggle { display: none; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰ Índice</button>
+
+<div class="shell">
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="brand">IAprendizaje</div>
+      <div class="course-title">Neuropsicología Universitaria</div>
+      <span class="bloque-badge">Bloque I · Fundamentos</span>
+    </div>
+
+    <div class="sidebar-nav">
+      <div class="nav-section-label">Módulo I</div>
+      <a class="nav-item module" href="#mod1">Bases Teóricas</a>
+      <a class="nav-item" href="#t1-1">1. Organización del SN</a>
+      <a class="nav-item" href="#t1-2">2. Lateralización Hemisférica</a>
+      <a class="nav-item" href="#t1-3">3. Técnicas de Estudio</a>
+      <a class="nav-item" href="#t1-4">4. Etiología del Daño Cerebral</a>
+      <a class="nav-item" href="#t1-5">5. Evaluación Neuropsicológica</a>
+
+      <div class="nav-section-label">Módulo II</div>
+      <a class="nav-item module" href="#mod2">Alteraciones Cognitivas</a>
+      <a class="nav-item" href="#t2-1">6. Lenguaje: Afasias</a>
+      <a class="nav-item" href="#t2-2">7. Memoria: Amnesias</a>
+      <a class="nav-item" href="#t2-3">8. Emoción y Consciencia</a>
+      <a class="nav-item" href="#t2-4">9. Agnosias y Apraxias</a>
+      <a class="nav-item" href="#t2-5">10. Atención y FFEE</a>
+
+      <div class="nav-section-label">Módulo III</div>
+      <a class="nav-item module" href="#mod3">Ámbitos de Intervención</a>
+      <a class="nav-item" href="#t3-1">11. Neuropsicología Infantil</a>
+      <a class="nav-item" href="#t3-2">12. Envejecimiento</a>
+      <a class="nav-item" href="#t3-3">13. Daño Cerebral Adquirido</a>
+      <a class="nav-item" href="#t3-4">14. Alteraciones Emocionales</a>
+
+      <div class="nav-section-label">Herramientas</div>
+      <a class="nav-item" href="#exam-gen">🎯 Generador de Examen IA</a>
+    </div>
+
+    <div class="sidebar-progress">
+      <div class="progress-label">Progreso del Bloque I</div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progressFill"></div>
+      </div>
+      <div class="progress-pct" id="progressPct">0%</div>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="main">
+    <!-- COVER -->
+    <div class="cover" id="top">
+      <div class="cover-eyebrow">Bloque I · Fundamentos Teóricos de la Neuropsicología</div>
+      <h1>Las bases del cerebro que aprende, siente y actúa</h1>
+      <p class="subtitle">Un manual universitario para maestros que quieren entender cómo funciona el sistema nervioso, qué ocurre cuando falla y cómo se evalúa.</p>
+      <div class="cover-meta">
+        <span>📖 14 temas</span>
+        <span>⏱ 30–45 min por tema</span>
+        <span>🎓 Nivel universitario</span>
+        <span>🧒 Conexiones AACC incluidas</span>
+      </div>
+    </div>
+
+    <!-- ==================== MÓDULO I ==================== -->
+    <div class="content-wrap">
+      <section class="section" id="mod1">
+        <div class="section-header">
+          <div class="section-eyebrow">Módulo I</div>
+          <h2>Bases Teóricas de la Neuropsicología</h2>
+        </div>
+        <p class="lead">La neuropsicología es la disciplina científica que estudia las relaciones entre el funcionamiento del cerebro y la conducta humana. Para comprenderla, es imprescindible conocer primero la arquitectura del sistema nervioso y los principios que regulan su organización.</p>
+
+        <!-- TEMA 1 -->
+        <div class="subsection" id="t1-1">
+          <h3>1. Organización Anatómica y Funcional del Sistema Nervioso</h3>
+
+          <div class="objectives-box">
+            <div class="ob-label">Objetivos de aprendizaje</div>
+            <ul>
+              <li>Distinguir las divisiones del sistema nervioso central y periférico.</li>
+              <li>Identificar las principales estructuras cerebrales y sus funciones.</li>
+              <li>Comprender la organización jerárquica del encéfalo.</li>
+            </ul>
+          </div>
+
+          <p>El sistema nervioso (SN) constituye la red de comunicación más compleja del organismo humano. Su función primordial consiste en recibir información del entorno y del propio cuerpo, procesarla e integrarla, y generar respuestas adaptativas. Su organización puede abordarse desde una doble perspectiva: anatómica y funcional.</p>
+
+          <div class="def-box">
+            <div class="def-term">Definición · Neuropsicología</div>
+            <p>Rama de la neurociencia que estudia las relaciones entre los procesos cerebrales y la conducta observable, tanto en condiciones normales como patológicas (Kolb y Whishaw, 2009). Su objeto de estudio abarca desde la percepción y el lenguaje hasta las emociones y las funciones ejecutivas.</p>
+          </div>
+
+          <h4>1.1 Divisiones del Sistema Nervioso</h4>
+          <p>El SN se divide en dos grandes subsistemas con funciones complementarias:</p>
+
+          <table class="data-table">
+            <thead><tr><th>División</th><th>Estructura principal</th><th>Función general</th></tr></thead>
+            <tbody>
+              <tr><td><strong>SNC</strong> (Central)</td><td>Encéfalo y médula espinal</td><td>Integración y procesamiento de información</td></tr>
+              <tr><td><strong>SNP</strong> (Periférico)</td><td>Nervios craneales y espinales</td><td>Conducción de señales entre SNC y cuerpo</td></tr>
+              <tr><td>SNP Somático</td><td>Nervios motores y sensoriales</td><td>Control voluntario de músculos</td></tr>
+              <tr><td>SNP Autónomo</td><td>Simpático y parasimpático</td><td>Regulación automática de órganos</td></tr>
+            </tbody>
+          </table>
+
+          <h4>1.2 Estructura del Encéfalo</h4>
+          <p>El encéfalo —que incluye el cerebro, el cerebelo y el troncoencéfalo— es el principal órgano de procesamiento del SNC. Desde una perspectiva evolutiva y funcional, puede organizarse en tres niveles jerárquicos siguiendo el modelo de MacLean (1990) y las propuestas posteriores de Luria (1974):</p>
+
+          <p><strong>Primer nivel (troncoencéfalo y diencéfalo):</strong> Regula las funciones vitales básicas —respiración, ritmo cardíaco, ciclo vigilia-sueño— mediante estructuras como el bulbo raquídeo, la protuberancia y el mesencéfalo. El tálamo actúa como estación de relevo sensorial hacia la corteza.</p>
+
+          <p><strong>Segundo nivel (sistema límbico):</strong> Integra la emoción, la memoria y la motivación. El hipocampo es fundamental para la consolidación de la memoria declarativa; la amígdala procesa las respuestas emocionales, especialmente el miedo y la amenaza.</p>
+
+          <p><strong>Tercer nivel (corteza cerebral):</strong> Constituye el substrato de las funciones cognitivas superiores. La corteza está organizada en cuatro lóbulos con funciones diferenciadas:</p>
+
+          <table class="data-table">
+            <thead><tr><th>Lóbulo</th><th>Funciones principales</th><th>Área destacada</th></tr></thead>
+            <tbody>
+              <tr><td>Frontal</td><td>Planificación, toma de decisiones, lenguaje expresivo, control motor</td><td>Área de Broca (F. inf. izquierdo)</td></tr>
+              <tr><td>Parietal</td><td>Integración somatosensorial, atención espacial, aritmética</td><td>Giro angular</td></tr>
+              <tr><td>Temporal</td><td>Procesamiento auditivo, comprensión del lenguaje, reconocimiento visual</td><td>Área de Wernicke (T. sup. izquierdo)</td></tr>
+              <tr><td>Occipital</td><td>Procesamiento visual primario y asociativo</td><td>Corteza visual primaria (V1)</td></tr>
+            </tbody>
+          </table>
+
+          <div class="aacc-box">
+            <div class="aacc-label">🟢 Conexión AACC · Aula de Primaria</div>
+            <p>Los alumnos con altas capacidades intelectuales muestran frecuentemente un desarrollo prefrontal más avanzado, lo que se refleja en mayor capacidad de planificación, metacognición y razonamiento abstracto. Sin embargo, el sistema límbico puede mostrar mayor reactividad emocional —hipersensibilidad, perfeccionismo— lo que explica la aparente contradicción entre un alto rendimiento cognitivo y una gestión emocional más compleja.</p>
+          </div>
+
+          <h4>1.3 La Neurona: Unidad Funcional del SN</h4>
+          <p>La neurona es la célula fundamental del SN. Consta de soma (cuerpo celular), dendritas (receptoras de información) y axón (emisor de señales). La comunicación entre neuronas se produce en la sinapsis mediante neurotransmisores como la dopamina (implicada en la motivación y la recompensa), la serotonina (regulación del estado de ánimo) o el glutamato (principal neurotransmisor excitador).</p>
+
+          <div class="case-box">
+            <div class="case-label">📋 Ejemplo Ilustrativo · El caso del homúnculo de Penfield</div>
+            <p>El neurocirujano Wilder Penfield cartografió la corteza somotosensorial y motora mediante estimulación eléctrica directa en pacientes conscientes durante cirugías (años 40-50). Descubrió que cada región corporal tiene una representación cortical cuyo tamaño es proporcional a la precisión del movimiento o la sensibilidad —no al tamaño real del órgano. El resultado es el célebre «homúnculo cortical»: una figura humana distorsionada con manos y labios enormes y tronco diminuto.</p>
+            <p><em>Relevancia neuropsicológica:</em> Este experimento demostró la organización topográfica de la corteza y sentó las bases de la localización funcional, principio central de la neuropsicología clásica.</p>
+          </div>
+        </div>
+
+        <hr class="section-rule">
+
+        <!-- TEMA 2 -->
+        <div class="subsection" id="t1-2">
+          <h3>2. Lateralización Hemisférica e Integración del Funcionamiento Cerebral</h3>
+
+          <div class="objectives-box">
+            <div class="ob-label">Objetivos de aprendizaje</div>
+            <ul>
+              <li>Comprender el concepto de asimetría funcional cerebral.</li>
+              <li>Diferenciar las especializaciones del hemisferio izquierdo y derecho.</li>
+              <li>Entender el papel del cuerpo calloso en la integración hemisférica.</li>
+            </ul>
+          </div>
+
+          <p>El encéfalo presenta una organización bilateralmente simétrica en términos anatómicos, pero funcionalmente asimétrica. Esta asimetría funcional, denominada <strong>lateralización hemisférica</strong>, implica que cada hemisferio está especializado en el procesamiento de determinadas funciones cognitivas.</p>
+
+          <div class="def-box">
+            <div class="def-term">Definición · Lateralización cerebral</div>
+            <p>Tendencia de cada hemisferio cerebral a especializarse en determinadas funciones cognitivas y conductuales. Se establece durante el desarrollo y está influida por factores genéticos y ambientales. La lateralización del lenguaje al hemisferio izquierdo es la asimetría más estudiada y consistente (Springer y Deutsch, 1994).</p>
+          </div>
+
+          <h4>2.1 Especializaciones Hemisféricas</h4>
+          <table class="data-table">
+            <thead><tr><th>Función</th><th>Hemisferio Izquierdo (HI)</th><th>Hemisferio Derecho (HD)</th></tr></thead>
+            <tbody>
+              <tr><td>Lenguaje</td><td>Producción y comprensión (95% diestros)</td><td>Prosodia, pragmática, humor</td></tr>
+              <tr><td>Procesamiento</td><td>Secuencial, analítico, temporal</td><td>Global, holístico, espacial</td></tr>
+              <tr><td>Memoria</td><td>Memoria verbal</td><td>Memoria visoespacial</td></tr>
+              <tr><td>Matemáticas</td><td>Álgebra, aritmética simbólica</td><td>Estimación, geometría</td></tr>
+              <tr><td>Emociones</td><td>Regulación, emociones positivas</td><td>Reconocimiento emocional</td></tr>
+            </tbody>
+          </table>
+
+          <h4>2.2 El Cuerpo Calloso y la Integración Hemisférica</h4>
+          <p>Los dos hemisferios están conectados principalmente por el <strong>cuerpo calloso</strong>, una comisura que contiene aproximadamente 250 millones de fibras nerviosas. Su función es fundamental para la integración de la información procesada por cada hemisferio. Las investigaciones con pacientes «cerebro dividido» (split-brain), realizadas por Roger Sperry y Michael Gazzaniga en los años 60-70, demostraron de forma definitiva las especializaciones hemisféricas. A Sperry le fue concedido el Premio Nobel de Fisiología o Medicina en 1981 por estos trabajos.</p>
+
+          <div class="case-box">
+            <div class="case-label">📋 Caso Clínico Ilustrativo · Pacientes split-brain</div>
+            <p>En pacientes a quienes se seccionó el cuerpo calloso para tratar epilepsias refractarias, se demostró que los dos hemisferios podían actuar de forma independiente. Si se presentaba una imagen en el campo visual izquierdo (procesada por el HD), el paciente podía seleccionar con la mano izquierda el objeto correspondiente, pero no podía nombrarlo, pues el acceso al lenguaje (HI) estaba bloqueado. Esta disociación demostró que cada hemisferio tiene su propia corriente de consciencia perceptual.</p>
+          </div>
+
+          <div class="aacc-box">
+            <div class="aacc-label">🟢 Conexión AACC · Aula de Primaria</div>
+            <p>El pensamiento divergente y la creatividad, frecuentemente elevados en alumnos AACC, se relacionan con una mayor integración interhemisférica. Algunos estudios señalan una menor asimetría hemisférica en estas poblaciones, lo que facilita el acceso simultáneo a modos de procesamiento analítico y holístico. En el aula, esto se traduce en alumnos que pueden «saltar» entre perspectivas globales y detallistas de manera fluida.</p>
+          </div>
+        </div>
+
+        <hr class="section-rule">
+
+        <!-- TEMA 3 -->
+        <div class="subsection" id="t1-3">
+          <h3>3. Técnicas de Estudio en Neuropsicología</h3>
+
+          <div class="objectives-box">
+            <div class="ob-label">Objetivos de aprendizaje</div>
+            <ul>
+              <li>Clasificar las principales técnicas de neuroimagen estructural y funcional.</li>
+              <li>Conocer las técnicas electrofisiológicas y sus aplicaciones.</li>
+              <li>Comprender las limitaciones de cada metodología.</li>
+            </ul>
+          </div>
+
+          <p>El avance de la neuropsicología ha estado íntimamente ligado al desarrollo de técnicas que permiten estudiar el cerebro en vivo. Estas técnicas pueden clasificarse en función de si proporcionan información sobre la estructura cerebral, su actividad funcional, o su actividad eléctrica.</p>
+
+          <h4>3.1 Técnicas de Neuroimagen Estructural</h4>
+          <p>Permiten visualizar la anatomía del cerebro sin necesidad de intervención quirúrgica:</p>
+
+          <table class="data-table">
+            <thead><tr><th>Técnica</th><th>Principio</th><th>Resolución</th><th>Uso clínico</th></tr></thead>
+            <tbody>
+              <tr><td><strong>TAC</strong> (TC)</td><td>Rayos X + reconstrucción</td><td>Espacial media</td><td>Detección rápida de lesiones, hemorragias</td></tr>
+              <tr><td><strong>RMN estructural</strong></td><td>Campos magnéticos</td><td>Espacial alta</td><td>Tumores, esclerosis múltiple, malformaciones</td></tr>
+              <tr><td><strong>DTI</strong></td><td>Difusión del agua en tractos</td><td>Alta (tractos)</td><td>Integridad de sustancia blanca</td></tr>
+            </tbody>
+          </table>
+
+          <h4>3.2 Técnicas de Neuroimagen Funcional</h4>
+          <p>Revelan qué regiones cerebrales están activas durante la realización de tareas cognitivas:</p>
+
+          <table class="data-table">
+            <thead><tr><th>Técnica</th><th>Principio</th><th>Resolución temporal</th><th>Aplicaciones</th></tr></thead>
+            <tbody>
+              <tr><td><strong>RMf</strong> (fMRI)</td><td>Señal BOLD (oxigenación)</td><td>Segundos</td><td>Localización de funciones cognitivas</td></tr>
+              <tr><td><strong>PET</strong></td><td>Glucosa radiactiva</td><td>Minutos</td><td>Metabolismo cerebral, demencias</td></tr>
+              <tr><td><strong>SPECT</strong></td><td>Flujo sanguíneo</td><td>Minutos</td><td>Epilepsia, perfusión</td></tr>
+            </tbody>
+          </table>
+
+          <h4>3.3 Técnicas Electrofisiológicas</h4>
+          <p>El <strong>electroencefalograma (EEG)</strong> registra la actividad eléctrica cortical con una resolución temporal de milisegundos, siendo ideal para el estudio de epilepsias y estados de consciencia. Los <strong>potenciales evocados (PE)</strong> son respuestas eléctricas cerebrales ante estímulos específicos, muy utilizados en el diagnóstico de déficits sensoriales y en investigación cognitiva.</p>
+
+          <div class="aacc-box">
+            <div class="aacc-label">🟢 Conexión AACC · Aula de Primaria</div>
+            <p>Las técnicas de EEG y RMf han comenzado a aplicarse en el estudio de alumnos con altas capacidades. Los estudios de Geake y Hansen (2005) con RMf mostraron que los niños con mayor capacidad de razonamiento abstracto presentan patrones de activación frontal-parietal más eficientes durante tareas de analogías. Esto tiene implicaciones directas para el diseño de tareas de enriquecimiento curricular.</p>
+          </div>
+        </div>
+
+        <hr class="section-rule">
+
+        <!-- TEMA 4 -->
+        <div class="subsection" id="t1-4">
+          <h3>4. Etiología y Mecanismos del Daño Cerebral</h3>
+
+          <div class="objectives-box">
+            <div class="ob-label">Objetivos de aprendizaje</div>
+            <ul>
+              <li>Clasificar las principales causas de daño cerebral adquirido.</li>
+              <li>Comprender los mecanismos fisiopatológicos del daño primario y secundario.</li>
+              <li>Distinguir entre daño focal y difuso.</li>
+            </ul>
+          </div>
+
+          <p>El daño cerebral puede ser de origen congénito —producido antes, durante o inmediatamente después del nacimiento— o adquirido, cuando se produce tras un período de desarrollo normal. La neuropsicología clínica se ocupa especialmente del daño cerebral adquirido (DCA), cuyas consecuencias cognitivas y conductuales constituyen el núcleo de la evaluación e intervención neuropsicológica.</p>
+
+          <h4>4.1 Principales Etiologías del DCA</h4>
+
+          <table class="data-table">
+            <thead><tr><th>Categoría</th><th>Causa</th><th>Mecanismo</th></tr></thead>
+            <tbody>
+              <tr><td>Vascular</td><td>Ictus isquémico / hemorrágico</td><td>Oclusión u obstrucción de vasos cerebrales</td></tr>
+              <tr><td>Traumática</td><td>TCE (cerrado / penetrante)</td><td>Golpe directo, aceleración-desaceleración</td></tr>
+              <tr><td>Tumoral</td><td>Tumores cerebrales primarios o metastásicos</td><td>Compresión, invasión o edema</td></tr>
+              <tr><td>Infecciosa</td><td>Encefalitis, meningitis</td><td>Inflamación e infección del SNC</td></tr>
+              <tr><td>Anóxica</td><td>Parada cardíaca, ahogamiento</td><td>Privación de oxígeno a neuronas</td></tr>
+              <tr><td>Neurodegenerativa</td><td>Alzheimer, Parkinson, ELA</td><td>Muerte neuronal progresiva</td></tr>
+              <tr><td>Tóxica/metabólica</td><td>Alcohol, drogas, insuficiencia hepática</td><td>Neurotoxicidad directa o metabólica</td></tr>
+            </tbody>
+          </table>
+
+          <h4>4.2 Daño Primario y Daño Secundario</h4>
+          <p>Es fundamental distinguir entre el <strong>daño primario</strong>, producido en el momento de la lesión (por ejemplo, la destrucción neuronal inmediata en un ictus), y el <strong>daño secundario</strong>, que se desarrolla horas o días después como consecuencia de mecanismos en cascada: edema cerebral, inflamación, excitotoxicidad por glutamato o apoptosis. La intervención terapéutica precoz tiene como objetivo prioritario minimizar el daño secundario.</p>
+
+          <h4>4.3 Daño Focal vs. Daño Difuso</h4>
+          <p>El daño focal afecta a una región cerebral delimitada (como ocurre en los ictus o tumores) y produce déficits neuropsicológicos específicos y predecibles según la localización de la lesión. El daño difuso, propio de los traumatismos craneoencefálicos graves o las encefalopatías anóxicas, afecta de forma extensa al tejido cerebral y se asocia a alteraciones globales de la cognición, la velocidad de procesamiento y la atención.</p>
+
+          <div class="case-box">
+            <div class="case-label">📋 Caso Clínico Ilustrativo · El caso de Phineas Gage (1848)</div>
+            <p>Phineas Gage era un capataz de ferrocarril que en 1848 sufrió el paso de una barra de hierro a través del lóbulo frontal izquierdo como consecuencia de una explosión accidental. Sobrevivió sin déficits motores, sensoriales ni del lenguaje, pero experimentó un profundo cambio de personalidad: se volvió impulsivo, irresponsable y socialmente inapropiado. Su médico, el Dr. Harlow, describió que «el equilibrio entre sus facultades intelectuales y sus propensiones animales parecía destruido».</p>
+            <p><em>Relevancia neuropsicológica:</em> El caso de Gage constituye la primera evidencia clínica de la implicación del córtex prefrontal ventromedial en el control de la conducta social y la toma de decisiones. Fue revitalizado por Antonio Damasio (1994) en su obra <em>El error de Descartes</em>.</p>
+          </div>
+        </div>
+
+        <hr class="section-rule">
+
+        <!-- TEMA 5 -->
+        <div class="subsection" id="t1-5">
+          <h3>5. Principios de la Evaluación Neuropsicológica</h3>
+
+          <div class="objectives-box">
+            <div class="ob-label">Objetivos de aprendizaje</div>
+            <ul>
+              <li>Comprender los objetivos y el proceso de la evaluación neuropsicológica.</li>
+              <li>Conocer los principales métodos e instrumentos de evaluación.</li>
+              <li>Entender el concepto de línea base y rendimiento premórbido.</li>
+            </ul>
+          </div>
+
+          <p>La evaluación neuropsicológica es el proceso sistemático mediante el cual se examinan las funciones cognitivas, emocionales y conductuales de un individuo con el objetivo de establecer la presencia, naturaleza y extensión de posibles alteraciones asociadas a disfunción cerebral.</p>
+
+          <div class="def-box">
+            <div class="def-term">Definición · Evaluación Neuropsicológica</div>
+            <p>Proceso de evaluación clínica y científica de la expresión conductual de la disfunción cerebral, mediante la aplicación de procedimientos estandarizados, que permite describir, cuantificar e interpretar las capacidades cognitivas y conductuales del individuo en relación con el funcionamiento cerebral subyacente (Lezak et al., 2012).</p>
+          </div>
+
+          <h4>5.1 Objetivos de la Evaluación</h4>
+          <p>Los objetivos de una evaluación neuropsicológica pueden ser diagnósticos (determinar la presencia de alteración), de caracterización (describir el perfil de capacidades y déficits), de seguimiento (monitorizar la evolución), de planificación de la rehabilitación (identificar objetivos de intervención) o periciales (en el contexto médico-legal).</p>
+
+          <h4>5.2 Componentes del Proceso Evaluador</h4>
+          <table class="data-table">
+            <thead><tr><th>Fase</th><th>Contenido</th></tr></thead>
+            <tbody>
+              <tr><td>Entrevista clínica</td><td>Historia clínica, motivo de consulta, antecedentes, quejas subjetivas</td></tr>
+              <tr><td>Estimación premórbida</td><td>Estimación del rendimiento cognitivo previo a la lesión (nivel educativo, lectura)</td></tr>
+              <tr><td>Aplicación de pruebas</td><td>Batería de tests estandarizados por dominio cognitivo</td></tr>
+              <tr><td>Observación conductual</td><td>Comportamiento durante la evaluación, nivel de esfuerzo, fatigabilidad</td></tr>
+              <tr><td>Integración de datos</td><td>Análisis cualitativo y cuantitativo; informe neuropsicológico</td></tr>
+            </tbody>
+          </table>
+
+          <h4>5.3 El Concepto de Rendimiento Premórbido</h4>
+          <p>Para interpretar los resultados de una evaluación es imprescindible contar con una estimación del nivel cognitivo previo del paciente, denominado <strong>rendimiento premórbido</strong>. Sin esta referencia, es imposible determinar si un rendimiento dado representa un deterioro o es simplemente el nivel basal de ese individuo. Los métodos más utilizados para estimarlo incluyen la lectura de palabras irregulares (p. ej., Test NART o WTAR) y el nivel educativo alcanzado.</p>
+
+          <div class="aacc-box">
+            <div class="aacc-label">🟢 Conexión AACC · Aula de Primaria</div>
+            <p>El concepto de rendimiento premórbido es directamente aplicable al aula. Evaluar a un alumno AACC con pruebas estandarizadas para su edad puede conducir a subestimar su nivel real de capacidades. La evaluación psicopedagógica de estos alumnos requiere instrumentos de «techo alto» (con ítems suficientemente difíciles) y comparación con grupos normativos de mayor edad, para evitar el efecto suelo y obtener una imagen fidedigna de su perfil cognitivo.</p>
+          </div>
+
+          <!-- AUTOEVALUACIÓN MÓDULO I -->
+          <div class="quiz-section" id="quiz1">
+  <h3>Autoevaluación · Módulo 1</h3>
+  <p class="quiz-intro">Comprueba tu comprensión de los temas 1 a 5 (Bases Biológicas). 20 preguntas tipo test con feedback razonado.</p>
+  <div class="quiz-q" id="q1">
+    <div class="q-text">¿Qué estructura cerebral actúa como principal estación de relevo sensorial hacia la corteza?</div>
+    <label><input type="radio" name="q1" value="a"> El hipocampo</label>
+    <label><input type="radio" name="q1" value="b"> El tálamo</label>
+    <label><input type="radio" name="q1" value="c"> La amígdala</label>
+    <label><input type="radio" name="q1" value="d"> El cerebelo</label>
+    <div class="answer-feedback" id="fb1"></div>
+  </div>
+  <div class="quiz-q" id="q2">
+    <div class="q-text">¿Cuál de los siguientes lóbulos contiene el área de Broca, responsable de la producción del lenguaje?</div>
+    <label><input type="radio" name="q2" value="a"> Lóbulo parietal</label>
+    <label><input type="radio" name="q2" value="b"> Lóbulo occipital</label>
+    <label><input type="radio" name="q2" value="c"> Lóbulo frontal</label>
+    <label><input type="radio" name="q2" value="d"> Lóbulo temporal</label>
+    <div class="answer-feedback" id="fb2"></div>
+  </div>
+  <div class="quiz-q" id="q3">
+    <div class="q-text">¿Qué técnica de neuroimagen mide la actividad cerebral a través de la señal BOLD (Blood Oxygen Level Dependent)?</div>
+    <label><input type="radio" name="q3" value="a"> TAC</label>
+    <label><input type="radio" name="q3" value="b"> EEG</label>
+    <label><input type="radio" name="q3" value="c"> RMN estructural</label>
+    <label><input type="radio" name="q3" value="d"> RMf (resonancia magnética funcional)</label>
+    <div class="answer-feedback" id="fb3"></div>
+  </div>
+  <div class="quiz-q" id="q4">
+    <div class="q-text">¿Cuál es la causa más frecuente de daño cerebral adquirido en adultos de países desarrollados?</div>
+    <label><input type="radio" name="q4" value="a"> Traumatismo craneoencefálico</label>
+    <label><input type="radio" name="q4" value="b"> Tumores cerebrales</label>
+    <label><input type="radio" name="q4" value="c"> Ictus (accidente cerebrovascular)</label>
+    <label><input type="radio" name="q4" value="d"> Encefalitis infecciosa</label>
+    <div class="answer-feedback" id="fb4"></div>
+  </div>
+  <div class="quiz-q" id="q5">
+    <div class="q-text">¿Qué es el rendimiento premórbido en neuropsicología?</div>
+    <label><input type="radio" name="q5" value="a"> El nivel cognitivo actual del paciente</label>
+    <label><input type="radio" name="q5" value="b"> La estimación del nivel cognitivo anterior a la lesión</label>
+    <label><input type="radio" name="q5" value="c"> El diagnóstico psiquiátrico previo al daño cerebral</label>
+    <label><input type="radio" name="q5" value="d"> La capacidad de recuperación esperada tras la lesión</label>
+    <div class="answer-feedback" id="fb5"></div>
+  </div>
+  <div class="quiz-q" id="q6">
+    <div class="q-text">¿Qué estructura cerebral pertenece al sistema límbico y es fundamental para la consolidación de la memoria episódica?</div>
+    <label><input type="radio" name="q6" value="a"> El tálamo</label>
+    <label><input type="radio" name="q6" value="b"> Los ganglios basales</label>
+    <label><input type="radio" name="q6" value="c"> El hipocampo</label>
+    <label><input type="radio" name="q6" value="d"> El cerebelo</label>
+    <div class="answer-feedback" id="fb6"></div>
+  </div>
+  <div class="quiz-q" id="q7">
+    <div class="q-text">¿Qué función tienen principalmente los ganglios basales en el sistema nervioso?</div>
+    <label><input type="radio" name="q7" value="a"> Control del equilibrio y la coordinación</label>
+    <label><input type="radio" name="q7" value="b"> Regulación del ritmo cardíaco y la respiración</label>
+    <label><input type="radio" name="q7" value="c"> Control motor y aprendizaje procedimental</label>
+    <label><input type="radio" name="q7" value="d"> Procesamiento visual primario</label>
+    <div class="answer-feedback" id="fb7"></div>
+  </div>
+  <div class="quiz-q" id="q8">
+    <div class="q-text">¿Cuál es la ventaja principal de la PET (tomografía por emisión de positrones) frente a la RMN estructural?</div>
+    <label><input type="radio" name="q8" value="a"> Mayor resolución espacial</label>
+    <label><input type="radio" name="q8" value="b"> Ausencia de radiación ionizante</label>
+    <label><input type="radio" name="q8" value="c"> Medición del metabolismo cerebral en vivo</label>
+    <label><input type="radio" name="q8" value="d"> Rapidez de adquisición en urgencias</label>
+    <div class="answer-feedback" id="fb8"></div>
+  </div>
+  <div class="quiz-q" id="q9">
+    <div class="q-text">¿Qué vía de procesamiento visual se encarga de la localización espacial de los objetos?</div>
+    <label><input type="radio" name="q9" value="a"> Vía ventral ("qué")</label>
+    <label><input type="radio" name="q9" value="b"> Vía dorsal ("dónde")</label>
+    <label><input type="radio" name="q9" value="c"> Vía geniculoestinada</label>
+    <label><input type="radio" name="q9" value="d"> Vía del cuerpo calloso</label>
+    <div class="answer-feedback" id="fb9"></div>
+  </div>
+  <div class="quiz-q" id="q10">
+    <div class="q-text">¿En qué área cortical se origina el movimiento voluntario?</div>
+    <label><input type="radio" name="q10" value="a"> Córtex prefrontal dorsolateral</label>
+    <label><input type="radio" name="q10" value="b"> Córtex parietal posterior</label>
+    <label><input type="radio" name="q10" value="c"> Córtex motor primario (área 4 de Brodmann)</label>
+    <label><input type="radio" name="q10" value="d"> Córtex premotor suplementario</label>
+    <div class="answer-feedback" id="fb10"></div>
+  </div>
+  <div class="quiz-q" id="q11">
+    <div class="q-text">¿Qué es la plasticidad cerebral?</div>
+    <label><input type="radio" name="q11" value="a"> La resistencia del cerebro al daño</label>
+    <label><input type="radio" name="q11" value="b"> La capacidad del cerebro de modificar su estructura y función en respuesta a la experiencia o la lesión</label>
+    <label><input type="radio" name="q11" value="c"> La velocidad de transmisión de impulsos nerviosos</label>
+    <label><input type="radio" name="q11" value="d"> La capacidad de generar nuevas neuronas exclusivamente durante el desarrollo fetal</label>
+    <div class="answer-feedback" id="fb11"></div>
+  </div>
+  <div class="quiz-q" id="q12">
+    <div class="q-text">¿Cuál de las siguientes estructuras pertenece al diencéfalo?</div>
+    <label><input type="radio" name="q12" value="a"> El hipocampo</label>
+    <label><input type="radio" name="q12" value="b"> El núcleo caudado</label>
+    <label><input type="radio" name="q12" value="c"> El hipotálamo</label>
+    <label><input type="radio" name="q12" value="d"> El cerebelo</label>
+    <div class="answer-feedback" id="fb12"></div>
+  </div>
+  <div class="quiz-q" id="q13">
+    <div class="q-text">¿Qué técnica de neuroimagen tiene la mayor resolución temporal, permitiendo medir cambios en milisegundos?</div>
+    <label><input type="radio" name="q13" value="a"> RMf</label>
+    <label><input type="radio" name="q13" value="b"> PET</label>
+    <label><input type="radio" name="q13" value="c"> TAC</label>
+    <label><input type="radio" name="q13" value="d"> EEG/MEG</label>
+    <div class="answer-feedback" id="fb13"></div>
+  </div>
+  <div class="quiz-q" id="q14">
+    <div class="q-text">¿Qué tipo de lesión cerebral produce el efecto denominado "diasquisis"?</div>
+    <label><input type="radio" name="q14" value="a"> Solo las lesiones de la sustancia blanca</label>
+    <label><input type="radio" name="q14" value="b"> Solo los tumores cerebrales</label>
+    <label><input type="radio" name="q14" value="c"> Cualquier lesión focal, al inhibir funcionalmente zonas distantes pero conectadas</label>
+    <label><input type="radio" name="q14" value="d"> Solo las lesiones bilaterales del hipocampo</label>
+    <div class="answer-feedback" id="fb14"></div>
+  </div>
+  <div class="quiz-q" id="q15">
+    <div class="q-text">¿Qué estructura conecta los dos hemisferios cerebrales y permite la transferencia de información interhemisférica?</div>
+    <label><input type="radio" name="q15" value="a"> La ínsula</label>
+    <label><input type="radio" name="q15" value="b"> El cuerpo calloso</label>
+    <label><input type="radio" name="q15" value="c"> El fascículo arqueado</label>
+    <label><input type="radio" name="q15" value="d"> El tálamo</label>
+    <div class="answer-feedback" id="fb15"></div>
+  </div>
+  <div class="quiz-q" id="q16">
+    <div class="q-text">¿Cuál de los siguientes factores NO es un factor de riesgo vascular para el ictus?</div>
+    <label><input type="radio" name="q16" value="a"> Hipertensión arterial</label>
+    <label><input type="radio" name="q16" value="b"> Fibrilación auricular</label>
+    <label><input type="radio" name="q16" value="c"> Actividad física regular moderada</label>
+    <label><input type="radio" name="q16" value="d"> Diabetes mellitus</label>
+    <div class="answer-feedback" id="fb16"></div>
+  </div>
+  <div class="quiz-q" id="q17">
+    <div class="q-text">¿Cuál es la principal función del córtex prefrontal dorsolateral?</div>
+    <label><input type="radio" name="q17" value="a"> Procesamiento emocional primario</label>
+    <label><input type="radio" name="q17" value="b"> Control de la marcha y el equilibrio</label>
+    <label><input type="radio" name="q17" value="c"> Planificación, memoria de trabajo y control ejecutivo</label>
+    <label><input type="radio" name="q17" value="d"> Reconocimiento visual de objetos</label>
+    <div class="answer-feedback" id="fb17"></div>
+  </div>
+  <div class="quiz-q" id="q18">
+    <div class="q-text">¿Qué región cerebral está especialmente implicada en la regulación de las emociones, el miedo condicionado y la detección de amenazas?</div>
+    <label><input type="radio" name="q18" value="a"> El cerebelo</label>
+    <label><input type="radio" name="q18" value="b"> El hipocampo</label>
+    <label><input type="radio" name="q18" value="c"> La amígdala</label>
+    <label><input type="radio" name="q18" value="d"> El cuerpo calloso</label>
+    <div class="answer-feedback" id="fb18"></div>
+  </div>
+  <div class="quiz-q" id="q19">
+    <div class="q-text">¿Qué significa que una neurona tenga una alta tasa de mielinización?</div>
+    <label><input type="radio" name="q19" value="a"> Que transmite impulsos más lentamente</label>
+    <label><input type="radio" name="q19" value="b"> Que tiene mayor número de sinapsis</label>
+    <label><input type="radio" name="q19" value="c"> Que transmite impulsos nerviosos a mayor velocidad</label>
+    <label><input type="radio" name="q19" value="d"> Que está especializada en funciones sensitivas</label>
+    <div class="answer-feedback" id="fb19"></div>
+  </div>
+  <div class="quiz-q" id="q20">
+    <div class="q-text">¿Cuál de las siguientes técnicas permite estudiar la microestructura de la sustancia blanca y detectar daño axonal difuso?</div>
+    <label><input type="radio" name="q20" value="a"> RMN estructural estándar</label>
+    <label><input type="radio" name="q20" value="b"> PET con FDG</label>
+    <label><input type="radio" name="q20" value="c"> DTI (Diffusion Tensor Imaging)</label>
+    <label><input type="radio" name="q20" value="d"> SPECT de perfusión</label>
+    <div class="answer-feedback" id="fb20"></div>
+  </div>
+  <button class="quiz-btn" onclick="checkQuiz('1')">Comprobar respuestas</button>
+  <div class="quiz-result" id="result1"></div>
+</div>
+
+          <div class="quiz-section" id="quiz2">
+  <h3>Autoevaluación · Módulo 2</h3>
+  <p class="quiz-intro">Comprueba tu comprensión de los temas 6 a 10 (Síndromes Neuropsicológicos Mayores). 20 preguntas tipo test.</p>
+  <div class="quiz-q" id="q21">
+    <div class="q-text">¿Cuál es el perfil clásico de la afasia de Wernicke?</div>
+    <label><input type="radio" name="q21" value="a"> No fluente, comprensión conservada, repetición alterada</label>
+    <label><input type="radio" name="q21" value="b"> Fluente, comprensión muy alterada, repetición alterada</label>
+    <label><input type="radio" name="q21" value="c"> No fluente, comprensión alterada, repetición conservada</label>
+    <label><input type="radio" name="q21" value="d"> Fluente, comprensión conservada, repetición alterada</label>
+    <div class="answer-feedback" id="fb21"></div>
+  </div>
+  <div class="quiz-q" id="q22">
+    <div class="q-text">¿Qué tipo de error lingüístico consiste en sustituir una palabra por otra semánticamente relacionada (ej. "silla" por "mesa")?</div>
+    <label><input type="radio" name="q22" value="a"> Parafasia fonológica</label>
+    <label><input type="radio" name="q22" value="b"> Perseveración</label>
+    <label><input type="radio" name="q22" value="c"> Parafasia semántica</label>
+    <label><input type="radio" name="q22" value="d"> Neologismo</label>
+    <div class="answer-feedback" id="fb22"></div>
+  </div>
+  <div class="quiz-q" id="q23">
+    <div class="q-text">¿Cuál de los siguientes sistemas de memoria es el más vulnerable a la lesión hipocampal bilateral?</div>
+    <label><input type="radio" name="q23" value="a"> Memoria procedimental</label>
+    <label><input type="radio" name="q23" value="b"> Memoria episódica declarativa</label>
+    <label><input type="radio" name="q23" value="c"> Memoria de trabajo</label>
+    <label><input type="radio" name="q23" value="d"> Condicionamiento clásico</label>
+    <div class="answer-feedback" id="fb23"></div>
+  </div>
+  <div class="quiz-q" id="q24">
+    <div class="q-text">¿Qué es la amnesia retrógrada?</div>
+    <label><input type="radio" name="q24" value="a"> Incapacidad para formar nuevos recuerdos tras la lesión</label>
+    <label><input type="radio" name="q24" value="b"> Pérdida de recuerdos adquiridos antes de la lesión</label>
+    <label><input type="radio" name="q24" value="c"> Alteración de la memoria de trabajo</label>
+    <label><input type="radio" name="q24" value="d"> Pérdida de la memoria procedimental</label>
+    <div class="answer-feedback" id="fb24"></div>
+  </div>
+  <div class="quiz-q" id="q25">
+    <div class="q-text">¿Qué es la agnosia aperceptiva?</div>
+    <label><input type="radio" name="q25" value="a"> Incapacidad para denominar objetos correctamente</label>
+    <label><input type="radio" name="q25" value="b"> Incapacidad para reconocer objetos por fallo en el procesamiento perceptivo básico, aunque la visión primaria esté intacta</label>
+    <label><input type="radio" name="q25" value="c"> Incapacidad para reconocer rostros familiares</label>
+    <label><input type="radio" name="q25" value="d"> Incapacidad para localizar objetos en el espacio</label>
+    <div class="answer-feedback" id="fb25"></div>
+  </div>
+  <div class="quiz-q" id="q26">
+    <div class="q-text">¿Qué tipo de apraxia consiste en la incapacidad para ejecutar gestos aprendidos bajo orden verbal o por imitación, sin déficit motor primario?</div>
+    <label><input type="radio" name="q26" value="a"> Apraxia constructiva</label>
+    <label><input type="radio" name="q26" value="b"> Apraxia ideomotora</label>
+    <label><input type="radio" name="q26" value="c"> Apraxia del habla</label>
+    <label><input type="radio" name="q26" value="d"> Apraxia ideacional</label>
+    <div class="answer-feedback" id="fb26"></div>
+  </div>
+  <div class="quiz-q" id="q27">
+    <div class="q-text">¿Cuál de los siguientes componentes atiende a los estímulos del hemicampo espacial derecho en un individuo sano?</div>
+    <label><input type="radio" name="q27" value="a"> Solo el hemisferio izquierdo</label>
+    <label><input type="radio" name="q27" value="b"> Solo el hemisferio derecho</label>
+    <label><input type="radio" name="q27" value="c"> Ambos hemisferios</label>
+    <label><input type="radio" name="q27" value="d"> Únicamente el lóbulo occipital</label>
+    <div class="answer-feedback" id="fb27"></div>
+  </div>
+  <div class="quiz-q" id="q28">
+    <div class="q-text">¿Cuál es el modelo de componentes de la memoria de trabajo propuesto por Baddeley (1986)?</div>
+    <label><input type="radio" name="q28" value="a"> Memoria inmediata, a corto plazo y a largo plazo</label>
+    <label><input type="radio" name="q28" value="b"> Ejecutivo central, bucle fonológico, agenda visooespacial y búfer episódico</label>
+    <label><input type="radio" name="q28" value="c"> Memoria episódica, semántica y procedimental</label>
+    <label><input type="radio" name="q28" value="d"> Codificación, almacenamiento y recuperación</label>
+    <div class="answer-feedback" id="fb28"></div>
+  </div>
+  <div class="quiz-q" id="q29">
+    <div class="q-text">¿Qué caracteriza al síndrome de Korsakoff?</div>
+    <label><input type="radio" name="q29" value="a"> Amnesia anterógrada por déficit de vitamina B1 (tiamina) asociada al alcoholismo crónico</label>
+    <label><input type="radio" name="q29" value="b"> Amnesia retrógrada total por traumatismo craneoencefálico grave</label>
+    <label><input type="radio" name="q29" value="c"> Pérdida de memoria semántica por degeneración temporal anterior</label>
+    <label><input type="radio" name="q29" value="d"> Amnesia procedimental por lesión cerebelosa</label>
+    <div class="answer-feedback" id="fb29"></div>
+  </div>
+  <div class="quiz-q" id="q30">
+    <div class="q-text">¿Cuál de las siguientes es una función ejecutiva de orden inferior según el modelo de Miyake et al. (2000)?</div>
+    <label><input type="radio" name="q30" value="a"> Metacognición</label>
+    <label><input type="radio" name="q30" value="b"> Planificación estratégica a largo plazo</label>
+    <label><input type="radio" name="q30" value="c"> Inhibición de respuestas prepotentes</label>
+    <label><input type="radio" name="q30" value="d"> Toma de decisiones con carga emocional</label>
+    <div class="answer-feedback" id="fb30"></div>
+  </div>
+  <div class="quiz-q" id="q31">
+    <div class="q-text">¿Qué área cortical es el principal sustrato de la comprensión del lenguaje en individuos diestros?</div>
+    <label><input type="radio" name="q31" value="a"> Área de Broca (giro frontal inferior izquierdo)</label>
+    <label><input type="radio" name="q31" value="b"> Área de Wernicke (giro temporal superior izquierdo)</label>
+    <label><input type="radio" name="q31" value="c"> Giro angular izquierdo</label>
+    <label><input type="radio" name="q31" value="d"> Córtex motor primario izquierdo</label>
+    <div class="answer-feedback" id="fb31"></div>
+  </div>
+  <div class="quiz-q" id="q32">
+    <div class="q-text">¿Qué tipo de memoria está intacta en pacientes con amnesia hipocampal bilateral como H.M.?</div>
+    <label><input type="radio" name="q32" value="a"> Memoria episódica autobiográfica</label>
+    <label><input type="radio" name="q32" value="b"> Memoria declarativa para hechos recientes</label>
+    <label><input type="radio" name="q32" value="c"> Memoria procedimental e implícita</label>
+    <label><input type="radio" name="q32" value="d"> Orientación temporal</label>
+    <div class="answer-feedback" id="fb32"></div>
+  </div>
+  <div class="quiz-q" id="q33">
+    <div class="q-text">¿Cuál de los siguientes trastornos del lenguaje afecta específicamente a la lectura?</div>
+    <label><input type="radio" name="q33" value="a"> Afasia de conducción</label>
+    <label><input type="radio" name="q33" value="b"> Alexia</label>
+    <label><input type="radio" name="q33" value="c"> Apraxia del habla</label>
+    <label><input type="radio" name="q33" value="d"> Afasia transcortical motora</label>
+    <div class="answer-feedback" id="fb33"></div>
+  </div>
+  <div class="quiz-q" id="q34">
+    <div class="q-text">¿Qué se entiende por "prosopagnosia"?</div>
+    <label><input type="radio" name="q34" value="a"> Incapacidad para reconocer la voz de personas conocidas</label>
+    <label><input type="radio" name="q34" value="b"> Incapacidad para recordar nombres propios</label>
+    <label><input type="radio" name="q34" value="c"> Incapacidad para reconocer rostros familiares, con visión primaria intacta</label>
+    <label><input type="radio" name="q34" value="d"> Incapacidad para reconocer objetos comunes por la vista</label>
+    <div class="answer-feedback" id="fb34"></div>
+  </div>
+  <div class="quiz-q" id="q35">
+    <div class="q-text">¿Qué evalúa específicamente el Test de Stroop?</div>
+    <label><input type="radio" name="q35" value="a"> La memoria de trabajo verbal</label>
+    <label><input type="radio" name="q35" value="b"> La capacidad de inhibir una respuesta automática</label>
+    <label><input type="radio" name="q35" value="c"> La fluidez verbal semántica</label>
+    <label><input type="radio" name="q35" value="d"> La planificación y resolución de problemas</label>
+    <div class="answer-feedback" id="fb35"></div>
+  </div>
+  <div class="quiz-q" id="q36">
+    <div class="q-text">¿Cuál es la característica fundamental de la negligencia espacial unilateral que la diferencia de la hemianopsia?</div>
+    <label><input type="radio" name="q36" value="a"> La negligencia solo afecta al hemicampo izquierdo</label>
+    <label><input type="radio" name="q36" value="b"> En la negligencia los campos visuales son normales; el problema es atencional, no sensorial</label>
+    <label><input type="radio" name="q36" value="c"> La hemianopsia es más frecuente tras lesiones parietales</label>
+    <label><input type="radio" name="q36" value="d"> La negligencia mejora espontáneamente en todos los casos</label>
+    <div class="answer-feedback" id="fb36"></div>
+  </div>
+  <div class="quiz-q" id="q37">
+    <div class="q-text">¿Qué es el "priming" en el contexto de los sistemas de memoria?</div>
+    <label><input type="radio" name="q37" value="a"> Una técnica de rehabilitación de la memoria mediante repetición espaciada</label>
+    <label><input type="radio" name="q37" value="b"> Un efecto de facilitación del procesamiento de un estímulo por la exposición previa a uno relacionado, sin memoria consciente</label>
+    <label><input type="radio" name="q37" value="c"> La consolidación de recuerdos durante el sueño REM</label>
+    <label><input type="radio" name="q37" value="d"> La transferencia de información de la memoria a corto a largo plazo</label>
+    <div class="answer-feedback" id="fb37"></div>
+  </div>
+  <div class="quiz-q" id="q38">
+    <div class="q-text">¿Qué región cerebral está preferentemente implicada en la toma de decisiones con componente emocional y riesgo?</div>
+    <label><input type="radio" name="q38" value="a"> Córtex prefrontal dorsolateral</label>
+    <label><input type="radio" name="q38" value="b"> Hipocampo bilateral</label>
+    <label><input type="radio" name="q38" value="c"> Córtex prefrontal ventromedial y orbitofrontal</label>
+    <label><input type="radio" name="q38" value="d"> Lóbulo parietal superior</label>
+    <div class="answer-feedback" id="fb38"></div>
+  </div>
+  <div class="quiz-q" id="q39">
+    <div class="q-text">¿Cuáles son los tres componentes nucleares de las funciones ejecutivas según Miyake et al. (2000)?</div>
+    <label><input type="radio" name="q39" value="a"> Planificación, metacognición y regulación emocional</label>
+    <label><input type="radio" name="q39" value="b"> Inhibición, actualización (memoria de trabajo) y flexibilidad cognitiva</label>
+    <label><input type="radio" name="q39" value="c"> Atención selectiva, atención sostenida y atención dividida</label>
+    <label><input type="radio" name="q39" value="d"> Memoria episódica, semántica y procedimental</label>
+    <div class="answer-feedback" id="fb39"></div>
+  </div>
+  <div class="quiz-q" id="q40">
+    <div class="q-text">¿Qué síntoma caracteriza específicamente la anosognosia?</div>
+    <label><input type="radio" name="q40" value="a"> Incapacidad para nombrar objetos</label>
+    <label><input type="radio" name="q40" value="b"> Falta de consciencia del propio déficit neurológico o cognitivo</label>
+    <label><input type="radio" name="q40" value="c"> Incapacidad para repetir palabras escuchadas</label>
+    <label><input type="radio" name="q40" value="d"> Pérdida de la memoria semántica</label>
+    <div class="answer-feedback" id="fb40"></div>
+  </div>
+  <button class="quiz-btn" onclick="checkQuiz('2')">Comprobar respuestas</button>
+  <div class="quiz-result" id="result2"></div>
+</div>
+
+          <div class="quiz-section" id="quiz3">
+  <h3>Autoevaluación · Módulo 3</h3>
+  <p class="quiz-intro">Comprueba tu comprensión de los temas 11 a 14 (Neuropsicología del Ciclo Vital). 20 preguntas tipo test.</p>
+  <div class="quiz-q" id="q41">
+    <div class="q-text">¿Cuál es el déficit cognitivo nuclear en el TDAH según el modelo neuropsicológico de Barkley?</div>
+    <label><input type="radio" name="q41" value="a"> Déficit de memoria declarativa</label>
+    <label><input type="radio" name="q41" value="b"> Déficit de control inhibitorio</label>
+    <label><input type="radio" name="q41" value="c"> Déficit de memoria semántica</label>
+    <label><input type="radio" name="q41" value="d"> Déficit de percepción visual</label>
+    <div class="answer-feedback" id="fb41"></div>
+  </div>
+  <div class="quiz-q" id="q42">
+    <div class="q-text">¿Cuál es el déficit fonológico nuclear característico de la dislexia del desarrollo?</div>
+    <label><input type="radio" name="q42" value="a"> Baja velocidad de procesamiento visual</label>
+    <label><input type="radio" name="q42" value="b"> Déficit de conciencia fonológica y denominación rápida (RAN)</label>
+    <label><input type="radio" name="q42" value="c"> Déficit de comprensión lectora</label>
+    <label><input type="radio" name="q42" value="d"> Déficit de memoria visoespacial</label>
+    <div class="answer-feedback" id="fb42"></div>
+  </div>
+  <div class="quiz-q" id="q43">
+    <div class="q-text">¿Qué describe el "principio de crowding" en neuropsicología del desarrollo?</div>
+    <label><input type="radio" name="q43" value="a"> El exceso de estimulación cognitiva en la infancia que dificulta el aprendizaje</label>
+    <label><input type="radio" name="q43" value="b"> La reorganización de funciones en áreas alternativas tras lesión temprana, que puede comprometer las funciones propias de esas áreas</label>
+    <label><input type="radio" name="q43" value="c"> La concentración de síntomas conductuales en períodos de alta demanda escolar</label>
+    <label><input type="radio" name="q43" value="d"> El efecto protector del bilingüismo sobre el desarrollo cerebral</label>
+    <div class="answer-feedback" id="fb43"></div>
+  </div>
+  <div class="quiz-q" id="q44">
+    <div class="q-text">¿Qué función cognitiva experimenta el declive más precoz y consistente en el envejecimiento cerebral normal?</div>
+    <label><input type="radio" name="q44" value="a"> Vocabulario y conocimiento semántico</label>
+    <label><input type="radio" name="q44" value="b"> Velocidad de procesamiento de la información</label>
+    <label><input type="radio" name="q44" value="c"> Memoria episódica a largo plazo</label>
+    <label><input type="radio" name="q44" value="d"> Inteligencia cristalizada</label>
+    <div class="answer-feedback" id="fb44"></div>
+  </div>
+  <div class="quiz-q" id="q45">
+    <div class="q-text">¿Cuál es la diferencia fundamental entre Deterioro Cognitivo Leve (DCL) y demencia?</div>
+    <label><input type="radio" name="q45" value="a"> El DCL afecta a una sola función cognitiva; la demencia a múltiples</label>
+    <label><input type="radio" name="q45" value="b"> El DCL no tiene impacto funcional significativo en la vida diaria; la demencia sí</label>
+    <label><input type="radio" name="q45" value="c"> El DCL solo ocurre en mayores de 75 años; la demencia puede comenzar antes</label>
+    <label><input type="radio" name="q45" value="d"> El DCL es reversible en todos los casos; la demencia nunca lo es</label>
+    <div class="answer-feedback" id="fb45"></div>
+  </div>
+  <div class="quiz-q" id="q46">
+    <div class="q-text">¿Cuál de los siguientes es el biomarcador cognitivo más sensible para la detección temprana de la enfermedad de Alzheimer?</div>
+    <label><input type="radio" name="q46" value="a"> Déficit de comprensión lingüística</label>
+    <label><input type="radio" name="q46" value="b"> Amnesia episódica anterógrada con alta sensibilidad a la interferencia</label>
+    <label><input type="radio" name="q46" value="c"> Déficit de fluidez verbal fonológica</label>
+    <label><input type="radio" name="q46" value="d"> Apraxia constructiva</label>
+    <div class="answer-feedback" id="fb46"></div>
+  </div>
+  <div class="quiz-q" id="q47">
+    <div class="q-text">¿Qué tipo de demencia se caracteriza por un cambio de personalidad y conducta antes que por pérdida de memoria?</div>
+    <label><input type="radio" name="q47" value="a"> Enfermedad de Alzheimer</label>
+    <label><input type="radio" name="q47" value="b"> Demencia vascular</label>
+    <label><input type="radio" name="q47" value="c"> Demencia frontotemporal variante conductual (DFTvc)</label>
+    <label><input type="radio" name="q47" value="d"> Demencia por cuerpos de Lewy</label>
+    <div class="answer-feedback" id="fb47"></div>
+  </div>
+  <div class="quiz-q" id="q48">
+    <div class="q-text">¿Qué es la "reserva cognitiva" y cómo se construye?</div>
+    <label><input type="radio" name="q48" value="a"> La capacidad del cerebro de repararse a sí mismo tras un daño</label>
+    <label><input type="radio" name="q48" value="b"> La capacidad de tolerar patología cerebral sin manifestar síntomas, construida a través de educación, actividad intelectual y estímulos a lo largo de la vida</label>
+    <label><input type="radio" name="q48" value="c"> El volumen total de sustancia gris preservada en la vejez</label>
+    <label><input type="radio" name="q48" value="d"> La eficiencia de las sinapsis dopaminérgicas en el envejecimiento</label>
+    <div class="answer-feedback" id="fb48"></div>
+  </div>
+  <div class="quiz-q" id="q49">
+    <div class="q-text">¿Cuál de los siguientes trastornos del neurodesarrollo se caracteriza por dificultades en la cognición social, el lenguaje pragmático y la flexibilidad cognitiva?</div>
+    <label><input type="radio" name="q49" value="a"> TDAH</label>
+    <label><input type="radio" name="q49" value="b"> Dislexia</label>
+    <label><input type="radio" name="q49" value="c"> Trastorno del Espectro Autista (TEA)</label>
+    <label><input type="radio" name="q49" value="d"> Discalculia del desarrollo</label>
+    <div class="answer-feedback" id="fb49"></div>
+  </div>
+  <div class="quiz-q" id="q50">
+    <div class="q-text">¿Qué consecuencia neuropsicológica es más frecuente y específica del daño cerebral en el lóbulo temporal anterior derecho?</div>
+    <label><input type="radio" name="q50" value="a"> Afasia expresiva</label>
+    <label><input type="radio" name="q50" value="b"> Amnesia semántica para caras y entidades únicas</label>
+    <label><input type="radio" name="q50" value="c"> Apraxia ideomotora</label>
+    <label><input type="radio" name="q50" value="d"> Negligencia espacial izquierda</label>
+    <div class="answer-feedback" id="fb50"></div>
+  </div>
+  <div class="quiz-q" id="q51">
+    <div class="q-text">¿Cuál es el período de mayor plasticidad cerebral post-lesional en el que la rehabilitación es más eficaz?</div>
+    <label><input type="radio" name="q51" value="a"> Fase crónica (más de 12 meses tras la lesión)</label>
+    <label><input type="radio" name="q51" value="b"> Fase subaguda (días a semanas tras la lesión)</label>
+    <label><input type="radio" name="q51" value="c"> Fase de meseta (6-9 meses tras la lesión)</label>
+    <label><input type="radio" name="q51" value="d"> La plasticidad es constante independientemente del tiempo</label>
+    <div class="answer-feedback" id="fb51"></div>
+  </div>
+  <div class="quiz-q" id="q52">
+    <div class="q-text">¿Cuál es el trastorno del neurodesarrollo más frecuente en edad escolar?</div>
+    <label><input type="radio" name="q52" value="a"> TEA</label>
+    <label><input type="radio" name="q52" value="b"> Dislexia del desarrollo</label>
+    <label><input type="radio" name="q52" value="c"> TDAH</label>
+    <label><input type="radio" name="q52" value="d"> Discalculia del desarrollo</label>
+    <div class="answer-feedback" id="fb52"></div>
+  </div>
+  <div class="quiz-q" id="q53">
+    <div class="q-text">¿Qué describe el término "doble excepcionalidad" (2e) en el contexto educativo y neuropsicológico?</div>
+    <label><input type="radio" name="q53" value="a"> Tener dos lenguas maternas y altas capacidades intelectuales</label>
+    <label><input type="radio" name="q53" value="b"> Presentar simultáneamente altas capacidades intelectuales y uno o más trastornos del neurodesarrollo</label>
+    <label><input type="radio" name="q53" value="c"> Tener diagnóstico de dos trastornos del neurodesarrollo distintos sin altas capacidades</label>
+    <label><input type="radio" name="q53" value="d"> Superar el percentil 99 en dos índices del WISC-V</label>
+    <div class="answer-feedback" id="fb53"></div>
+  </div>
+  <div class="quiz-q" id="q54">
+    <div class="q-text">¿Cuál es la escala de valoración funcional más utilizada para evaluar la capacidad de realizar actividades básicas de la vida diaria en personas con daño cerebral o deterioro cognitivo?</div>
+    <label><input type="radio" name="q54" value="a"> MoCA</label>
+    <label><input type="radio" name="q54" value="b"> MMSE</label>
+    <label><input type="radio" name="q54" value="c"> Índice de Barthel</label>
+    <label><input type="radio" name="q54" value="d"> Trail Making Test</label>
+    <div class="answer-feedback" id="fb54"></div>
+  </div>
+  <div class="quiz-q" id="q55">
+    <div class="q-text">¿Qué se entiende por "períodos críticos" en la neuropsicología del desarrollo?</div>
+    <label><input type="radio" name="q55" value="a"> Los momentos de mayor vulnerabilidad emocional en la adolescencia</label>
+    <label><input type="radio" name="q55" value="b"> Las ventanas temporales del desarrollo en que determinadas experiencias tienen efectos permanentes sobre la organización cerebral</label>
+    <label><input type="radio" name="q55" value="c"> Los períodos de mayor riesgo de daño cerebral por accidente</label>
+    <label><input type="radio" name="q55" value="d"> Las fases del sueño en que se consolida la memoria en la infancia</label>
+    <div class="answer-feedback" id="fb55"></div>
+  </div>
+  <div class="quiz-q" id="q56">
+    <div class="q-text">¿Qué factor tiene mayor peso predictor sobre el riesgo de demencia según la investigación epidemiológica actual?</div>
+    <label><input type="radio" name="q56" value="a"> El sexo femenino</label>
+    <label><input type="radio" name="q56" value="b"> La historia familiar de demencia</label>
+    <label><input type="radio" name="q56" value="c"> El bajo nivel educativo y la inactividad cognitiva a lo largo de la vida</label>
+    <label><input type="radio" name="q56" value="d"> El consumo moderado de alcohol</label>
+    <div class="answer-feedback" id="fb56"></div>
+  </div>
+  <div class="quiz-q" id="q57">
+    <div class="q-text">¿Cuál de las siguientes características es más específica de la demencia por cuerpos de Lewy (DCL) frente a la enfermedad de Alzheimer?</div>
+    <label><input type="radio" name="q57" value="a"> Pérdida de memoria episódica como síntoma inicial</label>
+    <label><input type="radio" name="q57" value="b"> Alucinaciones visuales recurrentes, fluctuación cognitiva y parkinsonismo</label>
+    <label><input type="radio" name="q57" value="c"> Cambio de personalidad y desinhibición conductual</label>
+    <label><input type="radio" name="q57" value="d"> Afasia progresiva no fluente</label>
+    <div class="answer-feedback" id="fb57"></div>
+  </div>
+  <div class="quiz-q" id="q58">
+    <div class="q-text">En la evaluación neuropsicológica de la dislexia del desarrollo, ¿qué tarea distingue mejor a los disléxicos de los lectores normales?</div>
+    <label><input type="radio" name="q58" value="a"> Comprensión lectora de textos</label>
+    <label><input type="radio" name="q58" value="b"> Lectura de pseudopalabras (no-palabras) en voz alta</label>
+    <label><input type="radio" name="q58" value="c"> Memoria episódica verbal</label>
+    <label><input type="radio" name="q58" value="d"> Razonamiento abstracto no verbal</label>
+    <div class="answer-feedback" id="fb58"></div>
+  </div>
+  <div class="quiz-q" id="q59">
+    <div class="q-text">¿Qué tipo de trastorno produce la enfermedad de Parkinson desde el punto de vista neuropsicológico en sus fases iniciales?</div>
+    <label><input type="radio" name="q59" value="a"> Amnesia anterógrada severa</label>
+    <label><input type="radio" name="q59" value="b"> Síndrome disejecutivo y bradifrenia (lentitud del pensamiento)</label>
+    <label><input type="radio" name="q59" value="c"> Afasia progresiva</label>
+    <label><input type="radio" name="q59" value="d"> Prosopagnosia adquirida</label>
+    <div class="answer-feedback" id="fb59"></div>
+  </div>
+  <div class="quiz-q" id="q60">
+    <div class="q-text">¿Cuál de los siguientes factores de estilo de vida tiene mayor evidencia empírica como protector frente al declive cognitivo en el envejecimiento?</div>
+    <label><input type="radio" name="q60" value="a"> Consumo de suplementos de vitamina E</label>
+    <label><input type="radio" name="q60" value="b"> Actividad física aeróbica regular</label>
+    <label><input type="radio" name="q60" value="c"> Uso de videojuegos de entrenamiento cerebral online</label>
+    <label><input type="radio" name="q60" value="d"> Dieta rica en proteínas animales</label>
+    <div class="answer-feedback" id="fb60"></div>
+  </div>
+  <button class="quiz-btn" onclick="checkQuiz('3')">Comprobar respuestas</button>
+  <div class="quiz-result" id="result3"></div>
+</div>
+
+          <div class="key-concepts">
+            <h4>Conceptos Clave · Bloque I</h4>
+            <div class="concept-tags">
+              <span class="concept-tag">Neuropsicología</span>
+              <span class="concept-tag">Sistema Nervioso Central</span>
+              <span class="concept-tag">Lateralización hemisférica</span>
+              <span class="concept-tag">Cuerpo calloso</span>
+              <span class="concept-tag">RMf / EEG / PET</span>
+              <span class="concept-tag">Daño primario / secundario</span>
+              <span class="concept-tag">Rendimiento premórbido</span>
+              <span class="concept-tag">Afasia de Broca</span>
+              <span class="concept-tag">Afasia de Wernicke</span>
+              <span class="concept-tag">Amnesia anterógrada</span>
+              <span class="concept-tag">Hipocampo</span>
+              <span class="concept-tag">Agnosia aperceptiva</span>
+              <span class="concept-tag">Prosopagnosia</span>
+              <span class="concept-tag">Apraxia ideomotora</span>
+              <span class="concept-tag">Funciones ejecutivas</span>
+              <span class="concept-tag">Neglect espacial</span>
+              <span class="concept-tag">Trastornos del neurodesarrollo</span>
+              <span class="concept-tag">Doble excepcionalidad (2e)</span>
+              <span class="concept-tag">Deterioro Cognitivo Leve</span>
+              <span class="concept-tag">Reserva cognitiva</span>
+              <span class="concept-tag">Demencia tipo Alzheimer</span>
+              <span class="concept-tag">Plasticidad cerebral</span>
+              <span class="concept-tag">Crowding</span>
+            </div>
+          </div>
+
+          <a href="#top" class="back-top">↑ Volver al inicio del Bloque I</a>
+        </div>
+      </section>
+
+      <!-- ==================== GENERADOR DE EXAMEN IA ==================== -->
+      <div class="ai-exam-section" id="exam-gen">
+        <h2>Generador de Examen Personalizado</h2>
+        <p class="ai-intro">Selecciona el módulo y el nivel de dificultad. La IA generará un examen personalizado con preguntas originales y respuestas razonadas. Las preguntas no se repiten entre sesiones.</p>
+
+        <div class="ai-controls">
+          <div>
+            <label>Módulo</label>
+            <select id="examModule">
+              <option value="I">Módulo I · Bases Teóricas</option>
+              <option value="II">Módulo II · Alteraciones Cognitivas</option>
+              <option value="III">Módulo III · Ámbitos de Intervención</option>
+              <option value="todo">Bloque I completo (todos los módulos)</option>
+            </select>
+          </div>
+          <div>
+            <label>Dificultad</label>
+            <select id="examDiff">
+              <option value="básico">Básico · Definiciones y conceptos</option>
+              <option value="intermedio" selected>Intermedio · Aplicación clínica</option>
+              <option value="avanzado">Avanzado · Análisis y síntesis</option>
+            </select>
+          </div>
+          <div>
+            <label>Tipo de preguntas</label>
+            <select id="examType">
+              <option value="mixto">Mixto (test + desarrollo breve)</option>
+              <option value="test">Solo tipo test</option>
+              <option value="desarrollo">Solo desarrollo</option>
+            </select>
+          </div>
+          <div>
+            <label>Número de preguntas</label>
+            <select id="examNum">
+              <option value="5">5 preguntas</option>
+              <option value="10" selected>10 preguntas</option>
+              <option value="15">15 preguntas</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="generate-btn" id="generateBtn" onclick="generateExam()">
+          Generar examen
+        </button>
+
+        <div class="loading-indicator" id="loadingIndicator">
+          <div class="loading-dot"></div>
+          <div class="loading-dot"></div>
+          <div class="loading-dot"></div>
+          <span style="margin-left:0.75rem; font-family:var(--sans); font-size:0.82rem;">Generando examen personalizado…</span>
+        </div>
+
+        <div class="exam-output" id="examOutput">
+          <h3 id="examTitle"></h3>
+          <div id="examQuestions"></div>
+        </div>
+      </div>
+
+    </div><!-- /content-wrap -->
+  </main>
+</div><!-- /shell -->
+
+<script>
+// ===== PROGRESS TRACKER =====
+const sections = document.querySelectorAll('.subsection');
+const totalSections = sections.length;
+
+function updateProgress() {
+  let visited = 0;
+  sections.forEach(s => {
+    const rect = s.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.8) visited++;
+  });
+  const pct = Math.min(100, Math.round((visited / totalSections) * 100));
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent = pct + '%';
+}
+window.addEventListener('scroll', updateProgress);
+updateProgress();
+
+// ===== ACTIVE NAV =====
+function updateActiveNav() {
+  const navItems = document.querySelectorAll('.nav-item[href^="#"]');
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 120) current = '#' + s.id;
+  });
+  navItems.forEach(n => {
+    n.classList.toggle('active', n.getAttribute('href') === current);
+  });
+}
+window.addEventListener('scroll', updateActiveNav);
+
+// ===== QUIZ ENGINE =====
+const answers = {
+  q1: { correct: 'b', feedback: { b: 'El tálamo es la principal estación de relevo sensorial. Recibe información de casi todos los sistemas sensoriales (excepto el olfativo) y la proyecta hacia las áreas corticales correspondientes.' } },
+  q2: { correct: 'c', feedback: { c: 'El área de Broca (áreas 44-45 de Brodmann) se localiza en el giro frontal inferior del lóbulo frontal izquierdo. Su lesión produce afasia no fluente con producción agramática.' } },
+  q3: { correct: 'd', feedback: { d: 'La RMf detecta cambios en la oxigenación sanguínea que acompañan a la activación neuronal. Es la técnica de neuroimagen funcional de mayor resolución espacial actualmente disponible.' } },
+  q4: { correct: 'c', feedback: { c: 'El ictus (isquémico o hemorrágico) es la causa más frecuente de daño cerebral adquirido en adultos mayores en países desarrollados, y la primera causa de discapacidad adquirida en España.' } },
+  q5: { correct: 'b', feedback: { b: 'El rendimiento premórbido es la estimación del nivel cognitivo previo a la lesión. Sin esta referencia basal no es posible determinar si un rendimiento actual representa deterioro real o es el nivel habitual del paciente.' } },
+  q6: { correct: 'c', feedback: { c: 'El hipocampo, parte del sistema límbico, es fundamental para la consolidación de nuevos recuerdos episódicos y semánticos. Su lesión bilateral produce amnesia anterógrada grave como en el caso H.M.' } },
+  q7: { correct: 'c', feedback: { c: 'Los ganglios basales son fundamentales para el control motor voluntario y el aprendizaje de hábitos y habilidades motoras (memoria procedimental). Su degeneración produce enfermedad de Parkinson.' } },
+  q8: { correct: 'c', feedback: { c: 'La PET mide el consumo de glucosa o la actividad de neurotransmisores in vivo, lo que permite visualizar el funcionamiento metabólico cerebral. Es especialmente útil en el diagnóstico diferencial de demencias.' } },
+  q9: { correct: 'b', feedback: { b: 'La vía dorsal procesa información sobre la localización espacial y la guía de movimientos (\"dónde\"). La vía ventral procesa la identidad de los objetos (\"qué\"). Esta disociación explica las diferentes formas de agnosia.' } },
+  q10: { correct: 'c', feedback: { c: 'El córtex motor primario (giro precentral, área 4) contiene las neuronas motoras superiores que controlan directamente los movimientos voluntarios contralaterales. Su lesión produce hemiparesia o hemiplejía.' } },
+  q11: { correct: 'b', feedback: { b: 'La plasticidad cerebral es la capacidad del sistema nervioso para modificar su organización estructural y funcional en respuesta al aprendizaje, la experiencia o el daño. Persiste a lo largo de toda la vida, aunque decrece con la edad.' } },
+  q12: { correct: 'c', feedback: { c: 'El diencéfalo incluye el tálamo y el hipotálamo. El hipotálamo regula funciones autonómicas (temperatura, hambre, sed, ciclos de sueño-vigilia) y es la principal interfaz entre el sistema nervioso y el endocrino.' } },
+  q13: { correct: 'd', feedback: { d: 'El EEG (electroencefalografía) y la MEG (magnetoencefalografía) tienen resolución temporal de milisegundos, lo que permite estudiar la dinámica temporal de los procesos cognitivos. Su resolución espacial es, sin embargo, limitada.' } },
+  q14: { correct: 'c', feedback: { c: 'La diasquisis es la inhibición funcional de regiones cerebrales anatómicamente intactas pero conectadas con la zona lesionada. Su resolución espontánea en las primeras semanas explica buena parte de la recuperación inicial post-lesional.' } },
+  q15: { correct: 'b', feedback: { b: 'El cuerpo calloso es la mayor comisura cerebral, formada por más de 200 millones de fibras que conectan áreas homotópicas de ambos hemisferios. Su sección produce el síndrome de cerebro escindido estudiado por Sperry y Gazzaniga.' } },
+  q16: { correct: 'c', feedback: { c: 'La actividad física regular moderada es un factor PROTECTOR frente al ictus, no un factor de riesgo. Los factores de riesgo vascular principales incluyen hipertensión, fibrilación auricular, diabetes, tabaquismo y dislipemia.' } },
+  q17: { correct: 'c', feedback: { c: 'El córtex prefrontal dorsolateral (CPFDL) es el sustrato principal de las funciones ejecutivas de orden superior: planificación, memoria de trabajo, flexibilidad cognitiva e inhibición de respuestas prepotentes.' } },
+  q18: { correct: 'c', feedback: { c: 'La amígdala es el nodo central del procesamiento emocional, especialmente del miedo condicionado y la detección de amenazas. Sus conexiones con el hipocampo y el córtex prefrontal median la regulación emocional.' } },
+  q19: { correct: 'c', feedback: { c: 'La mielina es la vaina de grasa que recubre los axones y actúa como aislante eléctrico, permitiendo la conducción saltatoria y aumentando drásticamente la velocidad de transmisión del impulso nervioso.' } },
+  q20: { correct: 'c', feedback: { c: 'La DTI (Imagen de Tensor de Difusión) mide la difusión del agua a lo largo de los tractos de sustancia blanca, permitiendo evaluar la integridad de las conexiones axonales. Es la técnica de elección para detectar daño axonal difuso en TCE.' } },
+  q21: { correct: 'b', feedback: { b: 'La afasia de Wernicke se caracteriza por lenguaje fluente (aunque con parafasias semánticas y jergafasia), comprensión oral muy deteriorada y repetición alterada. Es la imagen especular de la afasia de Broca.' } },
+  q22: { correct: 'c', feedback: { c: 'La parafasia semántica es la sustitución de una palabra por otra del mismo campo semántico. Es característica de la afasia de Wernicke y refleja una alteración en el acceso al léxico semántico.' } },
+  q23: { correct: 'b', feedback: { b: 'La memoria episódica declarativa (recuerdos de episodios personales con su contexto temporal y espacial) es la más vulnerable a la lesión hipocampal bilateral. Como demostró el caso H.M., la memoria procedimental e implícita pueden estar preservadas.' } },
+  q24: { correct: 'b', feedback: { b: 'La amnesia retrógrada es la pérdida de recuerdos adquiridos antes del daño cerebral. Suele afectar más a los recuerdos recientes que a los remotos (ley de Ribot), porque los recuerdos más antiguos están más distribuidos y consolidados en el neocórtex.' } },
+  q25: { correct: 'b', feedback: { b: 'La agnosia aperceptiva es el fallo en el reconocimiento visual por un déficit en la construcción perceptiva del objeto, aunque la visión primaria (agudeza, campos visuales) esté intacta. El paciente no puede copiar ni igualar objetos.' } },
+  q26: { correct: 'b', feedback: { b: 'La apraxia ideomotora es la incapacidad para realizar gestos aprendidos (transitivos o intransitivos) bajo orden verbal o por imitación, en ausencia de debilidad o déficit sensorial. Suele asociarse a lesiones del lóbulo parietal izquierdo.' } },
+  q27: { correct: 'a', feedback: { a: 'El hemisferio izquierdo atiende preferentemente al hemicampo contralateral derecho. El hemisferio derecho, en cambio, atiende a AMBOS hemicampos. Esta asimetría explica por qué la lesión del HD produce neglect izquierdo sin compensación del HI.' } },
+  q28: { correct: 'b', feedback: { b: 'El modelo de Baddeley (1986, revisado 2000) propone un ejecutivo central que gestiona la atención y coordina dos sistemas esclavos (bucle fonológico y agenda visoespacial) y un búfer episódico que integra la información con la memoria a largo plazo.' } },
+  q29: { correct: 'a', feedback: { a: 'El síndrome de Korsakoff se produce por déficit de tiamina (B1), frecuentemente asociado al alcoholismo crónico. Se caracteriza por amnesia anterógrada severa, confabulación y anosognosia. La lesión afecta a los cuerpos mamilares y el tálamo dorsomedial.' } },
+  q30: { correct: 'c', feedback: { c: 'Miyake et al. (2000) identificaron tres componentes nucleares de las funciones ejecutivas: inhibición, actualización (memoria de trabajo) y cambio de set (flexibilidad cognitiva). La planificación y la toma de decisiones son funciones de orden superior que dependen de estos tres componentes.' } },
+  q31: { correct: 'b', feedback: { b: 'El área de Wernicke (área 22 de Brodmann), localizada en el giro temporal superior izquierdo, es el substrato primario de la comprensión lingüística. Su lesión produce afasia fluente con comprensión muy deteriorada y parafasias semánticas frecuentes.' } },
+  q32: { correct: 'c', feedback: { c: 'H.M. podía aprender nuevas habilidades motoras (memoria procedimental) y mostrar efectos de priming (memoria implícita) aunque no recordara conscientemente haberlas practicado. Esto demostró la disociación entre sistemas de memoria.' } },
+  q33: { correct: 'b', feedback: { b: 'La alexia (o dislexia adquirida) es la incapacidad adquirida para leer como consecuencia de daño cerebral. Se distingue de la dislexia del desarrollo, que es un trastorno de la adquisición de la lectura sin lesión estructural demostrable.' } },
+  q34: { correct: 'c', feedback: { c: 'La prosopagnosia es la incapacidad selectiva para reconocer rostros conocidos, incluso los de familiares o la propia cara en el espejo, a pesar de tener visión primaria normal. Se asocia a lesiones del giro fusiforme bilateral (FFA).' } },
+  q35: { correct: 'b', feedback: { b: 'El Stroop evalúa la capacidad de inhibir la respuesta automática de leer una palabra para nombrar el color de la tinta con que está escrita. La interferencia Stroop refleja el esfuerzo del control inhibitorio prefrontal.' } },
+  q36: { correct: 'b', feedback: { b: 'En la negligencia espacial los campos visuales son normales (se puede ver ambos hemicampos) pero el paciente no presta atención al espacio contralesional. En la hemianopsia hay un déficit sensorial real en el campo visual.' } },
+  q37: { correct: 'b', feedback: { b: 'El priming es una forma de memoria implícita en la que la exposición previa a un estímulo facilita el procesamiento posterior de ese mismo estímulo o de uno relacionado, sin que el sujeto tenga conciencia del efecto.' } },
+  q38: { correct: 'c', feedback: { c: 'El córtex prefrontal ventromedial y orbitofrontal integra señales emocionales (marcadores somáticos según Damasio) con el razonamiento para guiar las decisiones en condiciones de riesgo e incertidumbre. Su lesión produce el perfil del Iowa Gambling Task alterado.' } },
+  q39: { correct: 'b', feedback: { b: 'Miyake et al. (2000) identificaron mediante análisis de variables latentes tres componentes nucleares disociables pero correlacionados: inhibición de respuestas prepotentes, actualización y monitorización de la memoria de trabajo, y cambio de set cognitivo (flexibilidad).' } },
+  q40: { correct: 'b', feedback: { b: 'La anosognosia es la falta de conciencia del propio déficit neurológico. No es negación psicológica sino un síntoma neurológico real, frecuentemente asociado a lesiones del lóbulo parietal derecho (en la negligencia) o del lóbulo frontal.' } },
+  q41: { correct: 'b', feedback: { b: 'Según Barkley (1997), el déficit central del TDAH es la inhibición conductual deficiente, que secundariamente compromete cuatro funciones ejecutivas dependientes de ella: memoria de trabajo, autorregulación emocional, internalización del habla y reconstitución.' } },
+  q42: { correct: 'b', feedback: { b: 'La dislexia del desarrollo tiene como deficit núcleo la dificultad para procesar la fonología del lenguaje (conciencia fonológica) y para acceder rápidamente a las representaciones fonológicas (denominación rápida o RAN). Ambos déficits predicen la dificultad lectora.' } },
+  q43: { correct: 'b', feedback: { b: 'El crowding describe cómo, tras una lesión cerebral temprana, las funciones previstas para el área dañada se reorganizan en regiones adyacentes o contralaterales. El coste es que las funciones nativas de esas áreas de acogida pueden verse comprometidas.' } },
+  q44: { correct: 'b', feedback: { b: 'La velocidad de procesamiento es la función que comienza a declinar antes y de forma más consistente con el envejecimiento cognitivo normal, incluso antes de los 30 años. El vocabulario y la inteligencia cristalizada, en cambio, tienden a mantenerse hasta edades avanzadas.' } },
+  q45: { correct: 'b', feedback: { b: 'El criterio diferencial fundamental entre DCL y demencia es el impacto funcional en las actividades de la vida diaria: el DCL produce quejas y déficits objetivables pero sin impacto funcional significativo. La demencia, por definición, afecta a la autonomía cotidiana.' } },
+  q46: { correct: 'b', feedback: { b: 'La amnesia episódica anterógrada, especialmente el olvido acelerado en el recuerdo demorado con alta sensibilidad a la interferencia, es el marcador cognitivo más precoz de la EA. Refleja la degeneración hipocampal que precede años a los síntomas clínicos.' } },
+  q47: { correct: 'c', feedback: { c: 'La DFTvc se caracteriza por la degeneración del córtex prefrontal y temporal anterior, produciendo cambios de personalidad, desinhibición, apatía e hiperoralidad antes que pérdida de memoria episódica. Este patrón la diferencia claramente de la EA.' } },
+  q48: { correct: 'b', feedback: { b: 'La reserva cognitiva (Stern, 2002) es la capacidad del cerebro de mantener el funcionamiento normal a pesar de la carga de patología subyacente. Se construye a través del nivel educativo, la actividad intelectual continuada, el bilingüismo y la complejidad laboral.' } },
+  q49: { correct: 'c', feedback: { c: 'El TEA se caracteriza por dificultades en la cognición social (teoría de la mente), el lenguaje pragmático y la flexibilidad cognitiva, junto con patrones de comportamiento repetitivos e intereses restringidos. Su sustrato neurobiológico incluye alteraciones en la red neuronal por defecto y el surco temporal superior.' } },
+  q50: { correct: 'b', feedback: { b: 'El lóbulo temporal anterior derecho está especialmente implicado en el reconocimiento de entidades únicas (personas, lugares concretos). Su lesión produce dificultades para reconocer caras famosas y marcas concretas (demencia semántica con sesgo de la derecha).' } },
+  q51: { correct: 'b', feedback: { b: 'La fase subaguda (días a semanas tras la lesión) es el período de mayor neuroplasticidad post-lesional, coincidiendo con la resolución del edema cerebral, la diasquisis y el inicio de la reorganización cortical. Es la ventana temporal de mayor eficacia rehabilitadora.' } },
+  q52: { correct: 'c', feedback: { c: 'El TDAH tiene una prevalencia del 5-7% en población escolar, siendo el trastorno del neurodesarrollo más frecuente. La dislexia del desarrollo tiene una prevalencia similar (5-10%) aunque varía según el sistema ortográfico del idioma.' } },
+  q53: { correct: 'b', feedback: { b: 'La doble excepcionalidad (2e) describe a individuos con altas capacidades intelectuales (generalmente CI >125) que simultáneamente presentan uno o más trastornos del neurodesarrollo (TDAH, dislexia, TEA, etc.). El alto CI puede enmascarar el trastorno durante años.' } },
+  q54: { correct: 'c', feedback: { c: 'El Índice de Barthel evalúa la independencia funcional en 10 actividades básicas de la vida diaria (aseo, vestido, alimentación, transferencias, continencia, deambulación). Es la escala funcional más utilizada en geriatría y neurorrehabilitación.' } },
+  q55: { correct: 'b', feedback: { b: 'Los períodos críticos son ventanas temporales del desarrollo durante las cuales la experiencia tiene efectos permanentes e irreversibles sobre la organización cerebral. El período crítico del lenguaje, la visión binocular y otros sistemas tiene base neurobiológica (mielinización, poda sináptica).' } },
+  q56: { correct: 'c', feedback: { c: 'El bajo nivel educativo y la inactividad cognitiva a lo largo de la vida son los factores de riesgo modificables más potentes para la demencia. Contribuyen a una menor reserva cognitiva, que retrasa la aparición de síntomas pero no previene la patología subyacente.' } },
+  q57: { correct: 'b', feedback: { b: 'La tríada clásica de la demencia por cuerpos de Lewy incluye: alucinaciones visuales recurrentes (típicamente figuras de personas o animales), fluctuaciones cognitivas marcadas y síntomas parkinsonianos. Estos rasgos la distinguen de la EA y permiten el diagnóstico diferencial.' } },
+  q58: { correct: 'b', feedback: { b: 'La lectura de pseudopalabras (no-palabras como \"palbito\") requiere aplicar las reglas de conversión grafema-fonema de forma explícita, sin poder usar el léxico memorizado. Es la tarea más sensible para detectar el déficit fonológico nuclear de la dislexia.' } },
+  q59: { correct: 'b', feedback: { b: 'En sus fases iniciales, el Parkinson produce un síndrome disejecutivo subcortical con bradifrenia (lentitud del pensamiento), enlentecimiento de la velocidad de procesamiento y dificultades en la flexibilidad cognitiva, sin la amnesia anterógrada prominente de la EA.' } },
+  q60: { correct: 'b', feedback: { b: 'La actividad física aeróbica regular es el factor con mayor respaldo empírico para reducir el riesgo de demencia y ralentizar el declive cognitivo. El estudio FINGER (2015) demostró que la combinación de ejercicio, dieta, entrenamiento cognitivo y control vascular es especialmente eficaz.' } },
+};
+
+function checkQuiz(modNum) {
+  const quizId = 'quiz' + modNum;
+  const moduleQuestions = { '1': ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10', 'q11', 'q12', 'q13', 'q14', 'q15', 'q16', 'q17', 'q18', 'q19', 'q20'], '2': ['q21', 'q22', 'q23', 'q24', 'q25', 'q26', 'q27', 'q28', 'q29', 'q30', 'q31', 'q32', 'q33', 'q34', 'q35', 'q36', 'q37', 'q38', 'q39', 'q40'], '3': ['q41', 'q42', 'q43', 'q44', 'q45', 'q46', 'q47', 'q48', 'q49', 'q50', 'q51', 'q52', 'q53', 'q54', 'q55', 'q56', 'q57', 'q58', 'q59', 'q60'] };
+  const qs = moduleQuestions[modNum];
+  let score = 0, answered = 0;
+
+  qs.forEach(qId => {
+    const selected = document.querySelector(`input[name="${qId}"]:checked`);
+    const fb = document.getElementById('fb' + qId.slice(1));
+    if (!selected) return;
+    answered++;
+    const val = selected.value;
+    const data = answers[qId];
+    if (val === data.correct) {
+      score++;
+      fb.className = 'answer-feedback correct';
+      fb.textContent = '✓ ' + (data.feedback[val] || 'Respuesta correcta.');
+    } else {
+      fb.className = 'answer-feedback incorrect';
+      const correctFb = data.feedback[data.correct] || '';
+      fb.textContent = '✗ Incorrecto. ' + correctFb;
+    }
+    fb.style.display = 'block';
+  });
+
+  const result = document.getElementById('result' + modNum);
+  if (answered < qs.length) {
+    result.style.display = 'block';
+    result.textContent = 'Por favor, responde todas las preguntas antes de comprobar.';
+    result.style.background = '#FDF3DC';
+    result.style.color = '#7A4F00';
+  } else {
+    result.style.display = 'block';
+    const pct = Math.round((score / qs.length) * 100);
+    result.textContent = `Resultado: ${score} de ${qs.length} correctas (${pct}%). ${pct >= 70 ? '✓ Nivel superado.' : 'Repasa los temas con más dificultad antes de continuar.'}`;
+  }
+}
+
+// ===== AI EXAM GENERATOR =====
+async function generateExam() {
+  const btn = document.getElementById('generateBtn');
+  const loading = document.getElementById('loadingIndicator');
+  const output = document.getElementById('examOutput');
+  const mod = document.getElementById('examModule').value;
+  const diff = document.getElementById('examDiff').value;
+  const type = document.getElementById('examType').value;
+  const num = document.getElementById('examNum').value;
+
+  btn.disabled = true;
+  loading.style.display = 'block';
+  output.style.display = 'none';
+
+  const moduleContent = {
+    'I': 'Organización del Sistema Nervioso, lateralización hemisférica, técnicas de estudio (EEG, RMf, PET, TAC), etiología del daño cerebral (ictus, TCE, tumores, anoxia), principios de evaluación neuropsicológica y rendimiento premórbido.',
+    'II': 'Afasias (Broca, Wernicke, conducción, global, anómica), alexias, agrafias, amnesias (anterógrada, retrógrada), sistemas de memoria (episódica, semántica, procedimental, trabajo), agnosias (aperceptiva, asociativa, prosopagnosia), apraxias (ideomotora, ideacional, constructiva), atención (alerta, sostenida, selectiva, dividida, espacial), funciones ejecutivas, síndrome disejecutivo, negligencia espacial unilateral.',
+    'III': 'Trastornos del neurodesarrollo (TDAH, dislexia, TEA), doble excepcionalidad (2e), principio de crowding, envejecimiento cognitivo normal, deterioro cognitivo leve, demencias (Alzheimer, frontotemporal, vascular, cuerpos de Lewy), daño cerebral adquirido en adultos, fases de recuperación, reserva cognitiva, alteraciones emocionales y neuropsiquiátricas tras DCA.',
+    'todo': 'Todos los contenidos del Bloque I: sistema nervioso, lateralización, técnicas de estudio, daño cerebral, evaluación neuropsicológica, afasias, amnesias, agnosias, apraxias, atención, funciones ejecutivas, neuropsicología infantil, envejecimiento, DCA en adultos y alteraciones neuropsiquiátricas.'
+  };
+
+  const typeInstructions = {
+    'mixto': `La mitad de las preguntas deben ser tipo test (con 4 opciones, indicando la correcta con [CORRECTA]) y la otra mitad preguntas de desarrollo breve (con una respuesta modelo de 3-4 líneas).`,
+    'test': `Todas las preguntas deben ser tipo test con 4 opciones. Indica la respuesta correcta con [CORRECTA] y proporciona una justificación de 2-3 líneas.`,
+    'desarrollo': `Todas las preguntas deben ser de desarrollo breve. Proporciona para cada una una respuesta modelo de 4-5 líneas.`
+  };
+
+  const prompt = `Eres un profesor universitario de Neuropsicología. Genera un examen de evaluación de ${num} preguntas sobre el siguiente contenido: ${moduleContent[mod]}
+
+Nivel de dificultad: ${diff}.
+Formato de preguntas: ${typeInstructions[type]}
+
+Responde ÚNICAMENTE en formato JSON, sin texto adicional, siguiendo exactamente esta estructura:
+{
+  "titulo": "Examen de Neuropsicología — Módulo ${mod} — Nivel ${diff}",
+  "preguntas": [
+    {
+      "numero": 1,
+      "tipo": "test" o "desarrollo",
+      "enunciado": "texto de la pregunta",
+      "opciones": ["A) texto", "B) texto", "C) texto", "D) texto"] (solo si es test, omitir si es desarrollo),
+      "respuesta": "texto de la respuesta o justificación"
+    }
+  ]
+}`;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 3000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    const data = await response.json();
+    const raw = data.content.map(i => i.text || '').join('');
+    const clean = raw.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(clean);
+
+    document.getElementById('examTitle').textContent = parsed.titulo;
+    const container = document.getElementById('examQuestions');
+    container.innerHTML = '';
+
+    parsed.preguntas.forEach((q, i) => {
+      const div = document.createElement('div');
+      div.className = 'exam-question';
+
+      let html = `<div class="eq-num">Pregunta ${q.numero} · ${q.tipo === 'test' ? 'Tipo test' : 'Desarrollo'}</div>`;
+      html += `<p>${q.enunciado}</p>`;
+
+      if (q.tipo === 'test' && q.opciones) {
+        q.opciones.forEach(opt => {
+          const isCorrect = q.respuesta && opt.toLowerCase().includes(q.respuesta.split(' ')[0].toLowerCase());
+          html += `<p style="margin:0.2rem 0; font-size:0.85rem; color:rgba(255,255,255,0.75);">• ${opt}</p>`;
+        });
+      }
+
+      html += `<button class="show-answer-btn" onclick="toggleAnswer(this)">Ver respuesta</button>`;
+      html += `<div class="eq-answer">${q.respuesta}</div>`;
+      div.innerHTML = html;
+      container.appendChild(div);
+    });
+
+    output.style.display = 'block';
+  } catch (err) {
+    document.getElementById('examTitle').textContent = 'Error al generar el examen';
+    document.getElementById('examQuestions').innerHTML = `<p style="color:#F5A5A5; font-family:var(--sans); font-size:0.85rem;">No se pudo conectar con la IA. Comprueba la configuración y vuelve a intentarlo.</p>`;
+    output.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    loading.style.display = 'none';
+  }
+}
+
+function toggleAnswer(btn) {
+  const answer = btn.nextElementSibling;
+  const visible = answer.style.display === 'block';
+  answer.style.display = visible ? 'none' : 'block';
+  btn.textContent = visible ? 'Ver respuesta' : 'Ocultar respuesta';
+}
+</script>
+</body>
+</html>

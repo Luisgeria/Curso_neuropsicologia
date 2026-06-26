@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neuropsicología — Bloque II: Evaluación, Diagnóstico y Rehabilitación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #F8F7F4;
+    --bg-alt:    #EEECEA;
+    --ink:       #1C2B3A;
+    --ink-soft:  #3D5068;
+    --accent:    #2B5EA7;
+    --accent-lt: #D6E4F7;
+    --amber:     #C8860A;
+    --amber-lt:  #FDF3DC;
+    --muted:     #8A9BB0;
+    --rule:      #D4CFC8;
+    --teal:      #1A7A6E;
+    --teal-lt:   #E0F5F2;
+    --sidebar-w: 240px;
+    --content-max: 700px;
+    --serif-d:   'Playfair Display', Georgia, serif;
+    --serif-b:   'Source Serif 4', Georgia, serif;
+    --sans:      'Inter', system-ui, sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; font-size: 17px; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--serif-b); line-height: 1.75; }
+
+  .shell { display: flex; min-height: 100vh; }
+
+  /* SIDEBAR */
+  .sidebar {
+    position: fixed; top: 0; left: 0; bottom: 0;
+    width: var(--sidebar-w);
+    background: var(--ink); color: #fff;
+    overflow-y: auto; display: flex; flex-direction: column;
+    z-index: 100; padding-bottom: 2rem;
+  }
+  .sidebar-logo { padding: 1.5rem 1.25rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .sidebar-logo .brand { font-family: var(--sans); font-size: 0.65rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.35rem; }
+  .sidebar-logo .course-title { font-family: var(--serif-d); font-size: 0.9rem; line-height: 1.3; color: #fff; }
+  .bloque-badge { display: inline-block; margin-top: 0.5rem; background: var(--teal); color: #fff; font-family: var(--sans); font-size: 0.6rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.2rem 0.5rem; border-radius: 2px; }
+
+  .sidebar-nav { padding: 1rem 0; flex: 1; }
+  .nav-section-label { font-family: var(--sans); font-size: 0.6rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); padding: 1rem 1.25rem 0.4rem; }
+  .nav-item { display: block; padding: 0.4rem 1.25rem; font-family: var(--sans); font-size: 0.78rem; color: rgba(255,255,255,0.65); text-decoration: none; line-height: 1.4; transition: color 0.15s, background 0.15s; border-left: 2px solid transparent; }
+  .nav-item:hover { color: #fff; background: rgba(255,255,255,0.05); }
+  .nav-item.active { color: #fff; border-left-color: var(--teal); background: rgba(26,122,110,0.2); }
+  .nav-item.module { font-weight: 600; color: rgba(255,255,255,0.85); margin-top: 0.5rem; }
+
+  .bloque-links { padding: 1rem 1.25rem; border-top: 1px solid rgba(255,255,255,0.08); }
+  .bloque-links .bl-label { font-family: var(--sans); font-size: 0.6rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+  .bloque-links a { display: block; font-family: var(--sans); font-size: 0.75rem; color: rgba(255,255,255,0.45); text-decoration: none; padding: 0.2rem 0; }
+  .bloque-links a:hover { color: rgba(255,255,255,0.8); }
+  .bloque-links a.current { color: #fff; font-weight: 600; }
+
+  .sidebar-progress { padding: 1rem 1.25rem; border-top: 1px solid rgba(255,255,255,0.1); }
+  .progress-label { font-family: var(--sans); font-size: 0.65rem; font-weight: 500; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .progress-bar-bg { background: rgba(255,255,255,0.1); border-radius: 99px; height: 4px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: var(--teal); border-radius: 99px; width: 0%; transition: width 0.4s ease; }
+  .progress-pct { font-family: var(--sans); font-size: 0.7rem; color: rgba(255,255,255,0.5); margin-top: 0.35rem; text-align: right; }
+
+  /* MAIN */
+  .main { margin-left: var(--sidebar-w); flex: 1; padding: 0 2rem 6rem; }
+
+  /* COVER */
+  .cover { padding: 4rem 0 3rem; border-bottom: 1px solid var(--rule); max-width: var(--content-max); margin: 0 auto; }
+  .cover-eyebrow { font-family: var(--sans); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--teal); margin-bottom: 1rem; }
+  .cover h1 { font-family: var(--serif-d); font-size: 2.6rem; font-weight: 700; line-height: 1.15; color: var(--ink); margin-bottom: 1.25rem; }
+  .cover .subtitle { font-family: var(--serif-b); font-size: 1.1rem; font-weight: 300; font-style: italic; color: var(--ink-soft); margin-bottom: 2rem; line-height: 1.6; }
+  .cover-meta { display: flex; gap: 2rem; flex-wrap: wrap; font-family: var(--sans); font-size: 0.75rem; color: var(--muted); }
+
+  /* CONTENT */
+  .content-wrap { max-width: var(--content-max); margin: 0 auto; padding: 3rem 0; }
+  .section { margin-bottom: 5rem; scroll-margin-top: 2rem; }
+  .section-header { border-top: 2px solid var(--ink); padding-top: 1.5rem; margin-bottom: 2.5rem; }
+  .section-eyebrow { font-family: var(--sans); font-size: 0.65rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.6rem; }
+  .section h2 { font-family: var(--serif-d); font-size: 1.9rem; font-weight: 700; line-height: 1.2; color: var(--ink); }
+
+  .subsection { margin-bottom: 3rem; scroll-margin-top: 2rem; }
+  .subsection h3 { font-family: var(--serif-d); font-size: 1.3rem; font-weight: 600; color: var(--ink); margin-bottom: 1rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--rule); }
+  .subsection h4 { font-family: var(--sans); font-size: 0.85rem; font-weight: 700; color: var(--ink); letter-spacing: 0.03em; margin: 1.5rem 0 0.5rem; text-transform: uppercase; }
+
+  p { margin-bottom: 1.1rem; font-size: 1rem; color: var(--ink); }
+  .lead { font-size: 1.05rem; font-weight: 300; font-style: italic; color: var(--ink-soft); margin-bottom: 1.5rem; line-height: 1.8; }
+
+  .objectives-box { background: var(--accent-lt); border-left: 3px solid var(--accent); padding: 1.25rem 1.5rem; margin: 2rem 0; border-radius: 0 4px 4px 0; }
+  .objectives-box .ob-label { font-family: var(--sans); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.6rem; }
+  .objectives-box ul { list-style: none; padding: 0; }
+  .objectives-box ul li { font-family: var(--sans); font-size: 0.85rem; color: var(--ink); padding: 0.25rem 0 0.25rem 1.2rem; position: relative; }
+  .objectives-box ul li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-weight: 600; }
+
+  .def-box { background: var(--amber-lt); border-left: 3px solid var(--amber); padding: 1rem 1.25rem; margin: 1.5rem 0; border-radius: 0 4px 4px 0; }
+  .def-box .def-term { font-family: var(--sans); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--amber); margin-bottom: 0.3rem; }
+  .def-box p { margin: 0; font-size: 0.95rem; }
+
+  .aacc-box { background: #F0FBF4; border: 1px solid #A3D9B5; border-left: 3px solid #2D9E5F; padding: 1rem 1.25rem; margin: 1.5rem 0; border-radius: 0 4px 4px 0; }
+  .aacc-box .aacc-label { font-family: var(--sans); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #2D9E5F; margin-bottom: 0.4rem; }
+  .aacc-box p { margin: 0; font-size: 0.88rem; color: #1A4A2E; }
+
+  .rehab-box { background: var(--teal-lt); border-left: 3px solid var(--teal); padding: 1rem 1.25rem; margin: 1.5rem 0; border-radius: 0 4px 4px 0; }
+  .rehab-box .rehab-label { font-family: var(--sans); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); margin-bottom: 0.4rem; }
+  .rehab-box p { margin: 0; font-size: 0.88rem; color: #0F3D37; }
+
+  .case-box { background: #F5F0FB; border: 1px solid #C9B8E8; border-left: 3px solid #7B5EA7; padding: 1.25rem 1.5rem; margin: 2rem 0; border-radius: 0 4px 4px 0; }
+  .case-box .case-label { font-family: var(--sans); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #7B5EA7; margin-bottom: 0.5rem; }
+  .case-box p { margin-bottom: 0.5rem; font-size: 0.9rem; }
+  .case-box p:last-child { margin: 0; }
+
+  .instrument-card { border: 1px solid var(--rule); border-radius: 6px; padding: 1rem 1.25rem; margin: 0.75rem 0; background: #fff; }
+  .instrument-card .ic-name { font-family: var(--sans); font-size: 0.85rem; font-weight: 700; color: var(--accent); margin-bottom: 0.25rem; }
+  .instrument-card .ic-full { font-family: var(--sans); font-size: 0.72rem; color: var(--muted); margin-bottom: 0.4rem; }
+  .instrument-card p { margin: 0; font-size: 0.85rem; color: var(--ink-soft); }
+
+  .data-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-family: var(--sans); font-size: 0.82rem; }
+  .data-table th { background: var(--ink); color: #fff; padding: 0.6rem 0.85rem; text-align: left; font-weight: 600; letter-spacing: 0.04em; }
+  .data-table td { padding: 0.55rem 0.85rem; border-bottom: 1px solid var(--rule); vertical-align: top; color: var(--ink); }
+  .data-table tr:nth-child(even) td { background: var(--bg-alt); }
+
+  hr.section-rule { border: none; border-top: 1px solid var(--rule); margin: 3rem 0; }
+
+  /* QUIZ */
+  .quiz-section { background: var(--bg-alt); border: 1px solid var(--rule); border-radius: 6px; padding: 2rem; margin-top: 3rem; }
+  .quiz-section h3 { font-family: var(--serif-d); font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--ink); }
+  .quiz-section .quiz-intro { font-family: var(--sans); font-size: 0.82rem; color: var(--muted); margin-bottom: 1.5rem; }
+  .quiz-q { margin-bottom: 1.5rem; }
+  .quiz-q .q-text { font-family: var(--sans); font-size: 0.9rem; font-weight: 600; color: var(--ink); margin-bottom: 0.5rem; }
+  .quiz-q label { display: flex; align-items: flex-start; gap: 0.5rem; font-family: var(--sans); font-size: 0.83rem; color: var(--ink-soft); padding: 0.3rem 0; cursor: pointer; }
+  .quiz-q label input { margin-top: 3px; accent-color: var(--accent); }
+  .answer-feedback { display: none; font-family: var(--sans); font-size: 0.82rem; padding: 0.6rem 0.85rem; border-radius: 4px; margin-top: 0.5rem; }
+  .answer-feedback.correct { background: #E6F7ED; color: #1A5C35; border: 1px solid #A3D9B5; }
+  .answer-feedback.incorrect { background: #FDE8E8; color: #7A1F1F; border: 1px solid #F5A5A5; }
+  .quiz-btn { background: var(--accent); color: #fff; border: none; padding: 0.65rem 1.5rem; font-family: var(--sans); font-size: 0.85rem; font-weight: 600; border-radius: 4px; cursor: pointer; margin-top: 1rem; transition: background 0.15s; }
+  .quiz-btn:hover { background: #1E4A8A; }
+  .quiz-result { display: none; margin-top: 1.25rem; padding: 1rem; background: var(--accent-lt); border-radius: 4px; font-family: var(--sans); font-size: 0.88rem; color: var(--ink); font-weight: 600; }
+
+  /* AI EXAM */
+  .ai-exam-section { margin-top: 5rem; padding: 2.5rem; background: var(--ink); color: #fff; border-radius: 8px; }
+  .ai-exam-section h2 { font-family: var(--serif-d); font-size: 1.6rem; margin-bottom: 0.5rem; }
+  .ai-exam-section .ai-intro { font-family: var(--sans); font-size: 0.85rem; color: var(--muted); margin-bottom: 2rem; line-height: 1.6; }
+  .ai-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+  .ai-controls label { font-family: var(--sans); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 0.35rem; }
+  .ai-controls select { width: 100%; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 0.55rem 0.75rem; font-family: var(--sans); font-size: 0.85rem; border-radius: 4px; cursor: pointer; appearance: none; }
+  .ai-controls select option { background: var(--ink); }
+  .generate-btn { background: var(--teal); color: #fff; border: none; padding: 0.75rem 2rem; font-family: var(--sans); font-size: 0.9rem; font-weight: 600; border-radius: 4px; cursor: pointer; transition: background 0.15s; width: 100%; }
+  .generate-btn:hover { background: #135F55; }
+  .generate-btn:disabled { opacity: 0.5; cursor: default; }
+  .loading-indicator { display: none; text-align: center; padding: 2rem; font-family: var(--sans); font-size: 0.85rem; color: var(--muted); }
+  .loading-dot { display: inline-block; width: 6px; height: 6px; background: var(--teal); border-radius: 50%; margin: 0 2px; animation: bounce 1.2s infinite; }
+  .loading-dot:nth-child(2) { animation-delay: 0.2s; }
+  .loading-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce { 0%,80%,100%{transform:translateY(0);opacity:0.4} 40%{transform:translateY(-6px);opacity:1} }
+  .exam-output { display: none; margin-top: 2rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 1.75rem; }
+  .exam-output h3 { font-family: var(--serif-d); font-size: 1.1rem; margin-bottom: 1rem; color: #fff; }
+  .exam-question { margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .exam-question:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .exam-question .eq-num { font-family: var(--sans); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); margin-bottom: 0.3rem; }
+  .exam-question p { color: rgba(255,255,255,0.9); font-family: var(--sans); font-size: 0.88rem; line-height: 1.6; margin: 0; }
+  .exam-question .eq-answer { display: none; margin-top: 0.6rem; padding: 0.6rem 0.85rem; background: rgba(26,122,110,0.2); border-radius: 4px; font-family: var(--sans); font-size: 0.82rem; color: #7ECFC6; line-height: 1.5; }
+  .show-answer-btn { background: none; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.6); padding: 0.3rem 0.7rem; font-family: var(--sans); font-size: 0.72rem; border-radius: 3px; cursor: pointer; margin-top: 0.5rem; transition: all 0.15s; }
+  .show-answer-btn:hover { border-color: var(--teal); color: #fff; }
+
+  /* KEY CONCEPTS */
+  .key-concepts { background: var(--bg-alt); border: 1px solid var(--rule); border-radius: 6px; padding: 1.75rem; margin-top: 3rem; }
+  .key-concepts h4 { font-family: var(--sans); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+  .concept-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .concept-tag { background: #fff; border: 1px solid var(--rule); padding: 0.3rem 0.75rem; font-family: var(--sans); font-size: 0.75rem; color: var(--ink-soft); border-radius: 99px; }
+
+  .back-top { display: inline-block; margin-top: 3rem; font-family: var(--sans); font-size: 0.78rem; color: var(--teal); text-decoration: none; font-weight: 500; letter-spacing: 0.04em; }
+  .back-top:hover { text-decoration: underline; }
+
+  @media (max-width: 768px) {
+    .sidebar { transform: translateX(-100%); transition: transform 0.3s; }
+    .sidebar.open { transform: none; }
+    .main { margin-left: 0; padding: 0 1rem 4rem; }
+    .cover h1 { font-size: 1.8rem; }
+    .ai-controls { grid-template-columns: 1fr; }
+    .menu-toggle { display: block; position: fixed; top: 1rem; left: 1rem; z-index: 200; background: var(--ink); color: #fff; border: none; padding: 0.5rem 0.75rem; border-radius: 4px; font-family: var(--sans); font-size: 0.8rem; cursor: pointer; }
+  }
+  @media (min-width: 769px) { .menu-toggle { display: none; } }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+<button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰ Índice</button>
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="brand">IAprendizaje</div>
+      <div class="course-title">Neuropsicología Universitaria</div>
+      <span class="bloque-badge">Bloque II · Evaluación y Rehabilitación</span>
+    </div>
+    <div class="sidebar-nav">
+      <div class="nav-section-label">Módulo IV</div>
+      <a class="nav-item module" href="#mod4">Evaluación y Diagnóstico</a>
+      <a class="nav-item" href="#t4-1">1. Evaluación del Lenguaje y Praxias</a>
+      <a class="nav-item" href="#t4-2">2. Evaluación de Memoria y Percepción</a>
+      <a class="nav-item" href="#t4-3">3. Evaluación de Atención y FFEE</a>
+      <a class="nav-item" href="#t4-4">4. Evaluación Emocional y Conductual</a>
+      <a class="nav-item" href="#t4-5">5. Evaluación Infantil</a>
+      <a class="nav-item" href="#t4-6">6. Evaluación en Envejecimiento</a>
+      <div class="nav-section-label">Módulo V</div>
+      <a class="nav-item module" href="#mod5">Rehabilitación Neuropsicológica</a>
+      <a class="nav-item" href="#t5-1">7. Plasticidad Cerebral</a>
+      <a class="nav-item" href="#t5-2">8. Fundamentos de la Rehabilitación</a>
+      <a class="nav-item" href="#t5-3">9. Rehabilitación del Lenguaje</a>
+      <a class="nav-item" href="#t5-4">10. Rehabilitación de Memoria y Agnosias</a>
+      <a class="nav-item" href="#t5-5">11. Rehabilitación de Atención y FFEE</a>
+      <a class="nav-item" href="#t5-6">12. Rehabilitación Infantil</a>
+      <a class="nav-item" href="#t5-7">13. Intervención en Envejecimiento</a>
+      <div class="nav-section-label">Herramientas</div>
+      <a class="nav-item" href="#exam-gen">🎯 Generador de Examen IA</a>
+    </div>
+    <div class="bloque-links">
+      <div class="bl-label">Otros bloques</div>
+      <a href="neuropsicologia_bloque1.html">Bloque I · Fundamentos Teóricos</a>
+      <a href="#" class="current">Bloque II · Evaluación y Rehabilitación</a>
+      <a href="neuropsicologia_bloque3.html">Bloque III · Casos Clínicos</a>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label">Progreso del Bloque II</div>
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+      <div class="progress-pct" id="progressPct">0%</div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <div class="cover" id="top">
+      <div class="cover-eyebrow">Bloque II · Evaluación, Diagnóstico y Rehabilitación Neuropsicológica</div>
+      <h1>Del síntoma al plan de intervención: medir para rehabilitar</h1>
+      <p class="subtitle">Un manual universitario sobre cómo se evalúan las funciones cognitivas dañadas y cómo se diseñan programas de rehabilitación basados en la evidencia y en la plasticidad cerebral.</p>
+      <div class="cover-meta">
+        <span>📖 13 temas</span>
+        <span>⏱ 30–45 min por tema</span>
+        <span>🧪 Instrumentos de evaluación</span>
+        <span>🔄 Técnicas de rehabilitación</span>
+      </div>
+    </div>
+
+    <div class="content-wrap">
+
+      <!-- ====== MÓDULO IV ====== -->
+      <section class="section" id="mod4">
+        <div class="section-header">
+          <div class="section-eyebrow">Módulo IV</div>
+          <h2>Evaluación y Diagnóstico Neuropsicológico</h2>
+        </div>
+        <p class="lead">La evaluación neuropsicológica es la herramienta fundamental de la práctica clínica. Su rigor metodológico determina la calidad del diagnóstico y, en consecuencia, la pertinencia del plan de intervención. Cada dominio cognitivo dispone de instrumentos específicos con propiedades psicométricas contrastadas.</p>
+
+        <!-- T4-1 -->
+        <div class="subsection" id="t4-1">
+          <h3>1. Evaluación del Lenguaje y las Praxias</h3>
+          <div class="objectives-box">
+            <div class="ob-label">Objetivos de aprendizaje</div>
+            <ul>
+              <li>Conocer los principales instrumentos de evaluación del lenguaje afásico.</li>
+              <li>Comprender los procedimientos de evaluación de las praxias.</li>
+              <li>Interpretar los perfiles lingüísticos en función de los test.</li>
+            </ul>
+          </div>
+
+          <p>La evaluación del lenguaje en neuropsicología tiene como objetivo caracterizar el perfil lingüístico del paciente para establecer el tipo y gravedad de la afasia, orientar el diagnóstico topográfico y diseñar la intervención logopédica. Una evaluación completa debe explorar todos los niveles del lenguaje: producción oral, comprensión oral, repetición, denominación, lectura y escritura.</p>
+
+          <h4>1.1 Dimensiones de la Evaluación Lingüística</h4>
+          <table class="data-table">
+            <thead><tr><th>Dimensión</th><th>Qué se evalúa</th><th>Ejemplos de tareas</th></tr></thead>
+            <tbody>
+              <tr><td>Fluencia verbal</td><td>Cantidad, esfuerzo y prosodia del habla espontánea</td><td>Descripción de lámina (Cookie Theft), discurso narrativo</td></tr>
+              <tr><td>Comprensión oral</td><td>Comprensión de palabras, frases y órdenes</td><td>Señalamiento de objetos, seguimiento de instrucciones complejas</td></tr>
+              <tr><td>Repetición</td><td>Repetición de palabras, no-palabras y frases</td><td>Repetición de series de palabras y frases de longitud creciente</td></tr>
+              <tr><td>Denominación</td><td>Capacidad para nombrar objetos, acciones y categorías</td><td>Denominación por confrontación visual</td></tr>
+              <tr><td>Lectura</td><td>Lectura en voz alta y comprensión lectora</td><td>Lectura de palabras regulares, irregulares y no-palabras</td></tr>
+              <tr><td>Escritura</td><td>Escritura espontánea, al dictado y copia</td><td>Escritura del nombre, dictado de palabras y frases</td></tr>
+            </tbody>
+          </table>
+
+          <h4>1.2 Principales Instrumentos de Evaluación del Lenguaje</h4>
+
+          <div class="instrument-card">
+            <div class="ic-name">BAE</div>
+            <div class="ic-full">Batería para la Evaluación de la Afasia (Marcos Orts, 2020)</div>
+            <p>Batería completa adaptada a población española que evalúa los principales componentes lingüísticos. Permite clasificar el tipo de afasia y establecer el perfil lingüístico detallado del paciente.</p>
+          </div>
+
+          <div class="instrument-card">
+            <div class="ic-name">Boston Diagnostic Aphasia Examination (BDAE)</div>
+            <div class="ic-full">Goodglass, Kaplan y Barresi (2001). Adaptación española: García-Albea et al.</div>
+            <p>Referencia internacional para la clasificación de afasias según el modelo de Boston. Incluye la lámina «Cookie Theft» para el análisis del discurso espontáneo. Permite diferenciar los principales síndromes afásicos.</p>
+          </div>
+
+          <div class="instrument-card">
+            <div class="ic-name">Token Test</div>
+            <div class="ic-full">De Renzi y Vignolo (1962)</div>
+            <p>Prueba breve y muy sensible para detectar déficits de comprensión lingüística. El paciente debe mover fichas de diferentes formas, colores y tamaños siguiendo instrucciones de complejidad creciente. Especialmente útil para afasias leves o en screening.</p>
+          </div>
+
+          <div class="instrument-card">
+            <div class="ic-name">EPLA</div>
+            <div class="ic-full">Evaluación del Procesamiento Lingüístico en la Afasia (Kay, Lesser y Coltheart, 1992; adaptación española: Valle y Cuetos, 1995)</div>
+            <p>Batería de inspiración cognitiva que permite analizar en qué nivel del procesamiento lingüístico se produce el déficit, desde el acceso léxico hasta la producción fonológica. Especialmente útil para planificar la rehabilitación lingüística.</p>
+          </div>
+
+          <h4>1.3 Evaluación de las Praxias</h4>
+          <p>La evaluación de las praxias explora la capacidad del paciente para ejecutar gestos aprendidos. Se utilizan cuatro tipos de condiciones de presentación, que permiten distinguir diferentes niveles de la cadena apraxica: orden verbal, imitación de gestos del examinador, uso de objeto real, y realización espontánea en contexto funcional. Las principales tareas incluyen gestos transitivos (uso de objetos: «enroscar un tornillo»), gestos intransitivos simbólicos (saludo militar, señal de stop), secuencias de gestos manuales y praxias bucofaciales.</p>
+
+          <div class="aacc-box">
+            <div class="aacc-label">🟢 Conexión AACC · Aula de Primaria</div>
+            <p>Las pruebas de fluidez verbal categorial (p. ej., «di el mayor número de animales en un minuto») son especialmente sensibles para detectar tanto déficits como capacidades superiores. Los alumnos AACC tienden a producir significativamente más ítems que sus pares, con mayor diversidad semántica y menor número de errores de intrusión. Su uso en el aula como actividad cognitiva estimulante resulta muy apropiado.</p>
+          </div>
+        </div>
+
+        <hr class="section-rule">
+
+        <!-- T4-2 -->
+        <div class="subsection" id="t4-2">
+          <h3>2. Evaluación de la Memoria y la Percepción</h3>
+          <div class="objectives-box">
+            <div class="ob-label">Objetivos de aprendizaje</div>
+            <ul>
+              <li>Conocer los principales instrumentos de evaluación de la memoria.</li>
+              <li>Comprender los procedimientos para evaluar las agnosias visuales.</li>
+              <li>Distinguir los perfiles de deterioro en los diferentes sistemas de memoria.</li>
+            </ul>
+          </div>
+
+          <p>La evaluación de la memoria es uno de los apartados más complejos de la neuropsicología clínica, dado que la memoria no es un sistema unitario sino un conjunto de sistemas disociables con substratos neurales propios. Una evaluación completa debe explorar la memoria episódica verbal y visoespacial, la memoria semántica, la memoria de trabajo y la memoria implícita.</p>
+
+          <h4>2.1 Principales Instrumentos de Evaluación de Memoria</h4>
+
+          <div class="instrument-card">
+            <div class="ic-name">WMS-IV</div>
+            <div class="ic-full">Wechsler Memory Scale, 4.ª edición (Wechsler, 2009; adaptación española: TEA Ediciones, 2013)</div>
+            <p>Batería de referencia para la evaluación comprensiva de la memoria. Proporciona índices de memoria inmediata, memoria demorada, memoria de trabajo auditiva y visual, y memoria visoespacial. Permite comparar el perfil del paciente con normas españolas estratificadas por edad y nivel educativo.</p>
+          </div>
+
+          <div class="instrument-card">
+            <div class="ic-name">RAVLT</div>
+            <div class="ic-full">Rey Auditory Verbal Learning Test (Rey, 1941)</div>
+            <p>Lista de 15 palabras presentadas en 5 ensayos de aprendizaje, seguidos de una lista interferente y un recuerdo demorado. Permite analizar la curva de aprendizaje, la retención a largo plazo, la sensibilidad a la interferencia y el reconocimiento. Muy sensible para detectar la amnesia anterógrada temprana del Alzheimer.</p>
+          </div>
+
+          <div class="instrument-card">
+            <div class="ic-name">Figura Compleja de Rey-Osterrieth</div>
+            <div class="ic-full">Rey (1941), Osterrieth (1944)</div>
+            <p>El paciente copia una figura geométrica compleja y, sin previo aviso, la reproduce de memoria (recuerdo inmediato y demorado). Evalúa simultáneamente la capacidad de organización visoconstructiva y la memoria visoespacial no verbal. La estrategia de copia (análisis cualitativo) aporta información sobre las funciones ejecutivas.</p>
+          </div>
+
+          <div class="instrument-card">
+            <div class="ic-name">Rivermead Behavioural Memory Test (RBMT)</div>
+            <div class="ic-full">Wilson, Cockburn y Baddeley (1985)</div>
+            <p>Evaluación ecológica de la memoria mediante tareas que simulan situaciones cotidianas: recordar una cita, el nombre de una persona fotografiada, el lugar donde se ha dejado un objeto. Especialmente útil para evaluar la repercusión funcional del déficit mnésico en la vida diaria.</p>
+          </div>
+
+          <h4>2.2 Evaluación de la Percepción y las Agnosias</h4>
+          <p>La evaluación de las agnosias requiere un protocolo sistemático que descarte en primer lugar los déficits sensoriales primarios (agudeza visual, auditiva) antes de concluir que existe un trastorno agnósico. Los instrumentos más utilizados incluyen el <strong>Birmingham Object Recognition Battery (BORB)</strong>, que permite distinguir entre agnosia aperceptiva y asociativa mediante pruebas de igualación de siluetas, partes de objetos y objetos poco frecuentes; y las pruebas de reconocimiento de rostros como el <strong>Warrington Recognition Memory Test for Faces</strong>.</p>
+
+          <div class="case-box">
+            <div class="case-label">📋 Ejemplo de Perfil Evaluador · Caso de amnesia anterógrada</div>
+            <p>Varón de 58 años, infarto en territorio de la arteria cerebral posterior izquierda con afectación del hipocampo. Quejas de olvidos frecuentes de citas y conversaciones recientes. En la evaluación: RAVLT con aprendizaje muy reducido (máximo 6/15 en ensayo 5), recuerdo libre demorado de 0/15, reconocimiento conservado (13/15); WMS-IV con índice de memoria inmediata en percentil 12, memoria demorada en percentil 4; figura de Rey con copia correcta pero recuerdo demorado de 2/36 puntos.</p>
+            <p><em>Interpretación:</em> Amnesia anterógrada predominantemente verbal con afectación de la consolidación. El reconocimiento relativamente conservado sugiere que la información se codifica parcialmente pero no se consolida en la memoria a largo plazo.</p>
+          </div>
+
+          <div class="aacc-box">
+            <div class="aacc-label">🟢 Conexión AACC · Aula de Primaria</div>
+            <p>La memoria de trabajo —evaluable mediante subpruebas del WMS-IV o el Test de Amplitud de Memoria de la Batería de Aptitudes de Kauffman— es la función cognitiva que mejor predice el rendimiento académico a corto plazo. Los alumnos AACC presentan habitualmente una memoria de trabajo muy por encima de la media, lo que les permite mantener múltiples informaciones activas simultáneamente y realizar inferencias complejas. Conocer el perfil de memoria de un alumno permite individualizar los apoyos: algunos AACC con doble excepcionalidad tienen una memoria de trabajo comprometida a pesar de su alto CI.</p>
+          </div>
+        </div>
+
+        <hr class="section-rule">
+
+        <!-- T4-3 -->
+        <div class="subsection" id="t4-3">
+          <h3>3. Evaluación de la Atención y las Funciones Ejecutivas</h3>
+          <div class="objectives-box">
+            <div class="ob-label">Objetivos de aprendizaje</div>
+            <ul>
+              <li>Conocer los principales instrumentos de evaluación atencional.</li>
+              <li>Dominar los test de funciones ejecutivas más utilizados en la práctica clínica.</li>
+              <li>Comprender la interpretación de perfiles disejecutivos.</li>
+            </ul>
+          </div>
+
+          <p>La atención y las funciones ejecutivas son capacidades cognitivas de orden superior que resultan especialmente vulnerables al daño cerebral frontal y subcortical. Su evaluación es compleja porque se trata de procesos que, por definición, influyen en el rendimiento de las demás funciones cognitivas.</p>
+
+          <h4>3.1 Instrumentos de Evaluación Atencional</h4>
+
+          <div class="instrument-card">
+            <div class="ic-name">Test of Everyday Attention (TEA)</div>
+            <div class="ic-full">Robertson, Ward, Ridgeway y Nimmo-Smith (1994); adaptación española: TEA Ediciones</div>
+            <p>Batería ecológica que evalúa atención selectiva, atención sostenida, atención dividida y alternante mediante tareas contextualizadas (p. ej., buscar símbolos en un mapa de ciudad). Tiene excelente validez ecológica y buena sensibilidad para detectar déficits atencionales leves.</p>
+          </div>
+
+          <div class="instrument-card">
+            <div class="ic-name">Test de Stroop</div>
+            <div class="ic-full">Stroop (1935); Golden (1978); adaptación española: TEA Ediciones</div>
+            <p>Evalúa la capacidad de inhibición de respuesta automática y la atención selectiva. El sujeto debe nombrar el color de la tinta en que está impresa una palabra que denomina otro color (ej.: la palabra «ROJO» escrita en tinta azul). La puntuación de interferencia refleja la eficiencia del control inhibitorio prefrontal.</p>
+          </div>
+
+          <div class="instrument-card">
+            <div class="ic-name">Trail Making Test (TMT)</div>
+            <div class="ic-full">Reitan (1958); adaptación española: Peña-Casanova</div>
+            <p>Parte A: unir números en orden ascendente (velocidad de procesamiento y atención sostenida). Parte B: alternar entre números y letras (atención alternante y flexibilidad cognitiva). La ratio B/A es un índice sensible de disfunción ejecutiva frontal.</p>
+          </div>
+
+          <h4>3.2 Instrumentos de Evaluación de las Funciones Ejecutivas</h4>
+
+          <div class="instrument-card">
+            <div class="ic-name">Test de Clasificación de Tarjetas de Wisconsin (WCST)</div>
+            <div class="ic-full">Berg (1948); Heaton et al. (1993); adaptación española: TEA Ediciones</div>
+            <p>El sujeto debe descubrir el criterio de clasificación de tarjetas (color, forma o número) sin instrucciones explícitas, solo mediante feedback de acierto/error. El criterio cambia sin aviso. Evalúa flexibilidad cognitiva, aprendizaje por feedback, formación de conceptos e inhibición de perseveraciones. Muy sensible a la disfunción prefrontal dorsolateral.</p>
+          </div>
+
+          <div class="instrument-card">
+            <div class="ic-name">Test de la Torre de Londres</div>
+            <div class="ic-full">Shallice (1982); versión española: Culbertson y Zillmer</div>
+            <p>El sujeto debe reorganizar bolas de colores en postes para alcanzar una configuración meta en el menor número de movimientos posible. Evalúa planificación, anticipación de consecuencias y resolución de problemas. Muy sensible a lesiones prefrontales.</p>
+          </div>
+
+          <div class="instrument-card">
+            <div class="ic-name">BRIEF (Behavior Rating Inventory of Executive Function)</div>
+            <div class="ic-full">Gioia, Isquith, Guy y Kenworthy (2000); adaptación española: TEA Ediciones</div>
+            <p>Cuestionario para padres y profesores que evalúa las funciones ejecutivas en la vida cotidiana del niño (inhibición, flexibilidad, memoria de trabajo, planificación, monitorización). Disponible para edades de 5 a 18 años. De especial relevancia para el contexto educativo.</p>
+          </div>
+
+          <div class="aacc-box">
+            <div class="aacc-label">🟢 Conexión AACC · Aula de Primaria</div>
+            <p>El BRIEF es una herramienta fundamental para el maestro. En alumnos AACC con doble excepcionalidad (especialmente con TDAH comórbido), la puntuación de los padres y profesores en el BRIEF puede revelar un perfil disejecutivo significativo que contrasta con el alto CI. Este hallazgo orienta la intervención: no se trata de falta de esfuerzo o motivación, sino de dificultades reales en la autorregulación ejecutiva que requieren apoyos estructurales en el aula.</p>
+          </div>
+        </div>
+
+        <hr class="section-rule">
+
+        <!-- T4-4 -->
+        <div class="subsection" id="t4-4">
+          <h3>4. Evaluación Emocional y del Comportamiento</h3>
+          <div class="objectives-box">
+            <div class="ob-label">Objetivos de aprendizaje</div>
+            <ul>
+              <li>Conocer los instrumentos de evaluación del estado emocional en neuropsicología.</li>
+              <li>Diferenciar la evaluación de la emoción desde la perspectiva neuropsicológica.</li>
+              <li>Comprender el impacto emocional del daño cerebral.</li>
+            </ul>
+          </div>
+
+          <p>La evaluación emocional y conductual en neuropsicología abarca dos dimensiones complementarias: la evaluación de las consecuencias emocionales del daño cerebral (depresión, ansiedad, apatía, labilidad) y la evaluación de la capacidad del propio cerebro para procesar información emocional (reconocimiento de emociones, teoría de la mente, empatía).</p>
+
+          <h4>4.1 Instrumentos de Evaluación del Estado Emocional</h4>
+          <table class="data-table">
+            <thead><tr><th>Instrumento</th><th>Qué evalúa</th><th>Formato</th></tr></thead>
+            <tbody>
+              <tr><td>Escala de Depresión de Hamilton (HAM-D)</td><td>Gravedad de la depresión (heteroaplicada)</td><td>Entrevista clínica, 17-21 ítems</td></tr>
+              <tr><td>Inventario de Depresión de Beck (BDI-II)</td><td>Síntomas cognitivos y somáticos de depresión</td><td>Autoinforme, 21 ítems</td></tr>
+              <tr><td>Escala de Apatía de Starkstein</td><td>Apatía (diferenciada de la depresión)</td><td>Entrevista semiestructurada</td></tr>
+              <tr><td>Neuropsychiatric Inventory (NPI)</td><td>12 dominios neuropsiquiátricos en demencias</td><td>Entrevista al cuidador</td></tr>
+              <tr><td>WHOQOL-BREF</td><td>Calidad de vida relacionada con la salud</td><td>Autoinforme, 26 ítems</td></tr>
+            </tbody>
+          </table>
+
+          <h4>4.2 Evaluación del Procesamiento Emocional</h4>
+          <p>La capacidad del cerebro para procesar información emocional puede evaluarse mediante tareas de reconocimiento de expresiones faciales (utilizando el banco de fotografías de Ekman y Friesen para las 6 emociones básicas), de prosodia emocional, de atribución de estados mentales (teoría de la mente mediante el «Test de Lectura de la Mente en los Ojos» de Baron-Cohen) y de toma de decisiones con carga emocional mediante el Iowa Gambling Task.</p>
+
+          <div class="case-box">
+            <div class="case-label">📋 Ejemplo Evaluador · Apatía vs. depresión post-DCA</div>
+            <p>Mujer de 67 años, 6 meses después de un TCE moderado. La familia refiere que «no hace nada, no le interesa nada». La diferenciación entre apatía y depresión es crucial para la intervención. En la entrevista: la paciente no expresa tristeza ni ideación negativa (ausencia de disforia), pero muestra una reducción marcada de la iniciativa y la motivación. La escala de Apatía de Starkstein puntúa en rango de apatía moderada; el BDI-II en rango subclínico.</p>
+            <p><em>Interpretación:</em> Cuadro de apatía de origen orgánico (lesión prefrontal medial-subcortical), no depresión reactiva. La intervención farmacológica y conductual difiere significativamente según el diagnóstico.</p>
+          </div>
+        </div>
+
+        <hr class="section-rule">
+
+        <!-- T4-5 -->
+        <div class="subsection" id="t4-5">
+          <h3>5. Evaluación Neuropsicológica Infantil</h3>
+          <div class="objectives-box">
+            <div class="ob-label">Objetivos de aprendizaje</div>
+            <ul>
+              <li>Conocer las principales baterías de evaluación neuropsicológica infantil.</li>
+              <li>Comprender las especificidades metodológicas de la evaluación en la infancia.</li>
+              <li>Identificar los instrumentos más relevantes para el contexto escolar.</li>
+            </ul>
+          </div>
+
+          <p>La evaluación neuropsicológica en la infancia presenta características propias que la diferencian de la evaluación en adultos. El cerebro infantil está en proceso de maduración, por lo que las funciones cognitivas evaluadas tienen un carácter dinámico y cambiante. Esto implica la necesidad de utilizar instrumentos con normas actualizadas y específicas por edad, con rangos de edad suficientemente estrechos (idealmente de 6 meses a 1 año).</p>
+
+          <h4>5.1 Principales Baterías de Evaluación Neuropsicológica Infantil</h4>
+
+          <div class="instrument-card">
+            <div class="ic-name">NEPSY-II</div>
+            <div class="ic-full">Developmental Neuropsychological Assessment, 2.ª edición (Korkman, Kirk y Kemp, 2007)</div>
+            <p>Batería de referencia para la evaluación neuropsicológica de 3 a 16 años. Evalúa 6 dominios: atención y funciones ejecutivas, lenguaje, memoria y aprendizaje, percepción social, sensoriomotor, y visospacial. Permite el análisis de procesos y no solo de puntuaciones finales.</p>
+          </div>
+
+          <div class="instrument-card">
+            <div class="ic-name">ENFEN</div>
+            <div class="ic-full">Evaluación Neuropsicológica de las Funciones Ejecutivas en Niños (Portellano, Martínez Arias y Zumárraga, 2009)</div>
+            <p>Batería española específica para la evaluación de las funciones ejecutivas de 6 a 12 años. Incluye tareas de fluidez fonológica, sendero gris (planificación), anillas (planificación espacial) y resistencia a la interferencia.</p>
+          </div>
+
+          <div class="instrument-card">
+            <div class="ic-name">DNI / ENI-2</div>
+            <div class="ic-full">Evaluación Neuropsicológica Infantil, 2.ª edición (Matute et al., 2013)</div>
+            <p>Batería hispanohablante de 5 a 16 años, especialmente útil en contextos de diversidad cultural y lingüística. Incluye normas por país de habla hispana. Evalúa atención, habilidades construccionales, memoria, lenguaje, lectura, escritura y matemáticas.</p>
+          </div>
+
+          <div class="instrument-card">
+            <div class="ic-name">WISC-V</div>
+            <div class="ic-full">Escala de Inteligencia de Wechsler para Niños, 5.ª edición (Wechsler, 2014; adaptación española: Raiford y Coalson, 2018)</div>
+            <p>Aunque no es estrictamente una batería neuropsicológica, el WISC-V es imprescindible en la evaluación infantil. Proporciona el CI Total y cinco índices factoriales: Comprensión Verbal, Visoespacial, Razonamiento Fluido, Memoria de Trabajo y Velocidad de Procesamiento. El análisis de las discrepancias entre índices tiene valor neuropsicológico.</p>
+          </div>
+
+          <div class="aacc-box">
+            <div class="aacc-label">🟢 Conexión AACC · Aula de Primaria</div>
+            <p>La evaluación de alumnos AACC requiere baterías con «techo alto» que eviten el efecto techo. El WISC-V tiene un rango máximo de CI de 160, pero en alumnos con puntuaciones muy elevadas deben complementarse con pruebas de extensión como las Matrices Progresivas de Raven forma avanzada o el CAS-2 (Cognitive Assessment System). La discrepancia entre el Índice de Comprensión Verbal (habitualmente muy elevado en AACC) y el Índice de Velocidad de Procesamiento (frecuentemente más bajo) es característica del perfil AACC y no debe interpretarse como patología.</p>
+          </div>
+        </div>
+
+        <hr class="section-rule">
+
+        <!-- T4-6 -->
+        <div class="subsection" id="t4-6">
+          <h3>6. Evaluación Neuropsicológica en el Envejecimiento</h3>
+          <div class="objectives-box">
+            <div class="ob-label">Objetivos de aprendizaje</div>
+            <ul>
+              <li>Distinguir los instrumentos de screening de los de evaluación completa en el anciano.</li>
+              <li>Conocer las baterías específicas para el diagnóstico de demencias.</li>
+              <li>Comprender la evaluación funcional y su relevancia clínica.</li>
+            </ul>
+          </div>
+
+          <p>La evaluación neuropsicológica en el envejecimiento tiene como objetivo fundamental diferenciar el declive cognitivo normal del patológico, y caracterizar el perfil neuropsicológico de las demencias para orientar el diagnóstico etiológico y el plan de cuidados. La evaluación debe incluir siempre la dimensión funcional (impacto en las actividades de la vida diaria) junto con la cognitiva.</p>
+
+          <h4>6.1 Instrumentos de Screening</h4>
+          <table class="data-table">
+            <thead><tr><th>Test</th><th>Duración</th><th>Puntuación</th><th>Utilidad</th></tr></thead>
+            <tbody>
+              <tr><td>MMSE (Folstein)</td><td>5-10 min</td><td>0-30 (≤24: sospecha)</td><td>Screening general, muy difundido</td></tr>
+              <tr><td>MoCA</td><td>10 min</td><td>0-30 (≤26: sospecha)</td><td>Más sensible al DCL que el MMSE</td></tr>
+              <tr><td>Test del Reloj</td><td>3 min</td><td>Varios sistemas</td><td>Funciones ejecutivas y visoespaciales</td></tr>
+              <tr><td>Fototest</td><td>3 min</td><td>0-44 (≤23: sospecha)</td><td>Válido para analfabetos; muy breve</td></tr>
+            </tbody>
+          </table>
+
+          <h4>6.2 Baterías de Evaluación Completa en Demencias</h4>
+
+          <div class="instrument-card">
+            <div class="ic-name">NEUROPSSI</div>
+            <div class="ic-full">Evaluación Neuropsicológica del Síndrome de Deterioro Cognitivo (Montejo, Montenegro, Reinoso y De Andrés, 2012)</div>
+            <p>Batería española de evaluación completa para adultos mayores. Evalúa memoria, lenguaje, funciones ejecutivas, praxias y orientación, con normas estratificadas por edad y nivel educativo.</p>
+          </div>
+
+          <div class="instrument-card">
+            <div class="ic-name">ADAS-Cog</div>
+            <div class="ic-full">Alzheimer's Disease Assessment Scale — Cognitive subscale (Rosen et al., 1984)</div>
+            <p>Escala de referencia internacional en los ensayos clínicos de enfermedad de Alzheimer. Evalúa 11 áreas cognitivas. Sensible al cambio tras intervención, por lo que es el principal instrumento de medida de eficacia en estudios farmacológicos.</p>
+          </div>
+
+          <h4>6.3 Evaluación Funcional</h4>
+          <p>La evaluación funcional determina el impacto del deterioro cognitivo en la autonomía del paciente y es imprescindible para el diagnóstico diferencial entre DCL (sin impacto funcional significativo) y demencia (con impacto funcional). Los instrumentos más utilizados son el Índice de Barthel (actividades básicas) y la Escala de Actividades Instrumentales de la Vida Diaria de Lawton y Brody (actividades instrumentales: cocinar, manejar dinero, usar el teléfono).</p>
+
+          <!-- AUTOEVALUACIÓN MÓDULO IV -->
+          <div class="quiz-section" id="quiz4">
+  <h3>Autoevaluación · Módulo 4</h3>
+  <p class="quiz-intro">Comprueba tu comprensión del Módulo IV (Evaluación y Diagnóstico Neuropsicológico). 20 preguntas tipo test con feedback razonado.</p>
+  <div class="quiz-q">
+    <div class="q-text">El Test de Stroop evalúa principalmente:</div>
+    <label><input type="radio" name="qa1" value="a"> La memoria de trabajo verbal</label>
+    <label><input type="radio" name="qa1" value="b"> La capacidad de inhibición de respuesta automática y la atención selectiva</label>
+    <label><input type="radio" name="qa1" value="c"> La fluidez verbal semántica</label>
+    <label><input type="radio" name="qa1" value="d"> La planificación y resolución de problemas</label>
+    <div class="answer-feedback" id="fba1"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">El RAVLT es especialmente sensible para detectar:</div>
+    <label><input type="radio" name="qa2" value="a"> Déficits en la velocidad de procesamiento</label>
+    <label><input type="radio" name="qa2" value="b"> Alteraciones de la memoria procedimental</label>
+    <label><input type="radio" name="qa2" value="c"> La amnesia anterógrada temprana, especialmente en el Alzheimer</label>
+    <label><input type="radio" name="qa2" value="d"> Déficits de comprensión lingüística</label>
+    <div class="answer-feedback" id="fba2"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">El WCST (Wisconsin Card Sorting Test) es especialmente sensible a la disfunción de:</div>
+    <label><input type="radio" name="qa3" value="a"> El lóbulo temporal medial izquierdo</label>
+    <label><input type="radio" name="qa3" value="b"> El córtex prefrontal dorsolateral</label>
+    <label><input type="radio" name="qa3" value="c"> El cerebelo</label>
+    <label><input type="radio" name="qa3" value="d"> El lóbulo occipital bilateral</label>
+    <div class="answer-feedback" id="fba3"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">El MoCA es superior al MMSE para detectar el DCL porque:</div>
+    <label><input type="radio" name="qa4" value="a"> Tarda menos tiempo en administrarse</label>
+    <label><input type="radio" name="qa4" value="b"> Evalúa más dominios cognitivos, incluyendo funciones ejecutivas y atención</label>
+    <label><input type="radio" name="qa4" value="c"> No requiere formación para su administración</label>
+    <label><input type="radio" name="qa4" value="d"> Ha sido validado exclusivamente para población española</label>
+    <div class="answer-feedback" id="fba4"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">En la evaluación de un alumno AACC con el WISC-V, ¿qué discrepancia entre índices es característica de este perfil?</div>
+    <label><input type="radio" name="qa5" value="a"> Índice Visoespacial alto y Comprensión Verbal baja</label>
+    <label><input type="radio" name="qa5" value="b"> Índice de Comprensión Verbal alto y Velocidad de Procesamiento comparativamente más baja</label>
+    <label><input type="radio" name="qa5" value="c"> Memoria de Trabajo alta y Razonamiento Fluido bajo</label>
+    <label><input type="radio" name="qa5" value="d"> Todos los índices similares y elevados de forma homogénea</label>
+    <div class="answer-feedback" id="fba5"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">¿Cuántas opciones de respuesta tiene el Token Test de De Renzi y Vignolo?</div>
+    <label><input type="radio" name="qa6" value="a"> Es una tarea de imitación, sin opciones</label>
+    <label><input type="radio" name="qa6" value="b"> Consiste en mover fichas siguiendo instrucciones orales de complejidad creciente</label>
+    <label><input type="radio" name="qa6" value="c"> Es un cuestionario de 30 ítems de verdadero/falso</label>
+    <label><input type="radio" name="qa6" value="d"> Consiste en seleccionar entre 4 imágenes la correspondiente a la orden oral</label>
+    <div class="answer-feedback" id="fba6"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">¿Cuál de las siguientes baterías neuropsicológicas está específicamente diseñada para evaluar las funciones ejecutivas en niños de 6 a 12 años en población española?</div>
+    <label><input type="radio" name="qa7" value="a"> WMS-IV</label>
+    <label><input type="radio" name="qa7" value="b"> RAVLT</label>
+    <label><input type="radio" name="qa7" value="c"> ENFEN</label>
+    <label><input type="radio" name="qa7" value="d"> BORB</label>
+    <div class="answer-feedback" id="fba7"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">¿Qué evalúa específicamente la Figura Compleja de Rey-Osterrieth más allá de la memoria visoespacial?</div>
+    <label><input type="radio" name="qa8" value="a"> La velocidad de procesamiento visual</label>
+    <label><input type="radio" name="qa8" value="b"> La estrategia de copia, que informa de las funciones ejecutivas y la organización perceptiva</label>
+    <label><input type="radio" name="qa8" value="c"> La memoria de trabajo verbal</label>
+    <label><input type="radio" name="qa8" value="d"> La capacidad de denominación de objetos</label>
+    <div class="answer-feedback" id="fba8"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">¿Cuál es la principal utilidad del Rivermead Behavioural Memory Test (RBMT) en la evaluación neuropsicológica?</div>
+    <label><input type="radio" name="qa9" value="a"> Detectar déficits de memoria de trabajo en contextos laborales</label>
+    <label><input type="radio" name="qa9" value="b"> Evaluar la repercusión funcional del déficit mnésico en la vida cotidiana</label>
+    <label><input type="radio" name="qa9" value="c"> Medir la velocidad de aprendizaje verbal en afasias</label>
+    <label><input type="radio" name="qa9" value="d"> Evaluar la memoria procedimental mediante tareas motoras</label>
+    <div class="answer-feedback" id="fba9"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">¿Qué mide la Escala de Actividades Instrumentales de la Vida Diaria de Lawton y Brody (AIVD)?</div>
+    <label><input type="radio" name="qa10" value="a"> La capacidad de caminar de forma independiente</label>
+    <label><input type="radio" name="qa10" value="b"> La capacidad para realizar actividades complejas como cocinar, manejar dinero y usar el transporte público</label>
+    <label><input type="radio" name="qa10" value="c"> La fuerza muscular y el equilibrio</label>
+    <label><input type="radio" name="qa10" value="d"> La velocidad de procesamiento de la información en adultos mayores</label>
+    <div class="answer-feedback" id="fba10"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">¿Cuál de los siguientes instrumentos es la referencia para el diagnóstico neuropsicológico de la afasia en población de habla hispana?</div>
+    <label><input type="radio" name="qa11" value="a"> WAIS-IV</label>
+    <label><input type="radio" name="qa11" value="b"> BRIEF-2</label>
+    <label><input type="radio" name="qa11" value="c"> BAE o BDAE</label>
+    <label><input type="radio" name="qa11" value="d"> NEPSY-II</label>
+    <div class="answer-feedback" id="fba11"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">En la evaluación de la memoria en adultos, ¿qué índice de la WMS-IV es el más sensible para detectar la amnesia anterógrada?</div>
+    <label><input type="radio" name="qa12" value="a"> Índice de Memoria Inmediata</label>
+    <label><input type="radio" name="qa12" value="b"> Índice de Memoria de Trabajo Auditiva</label>
+    <label><input type="radio" name="qa12" value="c"> Índice de Memoria Demorada</label>
+    <label><input type="radio" name="qa12" value="d"> Índice Visoespacial</label>
+    <div class="answer-feedback" id="fba12"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">¿Para qué rango de edad está disponible la versión española del BRIEF-2?</div>
+    <label><input type="radio" name="qa13" value="a"> 3-6 años únicamente</label>
+    <label><input type="radio" name="qa13" value="b"> 5-18 años</label>
+    <label><input type="radio" name="qa13" value="c"> 12-25 años</label>
+    <label><input type="radio" name="qa13" value="d"> 6-65 años</label>
+    <div class="answer-feedback" id="fba13"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">¿Qué instrumento se utiliza en la evaluación de las emociones para diferenciar apatía de depresión en pacientes con daño cerebral adquirido?</div>
+    <label><input type="radio" name="qa14" value="a"> Inventario de Depresión de Beck (BDI-II)</label>
+    <label><input type="radio" name="qa14" value="b"> Escala de Apatía de Starkstein</label>
+    <label><input type="radio" name="qa14" value="c"> Test de Lectura de la Mente en los Ojos</label>
+    <label><input type="radio" name="qa14" value="d"> MMSE</label>
+    <div class="answer-feedback" id="fba14"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">¿Cuál es la diferencia principal entre el MMSE y el MoCA en términos de sensibilidad clínica?</div>
+    <label><input type="radio" name="qa15" value="a"> El MMSE dura más tiempo que el MoCA</label>
+    <label><input type="radio" name="qa15" value="b"> El MoCA detecta mejor el Deterioro Cognitivo Leve por incluir más ítems ejecutivos y atencionales</label>
+    <label><input type="radio" name="qa15" value="c"> El MMSE está validado para más idiomas</label>
+    <label><input type="radio" name="qa15" value="d"> No hay diferencias clínicamente relevantes entre ambos</label>
+    <div class="answer-feedback" id="fba15"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">¿Cuál es el principal objetivo del Trail Making Test Parte B (TMT-B)?</div>
+    <label><input type="radio" name="qa16" value="a"> Evaluar la velocidad de lectura</label>
+    <label><input type="radio" name="qa16" value="b"> Evaluar la atención alternante y la flexibilidad cognitiva</label>
+    <label><input type="radio" name="qa16" value="c"> Medir la memoria de trabajo verbal</label>
+    <label><input type="radio" name="qa16" value="d"> Evaluar la comprensión de instrucciones complejas</label>
+    <div class="answer-feedback" id="fba16"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">¿Qué batería neuropsicológica infantil de referencia internacional cubre 6 dominios (atención/FFEE, lenguaje, memoria, percepción social, sensoriomotor y visoespacial) de 3 a 16 años?</div>
+    <label><input type="radio" name="qa17" value="a"> BRIEF-2</label>
+    <label><input type="radio" name="qa17" value="b"> NEPSY-II</label>
+    <label><input type="radio" name="qa17" value="c"> ENFEN</label>
+    <label><input type="radio" name="qa17" value="d"> ENI-2</label>
+    <div class="answer-feedback" id="fba17"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">¿Cuál de las siguientes es una prueba de evaluación de la denominación rápida, sensible a la dislexia del desarrollo?</div>
+    <label><input type="radio" name="qa18" value="a"> WCST</label>
+    <label><input type="radio" name="qa18" value="b"> RAN (Rapid Automatized Naming)</label>
+    <label><input type="radio" name="qa18" value="c"> Iowa Gambling Task</label>
+    <label><input type="radio" name="qa18" value="d"> Test de Cancelación de Albert</label>
+    <div class="answer-feedback" id="fba18"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">¿Qué evalúa el Test de la Torre de Londres (Shallice, 1982)?</div>
+    <label><input type="radio" name="qa19" value="a"> La comprensión de instrucciones verbales complejas</label>
+    <label><input type="radio" name="qa19" value="b"> La planificación y la anticipación de consecuencias</label>
+    <label><input type="radio" name="qa19" value="c"> La inhibición de respuestas prepotentes</label>
+    <label><input type="radio" name="qa19" value="d"> La memoria de trabajo auditiva</label>
+    <div class="answer-feedback" id="fba19"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">¿Cuál de los siguientes instrumentos está especialmente recomendado para la evaluación ecológica de la atención en adultos con daño cerebral?</div>
+    <label><input type="radio" name="qa20" value="a"> Test de Stroop</label>
+    <label><input type="radio" name="qa20" value="b"> WMS-IV</label>
+    <label><input type="radio" name="qa20" value="c"> Test of Everyday Attention (TEA)</label>
+    <label><input type="radio" name="qa20" value="d"> PROLEC-R</label>
+    <div class="answer-feedback" id="fba20"></div>
+  </div>
+  <button class="quiz-btn" onclick="checkQuiz('4')">Comprobar respuestas</button>
+  <div class="quiz-result" id="result4"></div>
+</div>
+
+          <div class="quiz-section" id="quiz5">
+  <h3>Autoevaluación · Módulo 5</h3>
+  <p class="quiz-intro">Comprueba tu comprensión del Módulo V (Rehabilitación Neuropsicológica). 20 preguntas tipo test con feedback razonado.</p>
+  <div class="quiz-q">
+    <div class="q-text">La técnica de "Errorless Learning" es especialmente eficaz en la rehabilitación de memoria porque:</div>
+    <label><input type="radio" name="qb1" value="a"> Maximiza la retroalimentación negativa para corregir errores</label>
+    <label><input type="radio" name="qb1" value="b"> Aprovecha los sistemas de memoria implícita que pueden estar preservados en la amnesia</label>
+    <label><input type="radio" name="qb1" value="c"> Activa preferentemente el córtex prefrontal dorsolateral</label>
+    <label><input type="radio" name="qb1" value="d"> Se basa en la repetición masiva de material verbal</label>
+    <div class="answer-feedback" id="fbb1"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">La Terapia de Entonación Melódica (MIT) está especialmente indicada en:</div>
+    <label><input type="radio" name="qb2" value="a"> Afasia de Wernicke con comprensión gravemente alterada</label>
+    <label><input type="radio" name="qb2" value="b"> Afasia global sin producción verbal</label>
+    <label><input type="radio" name="qb2" value="c"> Afasia de Broca no fluente grave con comprensión preservada</label>
+    <label><input type="radio" name="qb2" value="d"> Prosopagnosia con afectación de la comprensión pragmática</label>
+    <div class="answer-feedback" id="fbb2"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">¿Cuál es la diferencia fundamental entre "estimulación cognitiva" y "rehabilitación cognitiva" en el envejecimiento?</div>
+    <label><input type="radio" name="qb3" value="a"> La estimulación cognitiva es solo para demencias; la rehabilitación para envejecimiento normal</label>
+    <label><input type="radio" name="qb3" value="b"> La rehabilitación cognitiva es individualizada y orientada a objetivos funcionales específicos; la estimulación es grupal y no tiene objetivos cognitivos concretos</label>
+    <label><input type="radio" name="qb3" value="c"> La estimulación usa tecnología digital; la rehabilitación usa técnicas de papel y lápiz</label>
+    <label><input type="radio" name="qb3" value="d"> No existe diferencia clínica relevante entre ambas</label>
+    <div class="answer-feedback" id="fbb3"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">El principio de "especificidad" en rehabilitación neuropsicológica implica que:</div>
+    <label><input type="radio" name="qb4" value="a"> El entrenamiento debe ser idéntico para todos los pacientes con el mismo diagnóstico</label>
+    <label><input type="radio" name="qb4" value="b"> Solo deben rehabilitarse las funciones que el paciente conserva</label>
+    <label><input type="radio" name="qb4" value="c"> El entrenamiento debe orientarse a las funciones y tareas reales que el paciente necesita recuperar en su vida cotidiana</label>
+    <label><input type="radio" name="qb4" value="d"> La rehabilitación debe iniciarse exclusivamente en la fase aguda</label>
+    <div class="answer-feedback" id="fbb4"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">El estudio FINGER (Ngandu et al., 2015) aportó evidencia de que la demencia puede prevenirse o retrasarse mediante:</div>
+    <label><input type="radio" name="qb5" value="a"> Intervención farmacológica con anticolinesterásicos preventivos</label>
+    <label><input type="radio" name="qb5" value="b"> Intervención multidominio: ejercicio, dieta, entrenamiento cognitivo y control vascular</label>
+    <label><input type="radio" name="qb5" value="c"> Entrenamiento cognitivo informatizado intensivo exclusivo</label>
+    <label><input type="radio" name="qb5" value="d"> Estimulación cognitiva grupal de reminiscencia</label>
+    <div class="answer-feedback" id="fbb5"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">¿Qué mecanismo de plasticidad cerebral describe el proceso de activación de sinapsis previamente latentes e inhibidas tras una lesión?</div>
+    <label><input type="radio" name="qb6" value="a"> Brotación colateral</label>
+    <label><input type="radio" name="qb6" value="b"> Reorganización cortical</label>
+    <label><input type="radio" name="qb6" value="c"> Desenmascaramiento sináptico</label>
+    <label><input type="radio" name="qb6" value="d"> Neurogénesis</label>
+    <div class="answer-feedback" id="fbb6"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">¿Cuál de los siguientes enfoques de rehabilitación consiste en enseñar al paciente a utilizar estrategias alternativas para compensar la función dañada, sin intentar restaurarla?</div>
+    <label><input type="radio" name="qb7" value="a"> Enfoque de restauración</label>
+    <label><input type="radio" name="qb7" value="b"> Enfoque de sustitución neuronal</label>
+    <label><input type="radio" name="qb7" value="c"> Enfoque de compensación</label>
+    <label><input type="radio" name="qb7" value="d"> Técnica de potenciación a largo plazo</label>
+    <div class="answer-feedback" id="fbb7"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">¿Cuál es el objetivo principal del Attention Process Training (APT-3)?</div>
+    <label><input type="radio" name="qb8" value="a"> Mejorar la memoria episódica verbal mediante repetición espaciada</label>
+    <label><input type="radio" name="qb8" value="b"> Entrenar jerárquicamente los niveles atencionales: sostenida → selectiva → alternante → dividida</label>
+    <label><input type="radio" name="qb8" value="c"> Rehabilitar la denominación en afasias anómicas</label>
+    <label><input type="radio" name="qb8" value="d"> Entrenar las funciones ejecutivas mediante juegos de tablero</label>
+    <div class="answer-feedback" id="fbb8"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">¿Qué es el "Spaced Retrieval" y en qué tipo de déficit es especialmente eficaz?</div>
+    <label><input type="radio" name="qb9" value="a"> Técnica de visualización para la memoria prospectiva en pacientes ansiosos</label>
+    <label><input type="radio" name="qb9" value="b"> Técnica de recuperación de información a intervalos crecientes, especialmente eficaz en el Alzheimer leve-moderado</label>
+    <label><input type="radio" name="qb9" value="c"> Programa de entrenamiento de la memoria de trabajo para el TDAH</label>
+    <label><input type="radio" name="qb9" value="d"> Técnica de relajación para la fatiga cognitiva post-TCE</label>
+    <div class="answer-feedback" id="fbb9"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">¿Cuál es el marco conceptual de referencia que estructura la rehabilitación neuropsicológica contemporánea, definiendo funcionamiento en tres niveles: funciones corporales, actividades y participación?</div>
+    <label><input type="radio" name="qb10" value="a"> Modelo de Plasticidad de Kolb y Whishaw</label>
+    <label><input type="radio" name="qb10" value="b"> Clasificación Internacional del Funcionamiento (CIF) de la OMS</label>
+    <label><input type="radio" name="qb10" value="c"> Modelo de Boston de las afasias</label>
+    <label><input type="radio" name="qb10" value="d"> Modelo de Memoria de Trabajo de Baddeley</label>
+    <div class="answer-feedback" id="fbb10"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">En la rehabilitación de las afasias, ¿cuál es el principio terapéutico central de la CILT (Constraint-Induced Language Therapy)?</div>
+    <label><input type="radio" name="qb11" value="a"> Usar el canto para activar el hemisferio derecho</label>
+    <label><input type="radio" name="qb11" value="b"> Práctica masiva del lenguaje oral con restricción de la comunicación no verbal</label>
+    <label><input type="radio" name="qb11" value="c"> Entrenar la comprensión auditiva mediante pares mínimos</label>
+    <label><input type="radio" name="qb11" value="d"> Estimular el fascículo arqueado mediante tDCS</label>
+    <div class="answer-feedback" id="fbb11"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">¿Cuál de los siguientes programas está específicamente diseñado para la rehabilitación de las funciones ejecutivas mediante el entrenamiento en la gestión de objetivos?</div>
+    <label><input type="radio" name="qb12" value="a"> APT-3</label>
+    <label><input type="radio" name="qb12" value="b"> RehaCom</label>
+    <label><input type="radio" name="qb12" value="c"> Goal Management Training (GMT)</label>
+    <label><input type="radio" name="qb12" value="d"> PACE</label>
+    <div class="answer-feedback" id="fbb12"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">¿Qué técnica de rehabilitación del lenguaje emplea el enfoque pragmático, entrenando la comunicación en contextos naturales y funcionales?</div>
+    <label><input type="radio" name="qb13" value="a"> MIT (Terapia de Entonación Melódica)</label>
+    <label><input type="radio" name="qb13" value="b"> Tratamiento de Acceso Léxico</label>
+    <label><input type="radio" name="qb13" value="c"> PACE (Promoting Aphasics' Communicative Effectiveness)</label>
+    <label><input type="radio" name="qb13" value="d"> CILT (Constraint-Induced Language Therapy)</label>
+    <div class="answer-feedback" id="fbb13"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">¿Cuál es el tipo de intervención cognitiva más adecuado cuando el objetivo es mejorar una función cognitiva específica en una persona con DCL o envejecimiento normal?</div>
+    <label><input type="radio" name="qb14" value="a"> Estimulación cognitiva grupal</label>
+    <label><input type="radio" name="qb14" value="b"> Entrenamiento cognitivo específico</label>
+    <label><input type="radio" name="qb14" value="c"> Rehabilitación cognitiva individualizada</label>
+    <label><input type="radio" name="qb14" value="d"> Terapia de reminiscencia</label>
+    <div class="answer-feedback" id="fbb14"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">¿Cuál es el principal beneficio de la Comunicación Aumentativa y Alternativa (CAA) en pacientes con afasia grave?</div>
+    <label><input type="radio" name="qb15" value="a"> Restaura la producción verbal oral espontánea</label>
+    <label><input type="radio" name="qb15" value="b"> Proporciona sistemas de apoyo alternativos (pictogramas, tablets, PECS) que permiten la comunicación funcional</label>
+    <label><input type="radio" name="qb15" value="c"> Activa la plasticidad cortical del hemisferio derecho</label>
+    <label><input type="radio" name="qb15" value="d"> Mejora la comprensión auditiva mediante repetición</label>
+    <div class="answer-feedback" id="fbb15"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">¿Qué mecanismo de plasticidad post-lesional describe el crecimiento de nuevas ramificaciones axonales desde neuronas sanas hacia la zona lesionada?</div>
+    <label><input type="radio" name="qb16" value="a"> Desenmascaramiento sináptico</label>
+    <label><input type="radio" name="qb16" value="b"> Brotación colateral (sprouting)</label>
+    <label><input type="radio" name="qb16" value="c"> Potenciación a largo plazo</label>
+    <label><input type="radio" name="qb16" value="d"> Reorganización topográfica cortical</label>
+    <div class="answer-feedback" id="fbb16"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">En la intervención neuropsicológica en la infancia, ¿qué tipo de intervención tiene el mayor nivel de evidencia para el TDAH?</div>
+    <label><input type="radio" name="qb17" value="a"> Solo intervención farmacológica</label>
+    <label><input type="radio" name="qb17" value="b"> Solo intervención conductual en el aula</label>
+    <label><input type="radio" name="qb17" value="c"> Tratamiento multimodal: farmacológico + intervención conductual + apoyo escolar coordinado</label>
+    <label><input type="radio" name="qb17" value="d"> Entrenamiento en memoria de trabajo informatizado exclusivamente</label>
+    <div class="answer-feedback" id="fbb17"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">¿Cuál de las siguientes estrategias de rehabilitación de la memoria está clasificada como enfoque compensador?</div>
+    <label><input type="radio" name="qb18" value="a"> Spaced Retrieval</label>
+    <label><input type="radio" name="qb18" value="b"> Errorless Learning</label>
+    <label><input type="radio" name="qb18" value="c"> Uso de sistemas de memoria externa (agenda, alarmas, smartphone)</label>
+    <label><input type="radio" name="qb18" value="d"> Método de lugares (loci)</label>
+    <div class="answer-feedback" id="fbb18"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">¿Cuál es el objetivo principal del Problem Solving Therapy en la rehabilitación de las funciones ejecutivas?</div>
+    <label><input type="radio" name="qb19" value="a"> Entrenar la memoria de trabajo mediante ejercicios de n-back</label>
+    <label><input type="radio" name="qb19" value="b"> Enseñar un algoritmo explícito de resolución de problemas en 5 pasos aplicable a situaciones cotidianas</label>
+    <label><input type="radio" name="qb19" value="c"> Rehabilitar la atención dividida mediante tareas duales</label>
+    <label><input type="radio" name="qb19" value="d"> Mejorar la inhibición mediante el entrenamiento en el Test de Stroop</label>
+    <div class="answer-feedback" id="fbb19"></div>
+  </div>
+  <div class="quiz-q">
+    <div class="q-text">¿Qué describe el principio de "intensidad y dosis" en la rehabilitación neuropsicológica?</div>
+    <label><input type="radio" name="qb20" value="a"> La necesidad de dosificar los medicamentos neurológicos según el peso del paciente</label>
+    <label><input type="radio" name="qb20" value="b"> Que a mayor número de repeticiones y mayor intensidad del entrenamiento, mayor es la reorganización cortical y la recuperación funcional</label>
+    <label><input type="radio" name="qb20" value="c"> La distribución de las sesiones en días alternos para evitar la fatiga</label>
+    <label><input type="radio" name="qb20" value="d"> Que la intensidad de la rehabilitación debe reducirse progresivamente en la fase crónica</label>
+    <div class="answer-feedback" id="fbb20"></div>
+  </div>
+  <button class="quiz-btn" onclick="checkQuiz('5')">Comprobar respuestas</button>
+  <div class="quiz-result" id="result5"></div>
+</div>
+
+          <div class="key-concepts">
+            <h4>Conceptos Clave · Bloque II</h4>
+            <div class="concept-tags">
+              <span class="concept-tag">BAE / BDAE / EPLA</span>
+              <span class="concept-tag">Token Test</span>
+              <span class="concept-tag">WMS-IV</span>
+              <span class="concept-tag">RAVLT</span>
+              <span class="concept-tag">Figura de Rey-Osterrieth</span>
+              <span class="concept-tag">Test de Stroop</span>
+              <span class="concept-tag">Trail Making Test</span>
+              <span class="concept-tag">WCST</span>
+              <span class="concept-tag">BRIEF</span>
+              <span class="concept-tag">NEPSY-II / ENFEN</span>
+              <span class="concept-tag">WISC-V</span>
+              <span class="concept-tag">MMSE / MoCA</span>
+              <span class="concept-tag">Plasticidad cerebral</span>
+              <span class="concept-tag">Diasquisis</span>
+              <span class="concept-tag">LTP</span>
+              <span class="concept-tag">CIF-OMS</span>
+              <span class="concept-tag">CILT / MIT / PACE</span>
+              <span class="concept-tag">Errorless Learning</span>
+              <span class="concept-tag">Spaced Retrieval</span>
+              <span class="concept-tag">APT-3 / RehaCom</span>
+              <span class="concept-tag">Goal Management Training</span>
+              <span class="concept-tag">Tratamiento multimodal TDAH</span>
+              <span class="concept-tag">Intervención fonológica dislexia</span>
+              <span class="concept-tag">Estudio FINGER</span>
+              <span class="concept-tag">Rehabilitación vs. Estimulación cognitiva</span>
+            </div>
+          </div>
+
+          <a href="#top" class="back-top">↑ Volver al inicio del Bloque II</a>
+        </div>
+      </section>
+
+      <!-- ====== GENERADOR IA ====== -->
+      <div class="ai-exam-section" id="exam-gen">
+        <h2>Generador de Examen Personalizado</h2>
+        <p class="ai-intro">Genera un examen personalizado sobre evaluación y rehabilitación neuropsicológica. Las preguntas se generan de nuevo en cada sesión y no se repiten.</p>
+        <div class="ai-controls">
+          <div>
+            <label>Módulo</label>
+            <select id="examModule">
+              <option value="IV">Módulo IV · Evaluación y Diagnóstico</option>
+              <option value="V">Módulo V · Rehabilitación</option>
+              <option value="IIcompleto">Bloque II completo</option>
+            </select>
+          </div>
+          <div>
+            <label>Dificultad</label>
+            <select id="examDiff">
+              <option value="básico">Básico · Definiciones y conceptos</option>
+              <option value="intermedio" selected>Intermedio · Aplicación clínica</option>
+              <option value="avanzado">Avanzado · Análisis y síntesis</option>
+            </select>
+          </div>
+          <div>
+            <label>Tipo de preguntas</label>
+            <select id="examType">
+              <option value="mixto">Mixto (test + desarrollo)</option>
+              <option value="test">Solo tipo test</option>
+              <option value="desarrollo">Solo desarrollo</option>
+            </select>
+          </div>
+          <div>
+            <label>Número de preguntas</label>
+            <select id="examNum">
+              <option value="5">5 preguntas</option>
+              <option value="10" selected>10 preguntas</option>
+              <option value="15">15 preguntas</option>
+            </select>
+          </div>
+        </div>
+        <button class="generate-btn" id="generateBtn" onclick="generateExam()">Generar examen</button>
+        <div class="loading-indicator" id="loadingIndicator">
+          <div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div>
+          <span style="margin-left:0.75rem; font-family:var(--sans); font-size:0.82rem;">Generando examen personalizado…</span>
+        </div>
+        <div class="exam-output" id="examOutput">
+          <h3 id="examTitle"></h3>
+          <div id="examQuestions"></div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script>
+const sections = document.querySelectorAll('.subsection');
+function updateProgress() {
+  let visited = 0;
+  sections.forEach(s => { if (s.getBoundingClientRect().top < window.innerHeight * 0.8) visited++; });
+  const pct = Math.min(100, Math.round((visited / sections.length) * 100));
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent = pct + '%';
+}
+function updateActiveNav() {
+  const navItems = document.querySelectorAll('.nav-item[href^="#"]');
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = '#' + s.id; });
+  navItems.forEach(n => n.classList.toggle('active', n.getAttribute('href') === current));
+}
+window.addEventListener('scroll', () => { updateProgress(); updateActiveNav(); });
+updateProgress();
+
+const answers = {
+  qa1: { correct: 'b', feedback: { b: 'El Test de Stroop evalúa la inhibición de la respuesta automática de leer la palabra, para nombrar el color de la tinta. Esta interferencia refleja la eficiencia del control inhibitorio prefrontal.' } },
+  qa2: { correct: 'c', feedback: { c: 'El RAVLT analiza la curva de aprendizaje y la retención demorada. En el Alzheimer, el recuerdo libre demorado cae drásticamente (consolidación deteriorada), siendo uno de los signos neuropsicológicos más tempranos.' } },
+  qa3: { correct: 'b', feedback: { b: 'El WCST requiere flexibilidad cognitiva para cambiar el criterio de clasificación ante el feedback. Esta capacidad depende del córtex prefrontal dorsolateral; su lesión produce perseveraciones características.' } },
+  qa4: { correct: 'b', feedback: { b: 'El MoCA incluye ítems de funciones ejecutivas (fluidez, abstracción), atención y memoria de trabajo que el MMSE no evalúa o evalúa insuficientemente, lo que le otorga mayor sensibilidad para el DCL.' } },
+  qa5: { correct: 'b', feedback: { b: 'En el perfil AACC, el Índice de Comprensión Verbal suele ser excepcionalmente elevado, mientras que la Velocidad de Procesamiento puede ser comparativamente menor. No es patología, sino disincronía del desarrollo evolutivo.' } },
+  qa6: { correct: 'b', feedback: { b: 'El Token Test pide al paciente que mueva fichas de diferentes formas, colores y tamaños siguiendo instrucciones orales de longitud y complejidad creciente. No requiere producción verbal, lo que lo hace especialmente útil para evaluar comprensión en pacientes afásicos.' } },
+  qa7: { correct: 'c', feedback: { c: 'La ENFEN (Evaluación Neuropsicológica de las Funciones Ejecutivas en Niños, Portellano et al., 2009) es una batería española para 6-12 años que evalúa fluidez fonológica, planificación (sendero gris y anillas) y resistencia a la interferencia.' } },
+  qa8: { correct: 'b', feedback: { b: 'El análisis cualitativo de la estrategia de copia (si el paciente parte de un marco global o de detalles aislados) aporta información sobre las funciones ejecutivas y la organización perceptiva, más allá de la puntuación cuantitativa de memoria.' } },
+  qa9: { correct: 'b', feedback: { b: 'El RBMT utiliza tareas que simulan situaciones cotidianas (recordar una cita, el nombre de una persona fotografiada, dónde se ha dejado un objeto), lo que le otorga alta validez ecológica para evaluar el impacto del déficit de memoria en la vida diaria.' } },
+  qa10: { correct: 'b', feedback: { b: 'La escala de Lawton y Brody evalúa 8 actividades instrumentales (usar el teléfono, hacer la compra, cocinar, limpiar, lavar ropa, usar transporte, manejar medicación y dinero). Es fundamental para diferenciar DCL (AIVD conservadas) de demencia (AIVD afectadas).' } },
+  qa11: { correct: 'c', feedback: { c: 'La BAE (Batería para la Evaluación de la Afasia, Marcos Orts, 2020) y el BDAE (Boston Diagnostic Aphasia Examination, Goodglass y Kaplan, con adaptación española) son las referencias para la clasificación y evaluación de las afasias en población española.' } },
+  qa12: { correct: 'c', feedback: { c: 'El Índice de Memoria Demorada evalúa la capacidad de retener la información tras un intervalo de 20-30 minutos, que es precisamente donde se produce el fallo en la amnesia anterógrada (por déficit de consolidación hipocampal).' } },
+  qa13: { correct: 'b', feedback: { b: 'El BRIEF-2 (Behavior Rating Inventory of Executive Function, 2.ª edición) tiene normas para 5 a 18 años, con versiones para padres y profesores. Evalúa las funciones ejecutivas en el contexto natural del niño, con índices de inhibición, flexibilidad, memoria de trabajo, planificación y monitorización.' } },
+  qa14: { correct: 'b', feedback: { b: 'La Escala de Apatía de Starkstein permite diferenciar la apatía (reducción de motivación e iniciativa de origen neurológico, sin disforia) de la depresión. Esta distinción es crucial porque el tratamiento difiere significativamente.' } },
+  qa15: { correct: 'b', feedback: { b: 'El MMSE tiene un efecto techo en pacientes con deterioro leve porque carece de ítems ejecutivos suficientes. El MoCA incluye tareas de fluidez verbal, abstracción, memoria prospectiva y atención que detectan el DCL con mayor sensibilidad.' } },
+  qa16: { correct: 'b', feedback: { b: 'El TMT-B requiere alternar entre secuencias de números y letras (1-A-2-B-3-C...), lo que demanda atención alternante y flexibilidad cognitiva. El ratio TMT-B/TMT-A es un índice sensible de disfunción ejecutiva prefrontal.' } },
+  qa17: { correct: 'b', feedback: { b: 'La NEPSY-II (Korkman, Kirk y Kemp, 2007) es la batería neuropsicológica infantil más completa internacionalmente. Permite el análisis de procesos (no solo puntuaciones finales) y cubre desde los 3 hasta los 16 años.' } },
+  qa18: { correct: 'b', feedback: { b: 'La RAN (Denominación Rápida Automatizada) mide la velocidad con que un sujeto nombra series de letras, dígitos, colores u objetos. Es uno de los mejores predictores de la fluidez lectora y del déficit de automatización en la dislexia.' } },
+  qa19: { correct: 'b', feedback: { b: 'La Torre de Londres requiere reorganizar bolas de colores en postes para alcanzar una configuración meta en el menor número de movimientos posible, lo que exige planificación anticipatoria, capacidad de inhibir respuestas inmediatas y supervisión del plan.' } },
+  qa20: { correct: 'c', feedback: { c: 'El TEA (Robertson et al., 1994) evalúa la atención mediante tareas contextualizadas (buscar símbolos en un mapa de ciudad, contar tonos en una grabación), lo que le confiere alta validez ecológica para detectar déficits atencionales en la vida real.' } },
+  qb1: { correct: 'b', feedback: { b: 'El errorless learning minimiza los errores durante el aprendizaje para evitar que se consoliden respuestas incorrectas vía memoria implícita. Funciona porque la memoria implícita (procedimental, priming) frecuentemente está preservada en la amnesia hipocampal.' } },
+  qb2: { correct: 'c', feedback: { c: 'La MIT utiliza la entonación y el ritmo melódico para activar regiones del hemisferio derecho que pueden compensar la lesión del hemisferio izquierdo. Está indicada en la afasia de Broca no fluente con comprensión oral relativamente conservada.' } },
+  qb3: { correct: 'b', feedback: { b: 'La distinción clave es la individualización y orientación funcional. La rehabilitación cognitiva tiene objetivos específicos para el individuo (ej. preparar el desayuno solo); la estimulación es actividad grupal orientada al mantenimiento general.' } },
+  qb4: { correct: 'c', feedback: { c: 'El principio de especificidad establece que el entrenamiento que mejor se transfiere a la vida real es el que se practica en tareas funcionalmente relevantes para el individuo. El entrenamiento de laboratorio genérico tiene transferencia limitada.' } },
+  qb5: { correct: 'b', feedback: { b: 'El estudio FINGER fue el primer ensayo controlado aleatorizado que demostró que una intervención multidominio de 2 años mejoraba el rendimiento neuropsicológico en adultos mayores de riesgo, comparado con el grupo control.' } },
+  qb6: { correct: 'c', feedback: { c: 'El desenmascaramiento sináptico ocurre cuando la lesión libera sinapsis que estaban funcionalmente inhibidas, permitiendo que nuevas conexiones se activen y contribuyan a la recuperación. Este mecanismo es especialmente relevante en las primeras horas y días post-lesión.' } },
+  qb7: { correct: 'c', feedback: { c: 'El enfoque compensador enseña al paciente a suplir la función dañada con recursos internos (otras estrategias cognitivas) o externos (agenda, alarmas, señales visuales). Es el enfoque de primera elección en déficits graves o crónicos.' } },
+  qb8: { correct: 'b', feedback: { b: 'El APT-3 de Sohlberg y Mateer entrena la atención de forma jerárquica, comenzando por la atención sostenida (el componente más básico) y progresando hacia los niveles más complejos. Es el programa de rehabilitación atencional con mayor apoyo empírico.' } },
+  qb9: { correct: 'b', feedback: { b: 'El Spaced Retrieval consiste en recuperar información a intervalos temporales progresivamente más largos. Fortalece la traza mnésica al explotar el efecto de la práctica distribuida. Es especialmente eficaz en el Alzheimer leve-moderado.' } },
+  qb10: { correct: 'b', feedback: { b: 'La Clasificación Internacional del Funcionamiento (CIF, OMS 2001) proporciona el marco de referencia de la rehabilitación moderna: intervenir no solo en las funciones biológicas dañadas sino también en las actividades del individuo y su participación social.' } },
+  qb11: { correct: 'b', feedback: { b: 'La CILT se basa en la práctica masiva e intensa del lenguaje oral (de inspiración en la Constraint-Induced Movement Therapy) y en la restricción de las estrategias de comunicación no verbal (gestos, escritura), para forzar el uso del canal lingüístico dañado.' } },
+  qb12: { correct: 'c', feedback: { c: 'El Goal Management Training (GMT, Levine et al., 2000) enseña al paciente a detener la conducta automática, definir claramente los objetivos, dividirlos en subobjetivos y monitorizar la ejecución. Tiene evidencia en pacientes con TCE y lesiones frontales.' } },
+  qb13: { correct: 'c', feedback: { c: 'La PACE (Davis y Wilcox, 1985) usa tareas comunicativas naturales (describir una imagen al examinador sin que pueda verla) y permite al paciente usar cualquier canal (habla, gestos, escritura), priorizando la efectividad comunicativa sobre la corrección formal.' } },
+  qb14: { correct: 'b', feedback: { b: 'El entrenamiento cognitivo consiste en la práctica guiada y estructurada de tareas cognitivas específicas con el objetivo de mejorar esa función. A diferencia de la estimulación, tiene objetivos cognitivos concretos y medibles. Es adecuado para DCL y envejecimiento normal.' } },
+  qb15: { correct: 'b', feedback: { b: 'La CAA no restaura el lenguaje sino que ofrece sistemas alternativos o aumentativos (tableros de comunicación, PECS, apps en tablet) que permiten al paciente comunicarse funcionalmente cuando la producción verbal oral es insuficiente.' } },
+  qb16: { correct: 'b', feedback: { b: 'La brotación colateral (collateral sprouting) es el crecimiento de nuevas ramas axonales desde neuronas sanas hacia la zona de la lesión, restableciendo parcialmente la conectividad perdida. Ocurre en una escala temporal de semanas a meses.' } },
+  qb17: { correct: 'c', feedback: { c: 'Las revisiones Cochrane y las guías clínicas internacionales establecen el tratamiento multimodal como el de mayor eficacia en el TDAH: la combinación de medicación estimulante, intervención conductual y apoyo escolar produce mejores resultados que cualquier componente por separado.' } },
+  qb18: { correct: 'c', feedback: { c: 'Los sistemas de memoria externa (agendas, alarmas, notas, aplicaciones) son el ejemplo paradigmático del enfoque compensador: no intentan restaurar la función mnésica sino proporcionar un soporte externo que suple lo que la memoria interna no puede hacer.' } },
+  qb19: { correct: 'b', feedback: { b: 'La Problem Solving Therapy enseña explícitamente un algoritmo de resolución de problemas: definir el problema, generar alternativas, evaluar consecuencias, elegir y ejecutar, revisar el resultado. Es especialmente útil en síndromes disejecutivos de origen frontal.' } },
+  qb20: { correct: 'b', feedback: { b: 'El principio de intensidad establece que la reorganización cortical es proporcional al número de repeticiones y a la demanda del entrenamiento. Los programas de baja intensidad tienen menor eficacia. Tiene base en la investigación sobre plasticidad cerebral.' } },
+};
+
+function checkQuiz(mod) {
+  groups = { '4': ['qa1', 'qa2', 'qa3', 'qa4', 'qa5', 'qa6', 'qa7', 'qa8', 'qa9', 'qa10', 'qa11', 'qa12', 'qa13', 'qa14', 'qa15', 'qa16', 'qa17', 'qa18', 'qa19', 'qa20'], '5': ['qb1', 'qb2', 'qb3', 'qb4', 'qb5', 'qb6', 'qb7', 'qb8', 'qb9', 'qb10', 'qb11', 'qb12', 'qb13', 'qb14', 'qb15', 'qb16', 'qb17', 'qb18', 'qb19', 'qb20'] };
+  const qs = groups[mod];
+  let score = 0, answered = 0;
+  qs.forEach(qId => {
+    const sel = document.querySelector(`input[name="${qId}"]:checked`);
+    const num = qId.replace('qa','').replace('qb','');
+    const prefix = qId.startsWith('qa') ? 'a' : 'b';
+    const fb = document.getElementById('fb' + prefix + num);
+    if (!sel) return;
+    answered++;
+    const data = answers[qId];
+    if (sel.value === data.correct) {
+      score++;
+      fb.className = 'answer-feedback correct';
+      fb.textContent = '✓ ' + data.text;
+    } else {
+      fb.className = 'answer-feedback incorrect';
+      fb.textContent = '✗ Incorrecto. ' + data.text;
+    }
+    fb.style.display = 'block';
+  });
+  const result = document.getElementById('result' + mod);
+  if (answered < qs.length) {
+    result.style.display = 'block';
+    result.textContent = 'Por favor, responde todas las preguntas antes de comprobar.';
+    result.style.background = '#FDF3DC'; result.style.color = '#7A4F00';
+  } else {
+    result.style.display = 'block';
+    const pct = Math.round((score / qs.length) * 100);
+    result.textContent = `Resultado: ${score} de ${qs.length} correctas (${pct}%). ${pct >= 70 ? '✓ Nivel superado.' : 'Repasa los temas con más dificultad antes de continuar.'}`;
+  }
+}
+
+const moduleContent = {
+  'IV': 'Evaluación neuropsicológica del lenguaje y praxias (BAE, BDAE, EPLA, Token Test), evaluación de memoria y percepción (WMS-IV, RAVLT, Figura de Rey, RBMT, BORB), evaluación de atención y funciones ejecutivas (TEA, Stroop, Trail Making Test, WCST, Torre de Londres, BRIEF), evaluación emocional (Hamilton, BDI-II, NPI, Iowa Gambling Task), evaluación infantil (NEPSY-II, ENFEN, ENI-2, WISC-V), evaluación en envejecimiento (MMSE, MoCA, Test del Reloj, NEUROPSSI, ADAS-Cog, Barthel, Lawton).',
+  'V': 'Plasticidad cerebral (diasquisis, brotación colateral, reorganización cortical, LTP), enfoques de rehabilitación (restauración, compensación, sustitución), principios de rehabilitación (especificidad, intensidad, progresión, orientación a objetivos), CIF-OMS, rehabilitación del lenguaje y praxias (CILT, MIT, PACE, CAA), rehabilitación de la memoria (Errorless Learning, Spaced Retrieval, sistemas externos, método loci), rehabilitación de agnosias, rehabilitación de atención (APT-3, RehaCom) y funciones ejecutivas (GMT, Problem Solving, autoinstrucciones), rehabilitación en la infancia (tratamiento multimodal TDAH, intervención fonológica dislexia, ABA en TEA), intervención en envejecimiento (estimulación, entrenamiento y rehabilitación cognitiva, estudio FINGER).',
+  'IIcompleto': 'Todo el contenido del Bloque II: instrumentos de evaluación neuropsicológica (lenguaje, memoria, atención, funciones ejecutivas, emoción, infantil y envejecimiento) y técnicas de rehabilitación neuropsicológica (plasticidad, enfoques, lenguaje, memoria, agnosias, atención, FFEE, infancia y envejecimiento).'
+};
+
+async function generateExam() {
+  const btn = document.getElementById('generateBtn');
+  const loading = document.getElementById('loadingIndicator');
+  const output = document.getElementById('examOutput');
+  const mod = document.getElementById('examModule').value;
+  const diff = document.getElementById('examDiff').value;
+  const type = document.getElementById('examType').value;
+  const num = document.getElementById('examNum').value;
+  const typeInstructions = {
+    'mixto': `La mitad de las preguntas deben ser tipo test (con 4 opciones, indicando la correcta con [CORRECTA]) y la otra mitad de desarrollo breve (con respuesta modelo de 3-4 líneas).`,
+    'test': `Todas tipo test con 4 opciones. Indica la correcta con [CORRECTA] y proporciona justificación de 2-3 líneas.`,
+    'desarrollo': `Todas de desarrollo breve con respuesta modelo de 4-5 líneas.`
+  };
+  btn.disabled = true; loading.style.display = 'block'; output.style.display = 'none';
+  const prompt = `Eres un profesor universitario de Neuropsicología. Genera un examen de ${num} preguntas sobre: ${moduleContent[mod]}\n\nNivel: ${diff}.\nFormato: ${typeInstructions[type]}\n\nResponde ÚNICAMENTE en JSON sin texto adicional:\n{"titulo":"Examen Neuropsicología — Módulo ${mod} — Nivel ${diff}","preguntas":[{"numero":1,"tipo":"test o desarrollo","enunciado":"texto","opciones":["A) ...","B) ...","C) ...","D) ..."],"respuesta":"texto"}]}`;
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 3000, messages: [{ role: 'user', content: prompt }] })
+    });
+    const data = await response.json();
+    const raw = data.content.map(i => i.text || '').join('');
+    const parsed = JSON.parse(raw.replace(/```json|```/g, '').trim());
+    document.getElementById('examTitle').textContent = parsed.titulo;
+    const container = document.getElementById('examQuestions');
+    container.innerHTML = '';
+    parsed.preguntas.forEach(q => {
+      const div = document.createElement('div');
+      div.className = 'exam-question';
+      let html = `<div class="eq-num">Pregunta ${q.numero} · ${q.tipo === 'test' ? 'Tipo test' : 'Desarrollo'}</div><p>${q.enunciado}</p>`;
+      if (q.tipo === 'test' && q.opciones) q.opciones.forEach(opt => { html += `<p style="margin:0.2rem 0;font-size:0.85rem;color:rgba(255,255,255,0.75);">• ${opt}</p>`; });
+      html += `<button class="show-answer-btn" onclick="toggleAnswer(this)">Ver respuesta</button><div class="eq-answer">${q.respuesta}</div>`;
+      div.innerHTML = html;
+      container.appendChild(div);
+    });
+    output.style.display = 'block';
+  } catch (err) {
+    document.getElementById('examTitle').textContent = 'Error al generar el examen';
+    document.getElementById('examQuestions').innerHTML = `<p style="color:#F5A5A5;font-family:var(--sans);font-size:0.85rem;">No se pudo conectar con la IA. Comprueba la configuración y vuelve a intentarlo.</p>`;
+    output.style.display = 'block';
+  } finally { btn.disabled = false; loading.style.display = 'none'; }
+}
+
+function toggleAnswer(btn) {
+  const a = btn.nextElementSibling;
+  const v = a.style.display === 'block';
+  a.style.display = v ? 'none' : 'block';
+  btn.textContent = v ? 'Ver respuesta' : 'Ocultar respuesta';
+}
+</script>
+</body>
+</html>
